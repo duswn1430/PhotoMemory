@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         _Step = STEP.INIT;
 
         _iGameStage = 1;
+        _BoxMap._iLevel = 1;
 
         SetScore(0);
 
@@ -110,10 +111,6 @@ public class GameManager : MonoBehaviour
     public IEnumerator NEXT()
     {
         yield return new WaitForSeconds(2f);
-
-        //SetScore(_iGameStage);
-
-        //_iGameStage++;
 
         yield return StartCoroutine(LevelCheck());
 
