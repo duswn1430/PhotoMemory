@@ -6,104 +6,79 @@ using System.Linq;
 
 public class BoxMapManager : MonoBehaviour
 {
-    public GameManager _GameManager = null;
-
     public CameraControl _stCameraControl = null;
-        
-    public List<Box> _BoxList = null;
-    public List<Transform> _BoxTrans = null;
+
+    public GameManager _GameManager = null;
 
     public GameObject _BoxPrefab = null;
     public GameObject _DustPrefab = null;
 
-
-    public int _iLevel = 1;
-    public int _iRow;
-    public int _iCol;
-    int _iMaxSize = 8;
-    int _iMaxColorCnt = 7;
-    int _iBoxCount = 0;
-
-    private float _fSpwanTime = 0.2f;
-    private float _fMoveTime = 0.2f;
-
-    private bool _bTouchLock = false;
-
-    public Color[] _Colors = null;
-
     public UISprite _UIShutter = null;
 
-    // Use this for initialization
+    BoxMapData _stMapData = null;
+
+    List<Box> _BoxList = null;
+    List<Transform> _BoxTrans = null;
+
+    //public int _iRow;
+    public List<int> _listCol;
+
+    Transform _MyTransform = null;
+
+    private bool _bTouchLock = false;
+    private float _fSpwanTime = 0.2f;
+    private float _fMoveTime = 0.2f;
+    
     void Awake()
     {
         _BoxList = new List<Box>();
         _BoxTrans = new List<Transform>();
+        _listCol = new List<int>();
+
+        _MyTransform = transform;
+
+        //_iRow = 0;
+        _listCol.Clear();
     }
 
-    public IEnumerator InitBoxMap()
-    {
-        AddBoxMap();
-        AddBoxMap();
-        AddBoxMap();
-        AddBoxMap();
-
-        yield return StartCoroutine(SpwanBox());
-
-        SettingTartgets();
-    }
-
-    public IEnumerator GenerateBoxMap()
+    public IEnumerator SetBoxMap(BoxMapData mapdata)
     {
         if (_bTouchLock) yield break;
 
-        AddBoxMap();
+        MapSetting(mapdata);
+
         yield return StartCoroutine(SpwanBox());
+
         SettingTartgets();
     }
 
-    // 맵 추가.
-    void AddBoxMap()
+    // 맵 셋팅.
+    void MapSetting(BoxMapData mapdata)
     {
-        if (_iRow < _iMaxSize || _iCol < _iMaxSize)
+        _stMapData = mapdata;
+
+        for (int row = 0; row < mapdata.iRow; row++)
         {
-            if (_iRow == _iCol)
+            if (_listCol.Count < row + 1)
             {
-                for (int col = 0; col < _iCol; ++col)
-                {
-                    Box box = new Box();
-                    box._Parent = transform;
-                    box._Idx = _iBoxCount++;
-                    box._X = _iRow;
-                    box._Y = col;
-
-                    _BoxList.Add(box);
-                }
-
-                _iRow++;
+                _listCol.Add(0);
             }
-            else if (_iRow > _iCol)
+
+            for (int col = _listCol[row]; col < mapdata.iCol; col++)
             {
-                for (int row = 0; row < _iRow; ++row)
-                {
-                    Box box = new Box();
-                    box._Parent = transform;
-                    box._Idx = _iBoxCount++;
-                    box._X = row;
-                    box._Y = _iCol;
+                Box box = new Box();
+                box._Idx = _BoxList.Count;
+                box._X = row;
+                box._Y = col;
 
-                    _BoxList.Add(box);
-                }
-
-                _iCol++;
+                _BoxList.Add(box);
             }
+            _listCol[row] = mapdata.iCol;
         }
-        else
-        {
-            Debug.Log("SIZE FULL");
-        }
+        //_iRow = mapdata.iRow;
     }
 
-    // 맵 오브젝트 추가.
+    // 박스 추가.
     IEnumerator SpwanBox()
     {
         _bTouchLock = true;
@@ -111,7 +86,7 @@ public class BoxMapManager : MonoBehaviour
         List<Box> spawnList = _BoxList.Where(row => row._State == STATE.NONE).ToList();
 
         float rate = _fSpwanTime / spawnList.Count;
-
+        
         for (int i = 0; i < spawnList.Count; ++i)
         {
             yield return new WaitForSeconds(rate);
@@ -130,13 +105,9 @@ public class BoxMapManager : MonoBehaviour
     {
         Transform obj = Instantiate(_BoxPrefab).transform;
 
-        obj.name = box._Idx.ToString();
-        obj.parent = box._Parent;
-        obj.position = box._Pos;
-
         SetBoxPrefab(obj, box);
 
-        return obj.transform;
+        return obj;
 
     }
 
@@ -144,7 +115,7 @@ public class BoxMapManager : MonoBehaviour
     void SetBoxPrefab(Transform obj, Box box)
     {
         obj.name = box._Idx.ToString();
-        obj.parent = box._Parent;
+        obj.parent = transform;
         obj.position = box._Pos;
         AmiscGame.SetColor(obj, box._CurType);
     }
@@ -164,12 +135,14 @@ public class BoxMapManager : MonoBehaviour
     {
         if (_bTouchLock) return;
 
-        int colorNum = Mathf.Min(_iRow, _Colors.Length - 1);
-        int colorCnt = Mathf.Min(_iCol - 1, _iMaxColorCnt);
+        //int colorNum = Mathf.Min(_iRow, _stMapData.iColorType);
+        //int colorCnt = Mathf.Min(_listCol[_iRow], _stMapData.iColorVolume);
+        int colorNum = _stMapData.iColorType;
+        int colorCnt = _stMapData.iColorVolume;
 
         List<Box> listBox = _BoxList.ToList();
 
-        for(int i=0; i< listBox.Count; ++i)
+        for (int i = 0; i < listBox.Count; ++i)
         {
             listBox[i].Init();
         }
@@ -187,7 +160,7 @@ public class BoxMapManager : MonoBehaviour
             }
         }
 
-        for(int i=0; i<_BoxList.Count; ++i)
+        for (int i = 0; i < _BoxList.Count; ++i)
         {
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
@@ -283,20 +256,18 @@ public class BoxMapManager : MonoBehaviour
             }
             _UIShutter.gameObject.SetActive(false);
         }
-
     }
 
     // 완료 여부.
     public bool IsComplete()
     {
-        for(int i=0; i<_BoxList.Count; ++i)
+        for (int i = 0; i < _BoxList.Count; ++i)
         {
             Box box = _BoxList[i];
 
             if (box._OriginTpye != box._CurType)
                 return false;
         }
-
         return true;
     }
 
@@ -332,7 +303,7 @@ public class BoxMapManager : MonoBehaviour
     {
         if (_bTouchLock) return;
 
-        for(int i=0; i<_BoxTrans.Count; ++i)
+        for (int i = 0; i < _BoxTrans.Count; ++i)
         {
             Destroy(_BoxTrans[i].gameObject);
         }
@@ -340,14 +311,15 @@ public class BoxMapManager : MonoBehaviour
         _BoxTrans.Clear();
         _BoxList.Clear();
 
-        _iRow = 0;
-        _iCol = 0;
-        _iBoxCount = 0;
+        //_iRow = 0;
+        _listCol.Clear();
+        //_iBoxCount = 0;
 
         _stCameraControl.TargetsClear();
     }
 
-    public void RefreshBoxMap()
+    // 정답 보여주기.
+    public void ShowOriginBox()
     {
         for (int i = 0; i < _BoxList.Count; ++i)
         {
