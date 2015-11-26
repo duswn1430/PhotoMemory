@@ -149,13 +149,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        _iStage++;
+        if (_iStage < _listMapData.Count - 1)
+            _iStage++;
 
-        if (_listMapData.Count > _iStage)
-            StartCoroutine(GameStart());
-        else
-            Debug.Log("STAGE END");
-
+        StartCoroutine(GameStart());
     }
 
     void SetText(string text, int size)
