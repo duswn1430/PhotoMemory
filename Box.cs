@@ -12,15 +12,12 @@ public class Box
     public int _X;
     public int _Y;
 
-    public Transform _Parent;
-
     public Vector3 _Pos;
 
     public Type _OriginTpye;
     public Type _CurType;
 
     public STATE _State = STATE.NONE;
-
 
     public void Init()
     {

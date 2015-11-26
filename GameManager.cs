@@ -1,48 +1,59 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Define;
+using SimpleJSON;
+
 
 public class GameManager : MonoBehaviour
 {
-    public enum STEP {INIT, PLAY, COMPLETE };
+    public enum STEP { INIT, PLAY, COMPLETE };
 
     public static STEP _Step;
 
-    public BoxMapManager _BoxMap = null;
-
-    public GameObject _BtnStart = null;
-    public GameObject _BtnRestart = null;
-    public GameObject _BtnBack = null;
+    public BoxMapManager _BoxMapManager = null;
 
     public UILabel _UIText = null;
     public UILabel _UIScore = null;
 
-    int _iGameStage = 1;
+    public GameObject _btnStart = null;
+
+    List<BoxMapData> _listMapData;
+
+    JSONNode _jsonRoot = null;
+    string _sMapFile = "MapData";
+
+    int _iStage;
     int _iCountTime = 3;
 
-    bool _bGiveUp = false;
-    float _fGiveUpTime = 5;
-    float _fGiveUpSpendTime = 5;
+    void Awake()
+    {
+        _listMapData = new List<BoxMapData>();
+    }
 
     // Use this for initialization
     void Start()
     {
-        Init();
+        LoadMapData();
     }
 
-    void Update()
+    void LoadMapData()
     {
-        if (_bGiveUp)
+        TextAsset asset = (TextAsset)Resources.Load(_sMapFile);
+        _jsonRoot = JSON.Parse(asset.text);
+
+        for (int i = 0; i < _jsonRoot.Count; ++i)
         {
-            if (Time.time - _fGiveUpSpendTime > _fGiveUpTime)
-            {
-                _bGiveUp = false;
-                _fGiveUpSpendTime = Time.time;
+            BoxMapData data = new BoxMapData();
+            data.idx = _jsonRoot[i]["Index"].AsInt;
+            data.iRow = _jsonRoot[i]["BoxW"].AsInt;
+            data.iCol = _jsonRoot[i]["BoxH"].AsInt;
+            data.iColorType = _jsonRoot[i]["ColorTypes"].AsInt;
+            data.iColorVolume = _jsonRoot[i]["ColorVolume"].AsInt;
+            data.iBonusTerms = _jsonRoot[i]["BonusTerms"].AsInt;
+            data.iBonusTime = _jsonRoot[i]["BonusTime"].AsInt;
 
-                SetText("Remember ???", 130);
-
-                _BtnRestart.SetActive(true);
-                _BtnBack.SetActive(true);
-            }
+            _listMapData.Add(data);
         }
     }
 
@@ -50,45 +61,30 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.INIT;
 
-        _iGameStage = 1;
-        _BoxMap._iLevel = 1;
+        _iStage = 0;
+    }
 
-        SetScore(0);
+    // Update is called once per frame
+    void Update()
+    {
 
-        _bGiveUp = false;
-
-        SetText("", 0);
-
-        _BtnStart.SetActive(true);
-        _BtnRestart.SetActive(false);
-        _BtnBack.SetActive(false);
-        
-        _BoxMap.StartCoroutine(_BoxMap.InitBoxMap());
     }
 
     public void START()
     {
-        _BoxMap.BoxColoring();
+        _btnStart.SetActive(false);
 
-        StartCoroutine(StartProcses());
-
-        _BtnStart.gameObject.SetActive(false);
+        StartCoroutine(GameStart());
     }
 
     public void RESTART()
     {
-        _BoxMap.RefreshBoxMap();
-        StartCoroutine(StartProcses());
 
-        _BtnRestart.SetActive(false);
-        _BtnBack.SetActive(false);
     }
 
     public void BACK()
     {
-        _BoxMap.ClearBoxMap();
 
-        Init();
     }
 
     public void COMPLETE()
@@ -97,50 +93,24 @@ public class GameManager : MonoBehaviour
 
         SetText(_Step.ToString(), 200);
 
-        _bGiveUp = false;
-        _fGiveUpSpendTime = Time.time;
-        
-        _BtnRestart.SetActive(false);
-        _BtnBack.SetActive(false);
-
-        SetScore(_iGameStage++);
-
-        StartCoroutine(NEXT());
+        StartCoroutine(NextStage());
     }
 
-    public IEnumerator NEXT()
+    IEnumerator GameStart()
     {
-        yield return new WaitForSeconds(2f);
+        yield return StartCoroutine(_BoxMapManager.SetBoxMap(_listMapData[_iStage]));
 
-        yield return StartCoroutine(LevelCheck());
+        yield return new WaitForSeconds(0.5f);
 
-        _BoxMap.BoxColoring();
+        _BoxMapManager.BoxColoring();
 
-        StartCoroutine(StartProcses());
+        yield return new WaitForSeconds(0.5f);
 
-    }
-
-    IEnumerator LevelCheck()
-    {
-        int level = AmiscGame.GetLevel(_iGameStage);
-
-        if (_BoxMap._iLevel != level)
-        {
-            _BoxMap._iLevel = level;
-            yield return _BoxMap.StartCoroutine(_BoxMap.GenerateBoxMap());
-        }
-    }
-
-    IEnumerator StartProcses()
-    {
         yield return StartCoroutine(Counting());
 
-        yield return _BoxMap.StartCoroutine(_BoxMap.BoxShuffling());
+        yield return StartCoroutine(_BoxMapManager.BoxShuffling());
 
         _Step = STEP.PLAY;
-
-        _bGiveUp = true;
-        _fGiveUpSpendTime = Time.time;
 
         SetText(_Step.ToString(), 200);
     }
@@ -148,7 +118,7 @@ public class GameManager : MonoBehaviour
     IEnumerator Counting()
     {
         int time = _iCountTime;
-        
+
         while (time > 0)
         {
             SetText(time.ToString(), 250);
@@ -161,15 +131,22 @@ public class GameManager : MonoBehaviour
         SetText("", 0);
     }
 
+    IEnumerator NextStage()
+    {
+        yield return new WaitForSeconds(2f);
+
+        _iStage++;
+
+        if (_listMapData.Count > _iStage)
+            StartCoroutine(GameStart());
+        else
+            Debug.Log("STAGE END");
+
+    }
+
     void SetText(string text, int size)
     {
         _UIText.fontSize = size;
         _UIText.text = text;
-    }
-
-    void SetScore(int score)
-    {
-        string txt = string.Format("Score : {0}", score);
-        _UIScore.text = txt;
     }
 }
