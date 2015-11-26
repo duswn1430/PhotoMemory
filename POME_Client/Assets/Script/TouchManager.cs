@@ -14,17 +14,10 @@ public class TouchManager : MonoBehaviour
     public GameObject _goMark = null;
     public Transform _transMark = null;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (GameManager._Step == GameManager.STEP.PLAY)
-            UpdateTouch();
+        UpdateTouch();
     }
 
     void UpdateTouch()
@@ -88,13 +81,16 @@ public class TouchManager : MonoBehaviour
 
     void OnTouchDown(Transform obj)
     {
-        _SellectBox1 = obj;
-        BoxVisible(_SellectBox1, false);
+        if (GameManager._Step == GameManager.STEP.PLAY)
+        {
+            _SellectBox1 = obj;
+            BoxVisible(_SellectBox1, false);
 
-        _goMark.SetActive(true);
-        _transMark.position = obj.position;
+            _goMark.SetActive(true);
+            _transMark.position = obj.position;
 
-        _MovingBox.Visible(obj, true);
+            _MovingBox.Visible(obj, true);
+        }
     }
 
     void OnTouchUp(Transform obj)
@@ -121,7 +117,8 @@ public class TouchManager : MonoBehaviour
 
     void OnTouchMove(Transform obj)
     {
-        _transMark.position = obj.position;
+        if (_SellectBox1 != null)
+            _transMark.position = obj.position;
     }
 
     void BoxVisible(Transform obj, bool visible)
@@ -150,5 +147,8 @@ public class TouchManager : MonoBehaviour
 
         BoxVisible(_SellectBox1, true);
         _BoxMapManager.BoxChange(_SellectBox1, _SellectBox2);
+
+        _SellectBox1 = null;
+        _SellectBox2 = null;
     }
 }
