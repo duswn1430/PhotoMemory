@@ -12,7 +12,10 @@ public class BoxMapManager : MonoBehaviour
         
     public List<Box> _BoxList = null;
     public List<Transform> _BoxTrans = null;
+
     public GameObject _BoxPrefab = null;
+    public GameObject _DustPrefab = null;
+
 
     public int _iLevel = 1;
     public int _iRow;
@@ -28,7 +31,6 @@ public class BoxMapManager : MonoBehaviour
 
     public Color[] _Colors = null;
 
-    //public UISprite _sprShutter = null;
     public UISprite _UIShutter = null;
 
     // Use this for initialization
@@ -36,8 +38,6 @@ public class BoxMapManager : MonoBehaviour
     {
         _BoxList = new List<Box>();
         _BoxTrans = new List<Transform>();
-
-        //StartCoroutine(InitBoxMap());
     }
 
     public IEnumerator InitBoxMap()
@@ -72,7 +72,6 @@ public class BoxMapManager : MonoBehaviour
                 {
                     Box box = new Box();
                     box._Parent = transform;
-                    //box._Name = string.Format("{0}({1},{2})", _iBoxCount++, _iRow, col);
                     box._Idx = _iBoxCount++;
                     box._X = _iRow;
                     box._Y = col;
@@ -88,7 +87,6 @@ public class BoxMapManager : MonoBehaviour
                 {
                     Box box = new Box();
                     box._Parent = transform;
-                    //box._Name = string.Format("{0}({1},{2})", _iBoxCount++, row, _iCol);
                     box._Idx = _iBoxCount++;
                     box._X = row;
                     box._Y = _iCol;
@@ -320,6 +318,9 @@ public class BoxMapManager : MonoBehaviour
 
         LeanTween.moveLocalY(inObj.gameObject, 0, 0.2f).setFrom(-6).setEase(LeanTweenType.easeSpring);
         LeanTween.moveLocalY(outObj.gameObject, 0, 0.2f).setFrom(6).setEase(LeanTweenType.easeSpring);
+
+        Transform obj = Instantiate(_DustPrefab).transform;
+        obj.position = outObj.position;
 
         if (IsComplete())
             _GameManager.COMPLETE();
