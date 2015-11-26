@@ -7,11 +7,13 @@ using SimpleJSON;
 
 public class GameManager : MonoBehaviour
 {
-    public enum STEP { INIT, PLAY, COMPLETE };
+    public enum STEP { INIT, PLAY, COMPLETE, END };
 
     public static STEP _Step;
 
     public BoxMapManager _BoxMapManager = null;
+
+    public Timer _Timer = null;
 
     public UILabel _UIText = null;
     public UILabel _UIScore = null;
@@ -74,6 +76,9 @@ public class GameManager : MonoBehaviour
     {
         _btnStart.SetActive(false);
 
+        _Timer.gameObject.SetActive(true);
+        _Timer.Init();
+
         StartCoroutine(GameStart());
     }
 
@@ -96,6 +101,13 @@ public class GameManager : MonoBehaviour
         StartCoroutine(NextStage());
     }
 
+    public void END()
+    {
+        _Step = STEP.END;
+
+        SetText(_Step.ToString(), 200);
+    }
+
     IEnumerator GameStart()
     {
         yield return StartCoroutine(_BoxMapManager.SetBoxMap(_listMapData[_iStage]));
@@ -113,6 +125,8 @@ public class GameManager : MonoBehaviour
         _Step = STEP.PLAY;
 
         SetText(_Step.ToString(), 200);
+
+        _Timer.Start();
     }
 
     IEnumerator Counting()
