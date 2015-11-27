@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
         _btnStart.SetActive(true);
 
         _BoxMapManager.ClearBoxMap();
+        _BoxMapManager.Init();
 
         SetText("", 200);
 
