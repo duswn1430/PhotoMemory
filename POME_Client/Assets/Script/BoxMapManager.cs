@@ -33,6 +33,11 @@ public class BoxMapManager : MonoBehaviour
     
     void Awake()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         _BoxList = new List<Box>();
         _BoxTrans = new List<Transform>();
         _listCol = new List<int>();
@@ -44,6 +49,7 @@ public class BoxMapManager : MonoBehaviour
 
         //_iRow = 0;
         _listCol.Clear();
+
     }
 
     public IEnumerator SetBoxMap(BoxMapData mapdata)
@@ -379,6 +385,28 @@ public class BoxMapManager : MonoBehaviour
         {
             LeanTween.cancel(_Hint2.obj, _Hint2.tween.uniqueId);
             _Hint2.obj.transform.position = _Hint2.pos;
+        }
+    }
+
+    public void ShowOrigin()
+    {
+        for (int i = 0; i < _BoxList.Count; ++i)
+        {
+            Box box = _BoxList[i];
+            Transform obj = _BoxTrans[box._Idx];
+
+            AmiscGame.SetColor(obj, box._OriginTpye);
+        }
+    }
+
+    public void ShowCur()
+    {
+        for (int i = 0; i < _BoxList.Count; ++i)
+        {
+            Box box = _BoxList[i];
+            Transform obj = _BoxTrans[box._Idx];
+
+            AmiscGame.SetColor(obj, box._CurType);
         }
     }
 }

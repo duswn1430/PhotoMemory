@@ -126,6 +126,14 @@ public class Timer : MonoBehaviour
 
         _label.text = "00.00";
 
+        if (tmpTween != null)
+        {
+            LeanTween.cancel(tmpTween.uniqueId);
+
+            _sprPause.alpha = 1;
+            _label.alpha = 1;
+        }
+
         _GameManager.END();
     }
 
