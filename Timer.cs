@@ -6,12 +6,13 @@ public class Timer : MonoBehaviour
 {
     public GameManager _GameManager = null;
 
+    public UISprite _sprPause = null;
     public UISprite _sprite = null;
     public UILabel _label = null;
 
     public float _fRemainTime = 0;
     
-    private float _fTotalTime = 5f;
+    private float _fTotalTime = 60f;
 
     float _fEndTime = 0;
     float _fCurTime = 0;
@@ -20,12 +21,14 @@ public class Timer : MonoBehaviour
     float _fAmount = 0;
     string _sRemainTime = "";
 
+    LTDescr tmpTween = null;
+
+    bool _bTimerStart = false;
+
     void Update()
     {
-        if (GameManager._Step == GameManager.STEP.PLAY)
-        {
+        if (_bTimerStart)
             SepndTime();
-        }
     }
 
     public void Init()
@@ -59,10 +62,30 @@ public class Timer : MonoBehaviour
         }
     }
 
-    public void GameStart()
+    public void TimerStart()
     {
+        _bTimerStart = true;
+
         _fEndTime = Time.time + _fRemainTime;
         _fStageStartTime = Time.time;
+
+        _sprPause.gameObject.SetActive(false);
+
+        if (tmpTween != null)
+        {
+            LeanTween.cancel(tmpTween.uniqueId);
+
+            _sprPause.alpha = 1;
+            _label.alpha = 1;
+        }
+            
+    }
+
+    public void TimerStop()
+    {
+        _bTimerStart = false;
+
+        TimeBlink();
     }
 
     void SepndTime()
@@ -95,10 +118,24 @@ public class Timer : MonoBehaviour
 
     void TimerEnd()
     {
-        _GameManager.END();
+        TimerStop();
 
         _sprite.fillAmount = 0;
 
         _label.text = "00.00";
+
+        _GameManager.END();
+    }
+
+    void TimeBlink()
+    {
+        _sprPause.gameObject.SetActive(true);
+
+        tmpTween = LeanTween.value(_sprPause.gameObject, 1f, 0f, 0.5f).setLoopPingPong().setOnUpdate(
+            (float value) =>
+            {
+                _sprPause.alpha = value;
+                _label.alpha = value;
+            });
     }
 }
