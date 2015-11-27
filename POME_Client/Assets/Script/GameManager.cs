@@ -69,6 +69,11 @@ public class GameManager : MonoBehaviour
         _Step = STEP.INIT;
 
         _iStage = 0;
+
+        _iTotalScore = 0;
+        _iCurScore = 0;
+
+        SetScore(0);
     }
 
     public void START()
@@ -94,6 +99,8 @@ public class GameManager : MonoBehaviour
         _BoxMapManager.ClearBoxMap();
 
         SetText("", 200);
+
+        Init();
     }
 
     public void COMPLETE(BoxMapData mapdata)
@@ -103,9 +110,11 @@ public class GameManager : MonoBehaviour
         SetText(_Step.ToString(), 200);
 
         _iStageScore = (mapdata.iRow * mapdata.iCol) + mapdata.idx;
-        int addScroe = _iStageScore + (int)_Timer._fRemainTime;
+        _iTotalScore = _iStageScore + (int)_Timer._fRemainTime;
 
-        SetScore(addScroe);
+        SetScore(_iTotalScore);
+
+        _Timer.TimerStop();
 
         StartCoroutine(NextStage(mapdata));
     }
@@ -139,7 +148,7 @@ public class GameManager : MonoBehaviour
 
         SetText(_Step.ToString(), 200);
 
-        _Timer.GameStart();
+        _Timer.TimerStart();
     }
 
     IEnumerator Counting()
@@ -162,7 +171,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        _Timer.AddTime(mapdata, 1f);
+        _Timer.AddTime(mapdata, 1.00f);
 
         yield return new WaitForSeconds(1f);
 
@@ -178,11 +187,9 @@ public class GameManager : MonoBehaviour
         _UIText.text = text;
     }
 
-    void SetScore(int addScore)
+    void SetScore(int score)
     {
-        _iTotalScore = _iCurScore + addScore;
-
-        LeanTween.value(gameObject, _iCurScore, _iTotalScore, 1f).setEase(LeanTweenType.easeOutCirc).setOnUpdate(
+        LeanTween.value(gameObject, _iCurScore, score, 1f).setEase(LeanTweenType.easeOutCirc).setOnUpdate(
             (float value) =>
             {
                 _iCurScore = (int)value;
