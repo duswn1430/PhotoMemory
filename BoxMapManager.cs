@@ -27,7 +27,6 @@ public class BoxMapManager : MonoBehaviour
 
     private bool _bTouchLock = false;
     private float _fSpwanTime = 0.2f;
-    private float _fMoveTime = 0.2f;
     
     void Awake()
     {
@@ -75,7 +74,6 @@ public class BoxMapManager : MonoBehaviour
             }
             _listCol[row] = mapdata.iCol;
         }
-        //_iRow = mapdata.iRow;
     }
 
     // 박스 추가.
@@ -115,7 +113,7 @@ public class BoxMapManager : MonoBehaviour
     void SetBoxPrefab(Transform obj, Box box)
     {
         obj.name = box._Idx.ToString();
-        obj.parent = transform;
+        obj.parent = _MyTransform;
         obj.position = box._Pos;
         AmiscGame.SetColor(obj, box._CurType);
     }
@@ -135,8 +133,6 @@ public class BoxMapManager : MonoBehaviour
     {
         if (_bTouchLock) return;
 
-        //int colorNum = Mathf.Min(_iRow, _stMapData.iColorType);
-        //int colorCnt = Mathf.Min(_listCol[_iRow], _stMapData.iColorVolume);
         int colorNum = _stMapData.iColorType;
         int colorCnt = _stMapData.iColorVolume;
 
@@ -294,7 +290,7 @@ public class BoxMapManager : MonoBehaviour
         obj.position = outObj.position;
 
         if (IsComplete())
-            _GameManager.COMPLETE();
+            _GameManager.COMPLETE(_stMapData);
     }
 
 
@@ -313,7 +309,6 @@ public class BoxMapManager : MonoBehaviour
 
         //_iRow = 0;
         _listCol.Clear();
-        //_iBoxCount = 0;
 
         _stCameraControl.TargetsClear();
     }

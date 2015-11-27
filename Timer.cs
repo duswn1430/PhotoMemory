@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Define;
 
 public class Timer : MonoBehaviour
 {
@@ -8,12 +9,14 @@ public class Timer : MonoBehaviour
     public UISprite _sprite = null;
     public UILabel _label = null;
 
-    private float _fTotalTime = 20f;
+    public float _fRemainTime = 0;
+    
+    private float _fTotalTime = 100f;
 
-    float _fStartTime = 0;
+    //float _fStartTime = 0;
     float _fEndTime = 0;
     float _fCurTime = 0;
-    float _fRemainTime = 0;
+    float _fStageStartTime = 0;
 
     float _fAmount = 0;
     string _sRemainTime = "";
@@ -34,20 +37,34 @@ public class Timer : MonoBehaviour
         _fRemainTime = _fTotalTime;
     }
 
-    public void AddTime(float time)
+    public void AddTime(BoxMapData mapdata, float waitT)
     {
-        _fEndTime += time;
+        float stageSpendTime = Time.time - _fStageStartTime;
+
+        if (stageSpendTime <= mapdata.iBonusTerms)
+        {
+            _fCurTime = Time.time - waitT;
+
+            float Bonus = _fEndTime + mapdata.iBonusTime;
+
+            LeanTween.value(gameObject, _fEndTime, Bonus, 0.5f).setEase(LeanTweenType.easeOutCirc).setOnUpdate(
+                (float value) =>
+                {
+                    _fEndTime = value;
+
+                    _fRemainTime = _fEndTime - _fCurTime;
+
+                    ShowTimer();
+                }
+            );
+        }
     }
 
-    public void Start()
+    public void GameStart()
     {
         _fEndTime = Time.time + _fRemainTime;
+        _fStageStartTime = Time.time;
     }
-
-    //public void StopTimer()
-    //{
-    //    _bTimer = false;
-    //}
 
     void SepndTime()
     {
@@ -72,6 +89,7 @@ public class Timer : MonoBehaviour
         _sprite.fillAmount = _fAmount;
 
         _sRemainTime = _fRemainTime.ToString("N2");
+        //_sRemainTime = ((int)_fRemainTime).ToString();
 
         _label.text = _sRemainTime;
     }
@@ -83,6 +101,5 @@ public class Timer : MonoBehaviour
         _sprite.fillAmount = 0;
 
         _label.text = "00.00";
-
     }
 }

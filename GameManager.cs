@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
     int _iStage;
     int _iCountTime = 3;
 
+    int _iStageScore;
+    int _iTotalScore;
+    int _iCurScore = 0;
+
     void Awake()
     {
         _listMapData = new List<BoxMapData>();
@@ -66,12 +70,6 @@ public class GameManager : MonoBehaviour
         _iStage = 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void START()
     {
         _btnStart.SetActive(false);
@@ -92,13 +90,18 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void COMPLETE()
+    public void COMPLETE(BoxMapData mapdata)
     {
         _Step = STEP.COMPLETE;
 
         SetText(_Step.ToString(), 200);
 
-        StartCoroutine(NextStage());
+        _iStageScore = (mapdata.iRow * mapdata.iCol) + mapdata.idx;
+        int addScroe = _iStageScore + (int)_Timer._fRemainTime;
+
+        SetScore(addScroe);
+
+        StartCoroutine(NextStage(mapdata));
     }
 
     public void END()
@@ -116,7 +119,7 @@ public class GameManager : MonoBehaviour
 
         _BoxMapManager.BoxColoring();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         yield return StartCoroutine(Counting());
 
@@ -126,7 +129,7 @@ public class GameManager : MonoBehaviour
 
         SetText(_Step.ToString(), 200);
 
-        _Timer.Start();
+        _Timer.GameStart();
     }
 
     IEnumerator Counting()
@@ -145,9 +148,13 @@ public class GameManager : MonoBehaviour
         SetText("", 0);
     }
 
-    IEnumerator NextStage()
+    IEnumerator NextStage(BoxMapData mapdata)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+
+        _Timer.AddTime(mapdata, 1f);
+
+        yield return new WaitForSeconds(1f);
 
         if (_iStage < _listMapData.Count - 1)
             _iStage++;
@@ -159,5 +166,18 @@ public class GameManager : MonoBehaviour
     {
         _UIText.fontSize = size;
         _UIText.text = text;
+    }
+
+    void SetScore(int addScore)
+    {
+        _iTotalScore = _iCurScore + addScore;
+
+        LeanTween.value(gameObject, _iCurScore, _iTotalScore, 1f).setEase(LeanTweenType.easeOutCirc).setOnUpdate(
+            (float value) =>
+            {
+                _iCurScore = (int)value;
+                _UIScore.text = _iCurScore.ToString();
+            }
+        );
     }
 }
