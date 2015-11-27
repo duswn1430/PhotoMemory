@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
         SetText(_Step.ToString(), 200);
 
         _iStageScore = (mapdata.iRow * mapdata.iCol) + mapdata.idx;
-        _iTotalScore = _iStageScore + (int)_Timer._fRemainTime;
+        _iTotalScore += _iStageScore + (int)_Timer._fRemainTime;
 
         SetScore(_iTotalScore);
 
