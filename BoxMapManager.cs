@@ -27,12 +27,18 @@ public class BoxMapManager : MonoBehaviour
 
     private bool _bTouchLock = false;
     private float _fSpwanTime = 0.2f;
+
+    Hint _Hint1 = null;
+    Hint _Hint2 = null;
     
     void Awake()
     {
         _BoxList = new List<Box>();
         _BoxTrans = new List<Transform>();
         _listCol = new List<int>();
+
+        _Hint1 = new Hint();
+        _Hint2 = new Hint();
 
         _MyTransform = transform;
 
@@ -268,29 +274,37 @@ public class BoxMapManager : MonoBehaviour
     }
 
     // 박스 체인지.
-    public void BoxChange(Transform inObj, Transform outObj)
+    public void BoxChange(Transform obj1, Transform obj2)
     {
-        int inIdx = _BoxTrans.FindIndex(row => row == inObj);
-        int outIdx = _BoxTrans.FindIndex(row => row == outObj);
+        int idx1 = _BoxTrans.FindIndex(row => row == obj1);
+        int idx2 = _BoxTrans.FindIndex(row => row == obj2);
 
-        Box inBox = _BoxList[inIdx];
-        Box outBox = _BoxList[outIdx];
+        Box box1 = _BoxList[idx1];
+        Box box2 = _BoxList[idx2];
 
-        Type tmpType = inBox._CurType;
-        inBox._CurType = outBox._CurType;
-        outBox._CurType = tmpType;
+        Type tmpType = box1._CurType;
+        box1._CurType = box2._CurType;
+        box2._CurType = tmpType;
 
-        AmiscGame.SetColor(inObj, inBox._CurType);
-        AmiscGame.SetColor(outObj, outBox._CurType);
+        AmiscGame.SetColor(obj1, box1._CurType);
+        AmiscGame.SetColor(obj2, box2._CurType);
 
-        LeanTween.moveLocalY(inObj.gameObject, 0, 0.2f).setFrom(-6).setEase(LeanTweenType.easeSpring);
-        LeanTween.moveLocalY(outObj.gameObject, 0, 0.2f).setFrom(6).setEase(LeanTweenType.easeSpring);
+        LeanTween.moveLocalY(obj1.gameObject, 0, 0.2f).setFrom(-6).setEase(LeanTweenType.easeSpring);
+        LeanTween.moveLocalY(obj2.gameObject, 0, 0.2f).setFrom(6).setEase(LeanTweenType.easeSpring);
 
         Transform obj = Instantiate(_DustPrefab).transform;
-        obj.position = outObj.position;
+        obj.position = obj2.position;
+
+        DismissHint();
 
         if (IsComplete())
+        {
             _GameManager.COMPLETE(_stMapData);
+        }
+        else
+        {
+            _GameManager.resetHint();
+        }            
     }
 
 
@@ -326,6 +340,45 @@ public class BoxMapManager : MonoBehaviour
             if (box._OriginTpye != Type.NONE)
                 LeanTween.moveY(obj.gameObject, 1f, 1.0f).setEase(LeanTweenType.punch);
         }
+    }
 
+    public void ShowHint()
+    {
+        List<Box> listColorBox = _BoxList.Where(row => row._OriginTpye != Type.NONE && row._OriginTpye != row._CurType).ToList();
+
+        int colorRnd = Random.Range(0, listColorBox.Count);
+
+        Box cBox = listColorBox[colorRnd];
+
+
+        List<Box> listNoneBox = _BoxList.Where(row => row._CurType == cBox._OriginTpye && row._OriginTpye != row._CurType).ToList();
+
+        int noneRnd = Random.Range(0, listNoneBox.Count);
+
+        Box nBox = listNoneBox[noneRnd];
+
+        _Hint1.obj = _BoxTrans[cBox._Idx].gameObject;
+        _Hint1.pos = _BoxTrans[cBox._Idx].position;
+        _Hint1.tween = LeanTween.moveY(_Hint1.obj, 0.5f, 0.5f).setEase(LeanTweenType.punch).setLoopClamp();
+
+        _Hint2.obj = _BoxTrans[nBox._Idx].gameObject;
+        _Hint2.pos = _BoxTrans[nBox._Idx].position;
+        _Hint2.tween = LeanTween.moveY(_Hint2.obj, 0.5f, 0.5f).setEase(LeanTweenType.punch).setLoopClamp();
+    }
+
+    public void DismissHint()
+    {
+        if (_Hint1.tween != null)
+        {
+            LeanTween.cancel(_Hint1.obj, _Hint1.tween.uniqueId);
+            _Hint1.obj.transform.position = _Hint1.pos;
+
+        }
+
+        if (_Hint1.tween != null)
+        {
+            LeanTween.cancel(_Hint2.obj, _Hint2.tween.uniqueId);
+            _Hint2.obj.transform.position = _Hint2.pos;
+        }
     }
 }

@@ -17,4 +17,11 @@ namespace Define
         public int iBonusTerms;
         public int iBonusTime;
     }
+
+    public class Hint
+    {
+        public LTDescr tween;
+        public GameObject obj;
+        public Vector3 pos;
+    }
 }

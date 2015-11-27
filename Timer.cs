@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
     public UILabel _label = null;
 
     public float _fRemainTime = 0;
-    
+
     private float _fTotalTime = 60f;
 
     float _fEndTime = 0;
@@ -28,7 +28,9 @@ public class Timer : MonoBehaviour
     void Update()
     {
         if (_bTimerStart)
+        {
             SepndTime();
+        }
     }
 
     public void Init()
@@ -78,7 +80,7 @@ public class Timer : MonoBehaviour
             _sprPause.alpha = 1;
             _label.alpha = 1;
         }
-            
+
     }
 
     public void TimerStop()
