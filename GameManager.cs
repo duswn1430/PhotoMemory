@@ -51,10 +51,10 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < _jsonRoot.Count; ++i)
         {
             BoxMapData data = new BoxMapData();
-            data.idx = _jsonRoot[i]["Index"].AsInt;
+            data.idx = _jsonRoot[i]["index"].AsInt;
             data.iRow = _jsonRoot[i]["BoxW"].AsInt;
             data.iCol = _jsonRoot[i]["BoxH"].AsInt;
-            data.iColorType = _jsonRoot[i]["ColorTypes"].AsInt;
+            data.iColorType = _jsonRoot[i]["ColorType"].AsInt;
             data.iColorVolume = _jsonRoot[i]["ColorVolume"].AsInt;
             data.iBonusTerms = _jsonRoot[i]["BonusTerms"].AsInt;
             data.iBonusTime = _jsonRoot[i]["BonusTime"].AsInt;
