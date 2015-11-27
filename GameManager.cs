@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public UILabel _UIScore = null;
 
     public GameObject _btnStart = null;
+    public GameObject _btnBack = null;
 
     List<BoxMapData> _listMapData;
 
@@ -87,7 +88,12 @@ public class GameManager : MonoBehaviour
 
     public void BACK()
     {
+        _btnBack.SetActive(false);
+        _btnStart.SetActive(true);
 
+        _BoxMapManager.ClearBoxMap();
+
+        SetText("", 200);
     }
 
     public void COMPLETE(BoxMapData mapdata)
@@ -109,6 +115,10 @@ public class GameManager : MonoBehaviour
         _Step = STEP.END;
 
         SetText(_Step.ToString(), 200);
+
+        _Timer.gameObject.SetActive(false);
+
+        _btnBack.SetActive(true);
     }
 
     IEnumerator GameStart()
