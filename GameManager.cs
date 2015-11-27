@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     int _iCurScore = 0;
 
     bool _bHint = false;
-    float _fHintTime = 2;
+    float _fHintTime = 5;
     float _fHintWaitTime = 0;
     
     void Awake()
@@ -127,6 +127,8 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.COMPLETE;
 
+        _bHint = false;
+
         SetText(_Step.ToString(), 200);
 
         _iStageScore = (mapdata.iRow * mapdata.iCol) + mapdata.idx;
@@ -142,6 +144,8 @@ public class GameManager : MonoBehaviour
     public void END()
     {
         _Step = STEP.END;
+
+        _bHint = false;
 
         SetText(_Step.ToString(), 200);
 
