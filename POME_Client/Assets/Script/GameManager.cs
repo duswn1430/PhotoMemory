@@ -27,12 +27,16 @@ public class GameManager : MonoBehaviour
     string _sMapFile = "MapData";
 
     int _iStage;
-    int _iCountTime = 3;
+    int _iCount = 3;
 
     int _iStageScore;
     int _iTotalScore;
     int _iCurScore = 0;
 
+    bool _bHint = false;
+    float _fHintTime = 2;
+    float _fHintWaitTime = 0;
+    
     void Awake()
     {
         _listMapData = new List<BoxMapData>();
@@ -64,6 +68,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (_bHint)
+        {
+            if (Time.time - _fHintWaitTime >= _fHintTime)
+            {
+                _bHint = false;
+
+                ShowHint();
+            }
+        }
+    }
+
     void Init()
     {
         _Step = STEP.INIT;
@@ -74,6 +91,9 @@ public class GameManager : MonoBehaviour
         _iCurScore = 0;
 
         SetScore(0);
+
+        _bHint = false;
+        _fHintWaitTime = Time.time;
     }
 
     public void START()
@@ -130,6 +150,17 @@ public class GameManager : MonoBehaviour
         _btnBack.SetActive(true);
     }
 
+    public void ShowHint()
+    {
+        _BoxMapManager.ShowHint();
+    }
+
+    public void resetHint()
+    {
+        _bHint = true;
+        _fHintWaitTime = Time.time;
+    }
+
     IEnumerator GameStart()
     {
         yield return StartCoroutine(_BoxMapManager.SetBoxMap(_listMapData[_iStage]));
@@ -149,11 +180,14 @@ public class GameManager : MonoBehaviour
         SetText(_Step.ToString(), 200);
 
         _Timer.TimerStart();
+
+        _bHint = true;
+        _fHintWaitTime = Time.time;
     }
 
     IEnumerator Counting()
     {
-        int time = _iCountTime;
+        int time = _iCount;
 
         while (time > 0)
         {
