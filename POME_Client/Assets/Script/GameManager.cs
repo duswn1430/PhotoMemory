@@ -46,6 +46,39 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         LoadMapData();
+
+        GoogleAds._Instance.Init();
+
+#if UNITY_EDITOR
+        BACK();
+#else
+        GoogleAds._Instance.LoadInterstitial();
+        GoogleAds._Instance.OnInterstitialLoaded += Init;
+#endif
+    }
+
+    public void BANNER()
+    {
+        if (GoogleAds._Instance.IsBanner())
+            GoogleAds._Instance.HideBanner();
+        else
+            GoogleAds._Instance.ShowBanner();
+    }
+
+    public void INTERSTITAL()
+    {
+        if (GoogleAds._Instance._bLoadInterstital)
+            GoogleAds._Instance.ShowInterstital();
+    }
+
+    public void CONNECT()
+    {
+        GameService._Instance.Connect();
+    }
+
+    public void LEADERBOARD()
+    {
+        GameService._Instance.ShowLeaderBoard();
     }
 
     void LoadMapData()
@@ -94,6 +127,13 @@ public class GameManager : MonoBehaviour
 
         _bHint = false;
         _fHintWaitTime = Time.time;
+
+        _BoxMapManager.ClearBoxMap();
+        _BoxMapManager.Init();
+
+        SetText("", 200);
+
+        _btnStart.SetActive(true);
     }
 
     public void START()
@@ -114,14 +154,8 @@ public class GameManager : MonoBehaviour
     public void BACK()
     {
         _btnBack.SetActive(false);
-        _btnStart.SetActive(true);
 
-        _BoxMapManager.ClearBoxMap();
-        _BoxMapManager.Init();
-
-        SetText("", 200);
-
-        Init();
+        GoogleAds._Instance.LoadInterstitial();
     }
 
     public void COMPLETE(BoxMapData mapdata)
