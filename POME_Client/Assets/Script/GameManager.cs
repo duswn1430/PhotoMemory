@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         GoogleAds._Instance.Init();
 
 #if UNITY_EDITOR
-        BACK();
+        Init();
 #else
         GoogleAds._Instance.LoadInterstitial();
         GoogleAds._Instance.OnInterstitialLoaded += Init;
