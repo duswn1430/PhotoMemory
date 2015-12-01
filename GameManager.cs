@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public UILabel _UIScore = null;
     public UILabel _UIStage = null;
 
+    public UIPanel _ResultPanel = null;
+
     List<BoxMapData> _listMapData;
 
     JSONNode _jsonRoot = null;
@@ -134,6 +136,8 @@ public class GameManager : MonoBehaviour
 
     public void MAINMENU()
     {
+        _Step = STEP.END;
+
         _BoxMapManager.ClearBoxMap();
     }
 
@@ -172,7 +176,8 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.END;
 
-        _Timer.gameObject.SetActive(false);
+        //_Timer.gameObject.SetActive(false);
+        _ResultPanel.gameObject.SetActive(true);
     }
 
     public void ShowHint()
