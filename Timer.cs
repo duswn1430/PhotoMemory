@@ -16,7 +16,12 @@ public class Timer : MonoBehaviour
 
     float _fEndTime = 0;
     float _fCurTime = 0;
+    float _fPauseTime = 0;
+    float _fCutTime = 0;
+
     float _fStageStartTime = 0;
+    float _fHintTime = 0;
+    //float _fHintWaitTime = 0;
 
     float _fAmount = 0;
     string _sRemainTime = "";
@@ -24,12 +29,14 @@ public class Timer : MonoBehaviour
     LTDescr tmpTween = null;
 
     bool _bTimerStart = false;
+    bool _bHint = false;
 
     void Update()
     {
         if (_bTimerStart)
         {
             SepndTime();
+            Hint();
         }
     }
 
@@ -43,7 +50,7 @@ public class Timer : MonoBehaviour
 
     public void AddTime(BoxMapData mapdata, float waitT)
     {
-        float stageSpendTime = Time.time - _fStageStartTime;
+        float stageSpendTime = Time.time - _fStageStartTime - _fCutTime;
 
         if (stageSpendTime <= mapdata.iBonusTerms)
         {
@@ -67,9 +74,14 @@ public class Timer : MonoBehaviour
     public void TimerStart()
     {
         _bTimerStart = true;
+        _bHint = true;
 
         _fEndTime = Time.time + _fRemainTime;
         _fStageStartTime = Time.time;
+
+        _fHintTime = _fRemainTime;
+
+        _fCutTime = 0;
 
         _sprPause.gameObject.SetActive(false);
 
@@ -90,9 +102,25 @@ public class Timer : MonoBehaviour
         TimeBlink();
     }
 
+    public void TimerPause()
+    {
+        _bTimerStart = false;
+
+        _fPauseTime = Time.time;
+    }
+
+    public void TimerResume()
+    {
+        _bTimerStart = true;
+
+        _fPauseTime = Time.time - _fPauseTime;
+
+        _fCutTime += _fPauseTime;
+    }
+
     void SepndTime()
     {
-        _fCurTime = Time.time;
+        _fCurTime = Time.time - _fCutTime;
 
         _fRemainTime = _fEndTime - _fCurTime;
 
@@ -147,5 +175,27 @@ public class Timer : MonoBehaviour
                 _sprPause.alpha = value;
                 _label.alpha = value;
             });
+    }
+
+    void Hint()
+    {
+        if (_bHint)
+        {
+            float time = _fHintTime - _fRemainTime;
+
+            if (time >= 5)
+            {
+                _bHint = false;
+                //_fHintTime = _fRemainTime;
+
+                _GameManager.ShowHint();
+            }
+        }
+    }
+
+    public void ResetHint()
+    {
+        _bHint = true;
+        _fHintTime = _fRemainTime;
     }
 }

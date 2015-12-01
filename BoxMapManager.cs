@@ -280,6 +280,8 @@ public class BoxMapManager : MonoBehaviour
 
         DismissHint();
 
+        Sound._Instance.Play("block_down");
+
         if (IsComplete())
         {
             _GameManager.COMPLETE(_stMapData);
