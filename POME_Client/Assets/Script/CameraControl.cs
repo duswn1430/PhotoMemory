@@ -16,17 +16,10 @@ public class CameraControl : MonoBehaviour
 
     Transform _MyTransform = null;
 
-    public GameObject _Shutter = null;
-
-    private float _fSutterSize = 100;
-    private Vector3 _vecShutterScale;
-
     private void Awake()
     {
         m_Camera = GetComponentInChildren<Camera>();
         _MyTransform = transform;
-
-        _vecShutterScale = _Shutter.transform.localScale;
     }
 
     public void FindAveragePosition()
@@ -89,12 +82,6 @@ public class CameraControl : MonoBehaviour
                 m_Camera.orthographicSize = value;
             }
         );
-
-        _fSutterSize = size * 15f;
-
-        _vecShutterScale = new Vector3(_fSutterSize, _fSutterSize, _fSutterSize);
-
-        LeanTween.scale(_Shutter, _vecShutterScale, 0f);
     }
 
     public void TargetsClear()

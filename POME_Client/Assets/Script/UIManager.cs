@@ -17,12 +17,6 @@ public class UIManager : MonoBehaviour
         _PausePanel.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void START()
     {
         _StartPanel.gameObject.SetActive(false);

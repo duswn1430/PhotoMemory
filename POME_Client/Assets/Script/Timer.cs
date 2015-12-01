@@ -21,7 +21,6 @@ public class Timer : MonoBehaviour
 
     float _fStageStartTime = 0;
     float _fHintTime = 0;
-    //float _fHintWaitTime = 0;
 
     float _fAmount = 0;
     string _sRemainTime = "";
@@ -186,7 +185,6 @@ public class Timer : MonoBehaviour
             if (time >= 5)
             {
                 _bHint = false;
-                //_fHintTime = _fRemainTime;
 
                 _GameManager.ShowHint();
             }
