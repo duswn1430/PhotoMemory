@@ -13,7 +13,7 @@ public class BoxMapManager : MonoBehaviour
     public GameObject _BoxPrefab = null;
     public GameObject _DustPrefab = null;
 
-    public UISprite _UIShutter = null;
+    public Shutter _Shutter = null;
 
     BoxMapData _stMapData = null;
 
@@ -187,7 +187,7 @@ public class BoxMapManager : MonoBehaviour
 
         _bTouchLock = true;
 
-        yield return StartCoroutine(SetShutter(true));
+        yield return StartCoroutine(ShutterPlay(true, 0.33f));
 
         yield return StartCoroutine(Shuffle(_BoxList));
 
@@ -199,7 +199,7 @@ public class BoxMapManager : MonoBehaviour
             AmiscGame.SetColor(obj, box._CurType);
         }
 
-        yield return StartCoroutine(SetShutter(false));
+        yield return StartCoroutine(ShutterPlay(false, 0.33f));
         _bTouchLock = false;
     }
 
@@ -227,42 +227,19 @@ public class BoxMapManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
     }
 
-    // 셔터(추후 수정).
-    IEnumerator SetShutter(bool fill)
+    IEnumerator ShutterPlay(bool close, float time)
     {
-        int length = AmiscGame.arrShutterName.Length;
-        string shutterName = "";
-
-        if (fill)
+        if (close)
         {
-            _UIShutter.gameObject.SetActive(true);
+            _Shutter.PlayClose();
 
-            int cnt = 0;
-
-            while (cnt < length)
-            {
-                shutterName = AmiscGame.arrShutterName[cnt];
-                _UIShutter.spriteName = shutterName;
-
-                yield return new WaitForSeconds(0.02f);
-
-                cnt++;
-            }
+            yield return new WaitForSeconds(time);
         }
         else
         {
-            int cnt = length - 1;
+            _Shutter.PlayOpen();
 
-            while (cnt > 0)
-            {
-                shutterName = AmiscGame.arrShutterName[cnt];
-                _UIShutter.spriteName = shutterName;
-
-                yield return new WaitForSeconds(0.02f);
-
-                cnt--;
-            }
-            _UIShutter.gameObject.SetActive(false);
+            yield return new WaitForSeconds(time);
         }
     }
 
