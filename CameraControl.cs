@@ -10,7 +10,6 @@ public class CameraControl : MonoBehaviour
     [HideInInspector]
     public Transform[] m_Targets;
 
-
     private Camera m_Camera;
 
     private Vector3 m_DesiredPosition;
@@ -18,6 +17,7 @@ public class CameraControl : MonoBehaviour
     Transform _MyTransform = null;
 
     public GameObject _Shutter = null;
+
     private float _fSutterSize = 100;
     private Vector3 _vecShutterScale;
 

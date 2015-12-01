@@ -7,7 +7,7 @@ using SimpleJSON;
 
 public class GameManager : MonoBehaviour
 {
-    public enum STEP { INIT, PLAY, COMPLETE, END };
+    public enum STEP { INIT, PLAY, PAUSE, COMPLETE, END };
 
     public static STEP _Step;
 
@@ -15,11 +15,8 @@ public class GameManager : MonoBehaviour
 
     public Timer _Timer = null;
 
-    public UILabel _UIText = null;
     public UILabel _UIScore = null;
-
-    public GameObject _btnStart = null;
-    public GameObject _btnBack = null;
+    public UILabel _UIStage = null;
 
     List<BoxMapData> _listMapData;
 
@@ -47,39 +44,39 @@ public class GameManager : MonoBehaviour
     {
         LoadMapData();
 
-        GoogleAds._Instance.Init();
+        //GoogleAds._Instance.Init();
 
-#if UNITY_EDITOR
-        Init();
-#else
-        GoogleAds._Instance.LoadInterstitial();
-        GoogleAds._Instance.OnInterstitialLoaded += Init;
-#endif
+//#if UNITY_EDITOR
+//        Init();
+//#else
+//        GoogleAds._Instance.LoadInterstitial();
+//        GoogleAds._Instance.OnInterstitialLoaded += Init;
+//#endif
     }
 
-    public void BANNER()
-    {
-        if (GoogleAds._Instance.IsBanner())
-            GoogleAds._Instance.HideBanner();
-        else
-            GoogleAds._Instance.ShowBanner();
-    }
+    //public void BANNER()
+    //{
+    //    if (GoogleAds._Instance.IsBanner())
+    //        GoogleAds._Instance.HideBanner();
+    //    else
+    //        GoogleAds._Instance.ShowBanner();
+    //}
 
-    public void INTERSTITAL()
-    {
-        if (GoogleAds._Instance._bLoadInterstital)
-            GoogleAds._Instance.ShowInterstital();
-    }
+    //public void INTERSTITAL()
+    //{
+    //    if (GoogleAds._Instance._bLoadInterstital)
+    //        GoogleAds._Instance.ShowInterstital();
+    //}
 
-    public void CONNECT()
-    {
-        GameService._Instance.Connect();
-    }
+    //public void CONNECT()
+    //{
+    //    GameService._Instance.Connect();
+    //}
 
-    public void LEADERBOARD()
-    {
-        GameService._Instance.ShowLeaderBoard();
-    }
+    //public void LEADERBOARD()
+    //{
+    //    GameService._Instance.ShowLeaderBoard();
+    //}
 
     void LoadMapData()
     {
@@ -130,15 +127,11 @@ public class GameManager : MonoBehaviour
 
         _BoxMapManager.ClearBoxMap();
         _BoxMapManager.Init();
-
-        SetText("", 200);
-
-        _btnStart.SetActive(true);
     }
 
-    public void START()
+    public void GAMESTART()
     {
-        _btnStart.SetActive(false);
+        Init();
 
         _Timer.gameObject.SetActive(true);
         _Timer.Init();
@@ -146,25 +139,47 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameStart());
     }
 
-    public void RESTART()
+    public void PAUSE()
     {
+        _Step = STEP.PAUSE;
 
+        _Timer.TimerStop();
     }
 
-    public void BACK()
+    public void CONTINUE()
     {
-        _btnBack.SetActive(false);
+        _Step = STEP.PLAY;
 
-        GoogleAds._Instance.LoadInterstitial();
+        _Timer.TimerStart();
     }
+
+    public void MAINMENU()
+    {
+        _BoxMapManager.ClearBoxMap();
+    }
+
+    public void RANK()
+    {
+        _Step = STEP.PAUSE;
+
+        _Timer.TimerStop();
+    }
+
+    public void SOUND()
+    {
+        Debug.Log("????????????");
+    }
+
+    //public void BACK()
+    //{
+    //    GoogleAds._Instance.LoadInterstitial();
+    //}
 
     public void COMPLETE(BoxMapData mapdata)
     {
         _Step = STEP.COMPLETE;
 
         _bHint = false;
-
-        SetText(_Step.ToString(), 200);
 
         _iStageScore = (mapdata.iRow * mapdata.iCol) + mapdata.idx;
         _iTotalScore += _iStageScore + (int)_Timer._fRemainTime;
@@ -182,14 +197,10 @@ public class GameManager : MonoBehaviour
 
         _bHint = false;
 
-        SetText(_Step.ToString(), 200);
-
         _Timer.gameObject.SetActive(false);
-
-        _btnBack.SetActive(true);
     }
 
-    public void ShowHint()
+    void ShowHint()
     {
         _BoxMapManager.ShowHint();
     }
@@ -216,8 +227,6 @@ public class GameManager : MonoBehaviour
 
         _Step = STEP.PLAY;
 
-        SetText(_Step.ToString(), 200);
-
         _Timer.TimerStart();
 
         _bHint = true;
@@ -230,14 +239,12 @@ public class GameManager : MonoBehaviour
 
         while (time > 0)
         {
-            SetText(time.ToString(), 250);
+            //SetText(time.ToString(), 250);
 
             yield return new WaitForSeconds(1f);
 
             time--;
         }
-
-        SetText("", 0);
     }
 
     IEnumerator NextStage(BoxMapData mapdata)
@@ -249,15 +256,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         if (_iStage < _listMapData.Count - 1)
+        {
             _iStage++;
+            _UIStage.text = string.Format("Stage {0}", _iStage + 1);
+        }
 
         StartCoroutine(GameStart());
-    }
-
-    void SetText(string text, int size)
-    {
-        _UIText.fontSize = size;
-        _UIText.text = text;
     }
 
     void SetScore(int score)
@@ -266,7 +270,8 @@ public class GameManager : MonoBehaviour
             (float value) =>
             {
                 _iCurScore = (int)value;
-                _UIScore.text = _iCurScore.ToString();
+                //_UIScore.text = _iCurScore.ToString();
+                _UIScore.text = string.Format("Score : {0}", _iCurScore);
             }
         );
     }
