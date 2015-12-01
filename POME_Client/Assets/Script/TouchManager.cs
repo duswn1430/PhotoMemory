@@ -90,6 +90,8 @@ public class TouchManager : MonoBehaviour
             _transMark.position = obj.position;
 
             _MovingBox.Visible(obj, true);
+
+            Sound._Instance.Play("block_up");
         }
     }
 

@@ -29,10 +29,6 @@ public class GameManager : MonoBehaviour
     int _iStageScore;
     int _iTotalScore;
     int _iCurScore = 0;
-
-    bool _bHint = false;
-    float _fHintTime = 5;
-    float _fHintWaitTime = 0;
     
     void Awake()
     {
@@ -98,19 +94,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (_bHint)
-        {
-            if (Time.time - _fHintWaitTime >= _fHintTime)
-            {
-                _bHint = false;
-
-                ShowHint();
-            }
-        }
-    }
-
     void Init()
     {
         _Step = STEP.INIT;
@@ -121,9 +104,6 @@ public class GameManager : MonoBehaviour
         _iCurScore = 0;
 
         SetScore(0);
-
-        _bHint = false;
-        _fHintWaitTime = Time.time;
 
         _BoxMapManager.ClearBoxMap();
         _BoxMapManager.Init();
@@ -142,15 +122,14 @@ public class GameManager : MonoBehaviour
     public void PAUSE()
     {
         _Step = STEP.PAUSE;
-
-        _Timer.TimerStop();
+        _Timer.TimerPause();
     }
 
     public void CONTINUE()
     {
         _Step = STEP.PLAY;
 
-        _Timer.TimerStart();
+        _Timer.TimerResume();
     }
 
     public void MAINMENU()
@@ -162,7 +141,7 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.PAUSE;
 
-        _Timer.TimerStop();
+        _Timer.TimerPause();
     }
 
     public void SOUND()
@@ -179,8 +158,6 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.COMPLETE;
 
-        _bHint = false;
-
         _iStageScore = (mapdata.iRow * mapdata.iCol) + mapdata.idx;
         _iTotalScore += _iStageScore + (int)_Timer._fRemainTime;
 
@@ -195,20 +172,17 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.END;
 
-        _bHint = false;
-
         _Timer.gameObject.SetActive(false);
     }
 
-    void ShowHint()
+    public void ShowHint()
     {
         _BoxMapManager.ShowHint();
     }
 
     public void resetHint()
     {
-        _bHint = true;
-        _fHintWaitTime = Time.time;
+        _Timer.ResetHint();
     }
 
     IEnumerator GameStart()
@@ -228,9 +202,6 @@ public class GameManager : MonoBehaviour
         _Step = STEP.PLAY;
 
         _Timer.TimerStart();
-
-        _bHint = true;
-        _fHintWaitTime = Time.time;
     }
 
     IEnumerator Counting()
