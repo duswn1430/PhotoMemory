@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
 
     public float _fRemainTime = 0;
 
-    private float _fTotalTime = 60f;
+    private float _fTotalTime = 6f;
 
     float _fEndTime = 0;
     float _fCurTime = 0;

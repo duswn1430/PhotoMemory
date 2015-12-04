@@ -14,10 +14,17 @@ public class TouchManager : MonoBehaviour
     public GameObject _goMark = null;
     public Transform _transMark = null;
 
+    public void Init()
+    {
+        _goMark.SetActive(false);
+        _MovingBox.Visible(null, false);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        UpdateTouch();
+        if (GameManager._Step == GameManager.STEP.PLAY)
+            UpdateTouch();
     }
 
     void UpdateTouch()
