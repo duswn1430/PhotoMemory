@@ -20,10 +20,10 @@ public class Shutter : MonoBehaviour
 
         transform.localPosition = new Vector3(0, 0, -500);
 
-        for (int i = 0; i < renderers.Length; ++i)
-        {
-            renderers[i].material.renderQueue = 10000;
-        }
+        //for (int i = 0; i < renderers.Length; ++i)
+        //{
+        //    renderers[i].material.renderQueue = 10000;
+        //}
     }
 
     void Visible()
@@ -44,11 +44,11 @@ public class Shutter : MonoBehaviour
 
     public void PlayOpen()
     {
-        _animator.Play("FXSemoWB_Open");
+        _animator.Play("Shutter_Open");
     }
 
     public void PlayClose()
     {
-        _animator.Play("FXSemoWB_Close");
+        _animator.Play("Shutter_Close");
     }
 }

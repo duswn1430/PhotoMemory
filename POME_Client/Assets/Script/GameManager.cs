@@ -7,6 +7,8 @@ using SimpleJSON;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager _Instance = null;
+
     public enum STEP { INIT, PLAY, PAUSE, COMPLETE, END };
 
     public static STEP _Step;
@@ -18,7 +20,7 @@ public class GameManager : MonoBehaviour
     public UILabel _UIScore = null;
     public UILabel _UIStage = null;
 
-    public UIPanel _ResultPanel = null;
+    public ResultPopup _Result = null;
 
     List<BoxMapData> _listMapData;
 
@@ -34,6 +36,8 @@ public class GameManager : MonoBehaviour
     
     void Awake()
     {
+        _Instance = this;
+
         _listMapData = new List<BoxMapData>();
     }
 
@@ -119,6 +123,8 @@ public class GameManager : MonoBehaviour
         _Timer.Init();
 
         StartCoroutine(GameStart());
+        //_GameStep = GAME_STEP.START;
+        //NextStep();
     }
 
     public void PAUSE()
@@ -153,11 +159,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("????????????");
     }
 
-    //public void BACK()
-    //{
-    //    GoogleAds._Instance.LoadInterstitial();
-    //}
-
     public void COMPLETE(BoxMapData mapdata)
     {
         _Step = STEP.COMPLETE;
@@ -176,8 +177,8 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.END;
 
-        //_Timer.gameObject.SetActive(false);
-        _ResultPanel.gameObject.SetActive(true);
+        _Result.gameObject.SetActive(true);
+        _Result.SetResult(_iCurScore);
     }
 
     public void ShowHint()
@@ -190,15 +191,79 @@ public class GameManager : MonoBehaviour
         _Timer.ResetHint();
     }
 
+    void Update()
+    {
+
+    }
+
+    public enum GAME_STEP {START, NEXT };
+    public enum START_STEP {NONE, INIT, COLOR, COUNT, SHUFFLE, PLAY, PAUSE, COMPLETE, END };
+
+    GAME_STEP _GameStep;
+    START_STEP _StartStep;
+
+    float _fSpendTime = 0;
+    float _fWaitTime = 0;
+
+    public void NextStep()
+    {
+        switch (_GameStep)
+        {
+            case GAME_STEP.START:
+                _StartStep++;
+                StartSetting();
+                break;
+            case GAME_STEP.NEXT:
+                break;
+        }
+    }
+
+    void StartSetting()
+    {
+        Debug.Log("_StartStep : " + _StartStep);
+
+        switch (_StartStep)
+        {
+            case START_STEP.INIT:
+                StartCoroutine(_BoxMapManager.SetBoxMap(_listMapData[_iStage]));
+                break;
+            case START_STEP.COLOR:
+                break;
+            case START_STEP.COUNT:
+                break;
+            case START_STEP.SHUFFLE:
+                break;
+            case START_STEP.PLAY:
+                break;
+            case START_STEP.PAUSE:
+                break;
+            case START_STEP.COMPLETE:
+                break;
+            case START_STEP.END:
+                break;
+        }
+    }
+
+
     IEnumerator GameStart()
     {
         yield return StartCoroutine(_BoxMapManager.SetBoxMap(_listMapData[_iStage]));
 
         yield return new WaitForSeconds(0.5f);
 
+        while (_Step == STEP.PAUSE)
+        {
+            yield return new WaitForFixedUpdate();
+        }
+
         _BoxMapManager.BoxColoring();
 
         yield return new WaitForSeconds(1f);
+
+        while (_Step == STEP.PAUSE)
+        {
+            yield return new WaitForFixedUpdate();
+        }
 
         yield return StartCoroutine(Counting());
 
@@ -218,6 +283,11 @@ public class GameManager : MonoBehaviour
             //SetText(time.ToString(), 250);
 
             yield return new WaitForSeconds(1f);
+
+            while (_Step == STEP.PAUSE)
+            {
+                yield return new WaitForFixedUpdate();
+            }
 
             time--;
         }

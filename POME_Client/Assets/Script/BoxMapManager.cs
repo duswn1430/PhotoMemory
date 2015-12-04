@@ -61,6 +61,8 @@ public class BoxMapManager : MonoBehaviour
         yield return StartCoroutine(SpwanBox());
 
         SettingTartgets();
+
+        GameManager._Instance.NextStep();
     }
 
     // 맵 셋팅.
