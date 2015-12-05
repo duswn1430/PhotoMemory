@@ -16,12 +16,6 @@ public class ResultPopup : MonoBehaviour
         _iBestScore = PlayerPrefs.GetInt("BestScore");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void RANK()
     {
 

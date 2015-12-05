@@ -6,7 +6,7 @@ public class Timer : MonoBehaviour
 {
     public GameManager _GameManager = null;
 
-    public UISprite _sprPause = null;
+    //public UISprite _sprPause = null;
     public UISprite _sprite = null;
     public UILabel _label = null;
 
@@ -24,8 +24,8 @@ public class Timer : MonoBehaviour
 
     float _fAmount = 0;
     string _sRemainTime = "";
-
-    LTDescr tmpTween = null;
+    
+    LTDescr BlinkTween = null;
 
     bool _bTimerStart = false;
     bool _bHint = false;
@@ -82,23 +82,13 @@ public class Timer : MonoBehaviour
 
         _fCutTime = 0;
 
-        _sprPause.gameObject.SetActive(false);
-
-        if (tmpTween != null)
-        {
-            LeanTween.cancel(tmpTween.uniqueId);
-
-            _sprPause.alpha = 1;
-            _label.alpha = 1;
-        }
+        //_sprPause.gameObject.SetActive(false);
 
     }
 
     public void TimerStop()
     {
         _bTimerStart = false;
-
-        TimeBlink();
     }
 
     public void TimerPause()
@@ -153,27 +143,7 @@ public class Timer : MonoBehaviour
 
         _label.text = "00.00";
 
-        if (tmpTween != null)
-        {
-            LeanTween.cancel(tmpTween.uniqueId);
-
-            _sprPause.alpha = 1;
-            _label.alpha = 1;
-        }
-
         _GameManager.END();
-    }
-
-    void TimeBlink()
-    {
-        _sprPause.gameObject.SetActive(true);
-
-        tmpTween = LeanTween.value(_sprPause.gameObject, 1f, 0f, 0.5f).setLoopPingPong().setOnUpdate(
-            (float value) =>
-            {
-                _sprPause.alpha = value;
-                _label.alpha = value;
-            });
     }
 
     void Hint()
@@ -195,5 +165,26 @@ public class Timer : MonoBehaviour
     {
         _bHint = true;
         _fHintTime = _fRemainTime;
+    }
+
+    public void BlinkStart()
+    {
+        BlinkTween = LeanTween.value(_label.gameObject, 1f, 0f, 0.5f).setLoopPingPong().setOnUpdate(
+            (float value) =>
+            {
+                //_sprPause.alpha = value;
+                _label.alpha = value;
+            });
+    }
+
+    public void BlinkStop()
+    {
+        if (BlinkTween != null)
+        {
+            LeanTween.cancel(BlinkTween.uniqueId);
+
+            //_sprPause.alpha = 1;
+            _label.alpha = 1;
+        }
     }
 }
