@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public UILabel _UIScore = null;
     public UILabel _UIStage = null;
+    public UILabel _UIClear = null;
 
     public ResultPopup _ResultPop = null;
 
@@ -117,6 +118,8 @@ public class GameManager : MonoBehaviour
         WaitTimeReset(1f);
 
         StartCoroutine(NextGame());
+
+        SetClear(true);
     }
 
     public void END()
@@ -241,6 +244,8 @@ public class GameManager : MonoBehaviour
 
                             WaitTimeReset(0.0f);
                             StartCoroutine(StartGame());
+                            
+                            SetClear(false);
 
                         }
                         break;
@@ -289,6 +294,8 @@ public class GameManager : MonoBehaviour
 
         _Step = STEP.START;
         _StartStep = START_STEP.SIZE;
+
+        SetClear(false);
     }
 
     void SetMapSize()
@@ -340,5 +347,17 @@ public class GameManager : MonoBehaviour
                 _UIScore.text = string.Format("Score : {0}", _iCurScore);
             }
         );
+    }
+
+    void SetClear(bool show)
+    {
+        if (show)
+        {
+            LeanTween.scale(_UIClear.gameObject, new Vector3(1, 1, 1), 0.4f).setEase(LeanTweenType.easeSpring);
+        }
+        else
+        {
+            LeanTween.scale(_UIClear.gameObject, Vector3.zero, 0.4f).setEase(LeanTweenType.easeSpring);
+        }
     }
 }
