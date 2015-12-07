@@ -6,8 +6,7 @@ public class Timer : MonoBehaviour
 {
     public GameManager _GameManager = null;
 
-    //public UISprite _sprPause = null;
-    public UISprite _sprite = null;
+    //public UISprite _sprite = null;
     public UILabel _label = null;
 
     public float _fRemainTime = 0;
@@ -41,7 +40,7 @@ public class Timer : MonoBehaviour
 
     public void Init()
     {
-        _sprite.fillAmount = 1;
+        //_sprite.fillAmount = 1;
         _label.text = _fTotalTime.ToString("N2");
 
         _fRemainTime = _fTotalTime;
@@ -81,9 +80,6 @@ public class Timer : MonoBehaviour
         _fHintTime = _fRemainTime;
 
         _fCutTime = 0;
-
-        //_sprPause.gameObject.SetActive(false);
-
     }
 
     public void TimerStop()
@@ -127,7 +123,7 @@ public class Timer : MonoBehaviour
     {
         _fAmount = (_fRemainTime / _fTotalTime);
 
-        _sprite.fillAmount = _fAmount;
+        //_sprite.fillAmount = _fAmount;
 
         _sRemainTime = _fRemainTime.ToString("N2");
         //_sRemainTime = ((int)_fRemainTime).ToString();
@@ -139,7 +135,7 @@ public class Timer : MonoBehaviour
     {
         TimerStop();
 
-        _sprite.fillAmount = 0;
+        //_sprite.fillAmount = 0;
 
         _label.text = "00.00";
 
@@ -172,7 +168,6 @@ public class Timer : MonoBehaviour
         BlinkTween = LeanTween.value(_label.gameObject, 1f, 0f, 0.5f).setLoopPingPong().setOnUpdate(
             (float value) =>
             {
-                //_sprPause.alpha = value;
                 _label.alpha = value;
             });
     }
@@ -183,7 +178,6 @@ public class Timer : MonoBehaviour
         {
             LeanTween.cancel(BlinkTween.uniqueId);
 
-            //_sprPause.alpha = 1;
             _label.alpha = 1;
         }
     }
