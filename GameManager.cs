@@ -282,6 +282,7 @@ public class GameManager : MonoBehaviour
     void Init()
     {
         _iStage = 0;
+        _UIStage.text = string.Format("Stage {0}", _iStage + 1);
 
         _iStageScore = 0;
         _iTotalScore = 0;
