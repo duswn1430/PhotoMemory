@@ -98,7 +98,7 @@ public class TouchManager : MonoBehaviour
 
             _MovingBox.Visible(obj, true);
 
-            Sound._Instance.Play("block_up");
+            Sound._Instance.BoxUp();
         }
     }
 
