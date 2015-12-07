@@ -280,7 +280,7 @@ public class BoxMapManager : MonoBehaviour
 
         DismissHint();
 
-        Sound._Instance.Play("block_down");
+        Sound._Instance.BoxDown();
 
         if (IsComplete())
         {

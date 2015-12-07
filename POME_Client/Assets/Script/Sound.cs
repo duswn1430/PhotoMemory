@@ -19,7 +19,7 @@ public class Sound : MonoBehaviour
         _audio = transform.GetComponents<AudioSource>();
     }
 
-    public void Play(string clip)
+    void Play(string clip)
     {
         for (int i = 0; i < _Clips.Length; ++i)
         {
@@ -43,5 +43,15 @@ public class Sound : MonoBehaviour
 
             break;
         }
+    }
+
+    public void BoxUp()
+    {
+        Play("block_up");
+    }
+
+    public void BoxDown()
+    {
+        Play("block_down");
     }
 }
