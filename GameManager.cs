@@ -161,6 +161,11 @@ public class GameManager : MonoBehaviour
         _BoxMapManager.ClearBoxMap();
     }
 
+    public void PASS()
+    {
+        COMPLETE();
+    }
+
     public void ShowHint()
     {
         _BoxMapManager.ShowHint();
