@@ -25,7 +25,8 @@ public class UIManager : MonoBehaviour
 
     public void HELP()
     {
-        Debug.Log("????????????");
+        //Debug.Log("????????????");
+        UnityAds._Instance.ShowRewardedAd();
     }
 
     public void PAUSE()
