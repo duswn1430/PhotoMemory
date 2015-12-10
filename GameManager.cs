@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public Timer _Timer = null;
 
     public UILabel _UIScore = null;
+    public UILabel _UIBest = null;
     public UILabel _UIStage = null;
     public UILabel _UIClear = null;
 
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
     int _iStageScore;
     int _iTotalScore;
     int _iCurScore;
+    int _iBestScore;
 
     bool _bPause;
     bool _bGaemReady;
@@ -292,11 +294,13 @@ public class GameManager : MonoBehaviour
         _iStageScore = 0;
         _iTotalScore = 0;
         _iCurScore = 0;
+        _iBestScore = PlayerPrefs.GetInt("BestScore");
 
         _BoxMapManager.ClearBoxMap();
         _BoxMapManager.Init();
 
         SetScore(0);
+        SetBest(_iBestScore);
 
         _Step = STEP.START;
         _StartStep = START_STEP.SIZE;
@@ -350,9 +354,20 @@ public class GameManager : MonoBehaviour
             {
                 _iCurScore = (int)value;
                 //_UIScore.text = _iCurScore.ToString();
-                _UIScore.text = string.Format("Score : {0}", _iCurScore);
+                _UIScore.text = string.Format("SCORE : {0}", _iCurScore);
+
+                if(_iBestScore < _iCurScore)
+                {
+                    _iBestScore = _iCurScore;
+                    SetBest(_iBestScore);
+                }                
             }
         );
+    }
+
+    void SetBest(int score)
+    {
+        _UIBest.text = string.Format("BEST    : {0}", score);
     }
 
     void SetClear(bool show)
