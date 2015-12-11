@@ -23,11 +23,12 @@ public class GoogleAds : MonoBehaviour
     public event Action OnInterstitialLoadFail;
     public event Action OnInterstitialClosed;
 
-    public bool _bLoadInterstital;
+    //public bool _bLoadInterstital;
+    public bool _bInterstitialLoaded;
 
     public void Init()
     {
-        _bLoadInterstital = false;
+        _bInterstitialLoaded = false;
 
         UM_AdManager.instance.Init();
 
@@ -36,37 +37,7 @@ public class GoogleAds : MonoBehaviour
         GoogleMobileAd.OnInterstitialClosed += HandleOnInterstitialClosed;
 
         CreateBanner();
-        CreateInterstital();
-    }
-
-    void HandleOnInterstitialClosed()
-    {
-        Debug.Log("Interstitial Ad was closed");
-
-        _bLoadInterstital = false;
-
-        if (OnInterstitialClosed != null)
-            OnInterstitialClosed();
-    }
-
-    void HandleOnInterstitialLoadFail()
-    {
-        Debug.Log("Interstitial is failed to load");
-
-        _bLoadInterstital = false;
-
-        if (OnInterstitialLoadFail != null)
-            OnInterstitialLoadFail();
-    }
-
-    void HandleOnInterstitialLoaded()
-    {
-        Debug.Log("Interstitial ad content ready");
-
-        _bLoadInterstital = true;
-
-        if (OnInterstitialLoaded != null)
-            OnInterstitialLoaded();
+        //CreateInterstital();
     }
 
     // Banner
@@ -85,9 +56,14 @@ public class GoogleAds : MonoBehaviour
         UM_AdManager.instance.HideBanner(_iBannerId);
     }
 
-    public bool IsBanner()
+    public bool IsBannerOnScreen()
     {
         return UM_AdManager.instance.IsBannerOnScreen(_iBannerId);
+    }
+
+    public bool IsBannerLoaded()
+    {
+        return UM_AdManager.instance.IsBannerLoaded(_iBannerId);
     }
 
 
@@ -105,5 +81,35 @@ public class GoogleAds : MonoBehaviour
     public void ShowInterstital()
     {
         UM_AdManager.instance.ShowInterstitialAd();
+    }
+
+    void HandleOnInterstitialClosed()
+    {
+        Debug.Log("Interstitial Ad was closed");
+
+        //_bLoadInterstital = false;
+
+        if (OnInterstitialClosed != null)
+            OnInterstitialClosed();
+    }
+
+    void HandleOnInterstitialLoadFail()
+    {
+        Debug.Log("Interstitial is failed to load");
+
+        //_bLoadInterstital = false;
+
+        if (OnInterstitialLoadFail != null)
+            OnInterstitialLoadFail();
+    }
+
+    void HandleOnInterstitialLoaded()
+    {
+        Debug.Log("Interstitial ad content ready");
+
+        _bInterstitialLoaded = true;
+
+        if (OnInterstitialLoaded != null)
+            OnInterstitialLoaded();
     }
 }
