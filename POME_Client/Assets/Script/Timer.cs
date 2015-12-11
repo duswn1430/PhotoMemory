@@ -1,113 +1,63 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Define;
 
 public class Timer : MonoBehaviour
 {
-    public GameManager _GameManager = null;
-
-    //public UISprite _sprite = null;
     public UILabel _label = null;
 
-    public float _fRemainTime = 0;
+    public float _fRemainTime;
 
-    private float _fTotalTime = 60.0f;
+    private float _fTotalTime = 6.0f;
 
-    float _fEndTime = 0;
-    float _fCurTime = 0;
-    float _fPauseTime = 0;
-    float _fCutTime = 0;
+    float _fHintSetTime;
+    float _fHintTimer;
+
+    float _fTimer;
+    float _fTimerAfter;
+    float _fTimerBefore;
+
+    string _sRemainTime = "";
+
+    bool _bTimerPreccess;
+    bool _bHint;
 
     float _fStageStartTime = 0;
-    float _fHintTime = 0;
 
-    float _fAmount = 0;
-    string _sRemainTime = "";
-    
     LTDescr BlinkTween = null;
-
-    bool _bTimerStart = false;
-    bool _bHint = false;
-
-    void Update()
-    {
-        if (_bTimerStart)
-        {
-            SepndTime();
-            Hint();
-        }
-    }
 
     public void Init()
     {
-        //_sprite.fillAmount = 1;
-        _label.text = _fTotalTime.ToString("N2");
+        _bTimerPreccess = false;
+        _bHint = false;
 
+        _fTimer = 0;
         _fRemainTime = _fTotalTime;
+
+        _label.text = _fTotalTime.ToString("N2");
     }
 
-    public void AddTime(BoxMapData mapdata, float waitT)
+    void FixedUpdate()
     {
-        float stageSpendTime = Time.time - _fStageStartTime - _fCutTime;
-
-        if (stageSpendTime <= mapdata.iBonusTerms)
+        if (_bTimerPreccess)
         {
-            _fCurTime = Time.time - waitT;
+            _fTimerAfter = Time.time;
 
-            float Bonus = _fEndTime + mapdata.iBonusTime;
+            CalculateRemainTIme();
+            Hint();
 
-            LeanTween.value(gameObject, _fEndTime, Bonus, 0.5f).setEase(LeanTweenType.easeOutCirc).setOnUpdate(
-                (float value) =>
-                {
-                    _fEndTime = value;
+            _fTimer += _fTimerAfter - _fTimerBefore;
 
-                    _fRemainTime = _fEndTime - _fCurTime;
-
-                    ShowTimer();
-                }
-            );
+            _fTimerBefore = Time.time;
+        }
+        else
+        {
+            _fTimerBefore = Time.time;
         }
     }
 
-    public void TimerStart()
+    void CalculateRemainTIme()
     {
-        _bTimerStart = true;
-        _bHint = true;
-
-        _fEndTime = Time.time + _fRemainTime;
-        _fStageStartTime = Time.time;
-
-        _fHintTime = _fRemainTime;
-
-        _fCutTime = 0;
-    }
-
-    public void TimerStop()
-    {
-        _bTimerStart = false;
-    }
-
-    public void TimerPause()
-    {
-        _bTimerStart = false;
-
-        _fPauseTime = Time.time;
-    }
-
-    public void TimerResume()
-    {
-        _bTimerStart = true;
-
-        _fPauseTime = Time.time - _fPauseTime;
-
-        _fCutTime += _fPauseTime;
-    }
-
-    void SepndTime()
-    {
-        _fCurTime = Time.time - _fCutTime;
-
-        _fRemainTime = _fEndTime - _fCurTime;
+        _fRemainTime = _fTotalTime - _fTimer;
 
         if (_fRemainTime <= 0)
         {
@@ -115,44 +65,37 @@ public class Timer : MonoBehaviour
         }
         else
         {
-            ShowTimer();
+            SetTimerText();
         }
-    }
-
-    void ShowTimer()
-    {
-        _fAmount = (_fRemainTime / _fTotalTime);
-
-        //_sprite.fillAmount = _fAmount;
-
-        _sRemainTime = _fRemainTime.ToString("N2");
-        //_sRemainTime = ((int)_fRemainTime).ToString();
-
-        _label.text = _sRemainTime;
     }
 
     void TimerEnd()
     {
-        TimerStop();
-
-        //_sprite.fillAmount = 0;
+        _bTimerPreccess = false;
 
         _label.text = "00.00";
 
-        _GameManager.END();
+        GameManager._Instance.END();
+    }
+
+    void SetTimerText()
+    {
+        _sRemainTime = _fRemainTime.ToString("N2");
+
+        _label.text = _sRemainTime;
     }
 
     void Hint()
     {
         if (_bHint)
         {
-            float time = _fHintTime - _fRemainTime;
+            _fHintTimer = _fHintSetTime - _fRemainTime;
 
-            if (time >= 5)
+            if (_fHintTimer >= 5)
             {
                 _bHint = false;
 
-                _GameManager.ShowHint();
+                GameManager._Instance.ShowHint();
             }
         }
     }
@@ -160,12 +103,12 @@ public class Timer : MonoBehaviour
     public void ResetHint()
     {
         _bHint = true;
-        _fHintTime = _fRemainTime;
+        _fHintSetTime = _fRemainTime;
     }
 
     public void BlinkStart()
     {
-        BlinkTween = LeanTween.value(_label.gameObject, 1f, 0f, 0.5f).setLoopPingPong().setOnUpdate(
+        BlinkTween = LeanTween.value(gameObject, 1f, 0f, 0.5f).setLoopPingPong().setOnUpdate(
             (float value) =>
             {
                 _label.alpha = value;
@@ -180,5 +123,42 @@ public class Timer : MonoBehaviour
 
             _label.alpha = 1;
         }
+    }
+
+    public void TimerStart()
+    {
+        _bTimerPreccess = true;
+
+        _fStageStartTime = _fTimer;
+
+        ResetHint();
+    }
+
+    public void TimerStop()
+    {
+        _bTimerPreccess = false;
+    }
+
+    public float GetStageSpendTime()
+    {
+        float stageSpendTime = _fTimer - _fStageStartTime;
+
+        return stageSpendTime;
+    }
+
+    public void AddTime(float plusTime)
+    {
+        float Bonus = _fTotalTime + plusTime;
+
+        LeanTween.value(gameObject, _fTotalTime, Bonus, 0.5f).setEase(LeanTweenType.easeOutCirc).setOnUpdate(
+            (float value) =>
+            {
+                _fTotalTime = value;
+
+                _fRemainTime = _fTotalTime - _fTimer;
+
+                SetTimerText();
+            }
+        );
     }
 }
