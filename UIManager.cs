@@ -116,6 +116,7 @@ public class UIManager : MonoBehaviour
 #else
             if (GoogleAds._Instance._bInterstitialLoaded)
             {
+                GameManager._Instance._Timer.TimerStop();
                 GoogleAds._Instance.OnInterstitialClosed += new Action(GameManager._Instance.ShowOriginal);
                 GoogleAds._Instance.ShowInterstital();
             }
