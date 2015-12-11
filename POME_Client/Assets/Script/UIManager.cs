@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -39,7 +40,8 @@ public class UIManager : MonoBehaviour
     {
         while (_bGoogleLoaded == false)
         {
-            if (GoogleAds._Instance.IsBannerLoaded())
+            //if (GoogleAds._Instance.IsBannerLoaded())
+            if(GoogleAds._Instance._bInterstitialLoaded)
             {
                 _bGoogleLoaded = true;
                 GoogleAds._Instance.HideBanner();
@@ -104,6 +106,23 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("????????????");
     }
+
+    public void SHOW_ORIGINAL()
+    {
+        if (GameManager._Step == GameManager.STEP.PLAY)
+        {
+#if UNITY_EDITOR
+            GameManager._Instance.ShowOriginal();
+#else
+            if (GoogleAds._Instance._bInterstitialLoaded)
+            {
+                GoogleAds._Instance.OnInterstitialClosed += new Action(GameManager._Instance.ShowOriginal);
+                GoogleAds._Instance.ShowInterstital();
+            }
+#endif
+        }
+    }
+    
 
 
 }

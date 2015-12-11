@@ -187,7 +187,7 @@ public class BoxMapManager : MonoBehaviour
 
         _bTouchLock = true;
 
-        yield return StartCoroutine(ShutterPlay(true, 0.33f));
+        yield return StartCoroutine(ShutterPlay(true));
 
         yield return StartCoroutine(Shuffle(_BoxList));
 
@@ -199,7 +199,7 @@ public class BoxMapManager : MonoBehaviour
             AmiscGame.SetColor(obj, box._CurType);
         }
 
-        yield return StartCoroutine(ShutterPlay(false, 0.33f));
+        yield return StartCoroutine(ShutterPlay(false));
         _bTouchLock = false;
     }
 
@@ -227,19 +227,19 @@ public class BoxMapManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
     }
 
-    IEnumerator ShutterPlay(bool close, float time)
+    public IEnumerator ShutterPlay(bool close)
     {
         if (close)
         {
             _Shutter.PlayClose();
 
-            yield return new WaitForSeconds(time);
+            yield return new WaitForSeconds(0.33f);
         }
         else
         {
             _Shutter.PlayOpen();
 
-            yield return new WaitForSeconds(time);
+            yield return new WaitForSeconds(0.33f);
         }
     }
 
