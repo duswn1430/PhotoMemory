@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
 
     NEXT_STEP _NextStep;
 
+    public enum ORIGINAL_STEP { EFFECT1, ORIGIN, SHUTTER, CURRENT, END };
+
+    ORIGINAL_STEP _OriginalStep;
+
     public BoxMapManager _BoxMapManager = null;
 
     public Timer _Timer = null;
@@ -48,6 +52,7 @@ public class GameManager : MonoBehaviour
     bool _bPause;
     bool _bGaemReady;
     bool _bNextReady;
+    bool _bOriginal;
 
     float _fProgressTime;
     float _fWaitTime;
@@ -173,6 +178,16 @@ public class GameManager : MonoBehaviour
         _BoxMapManager.ShowHint();
     }
 
+    public void ShowOriginal()
+    {
+        _bOriginal = true;
+        _OriginalStep = ORIGINAL_STEP.EFFECT1;
+
+        _Timer.TimerStop();
+
+        StartCoroutine(Original());
+    }
+
     public void resetHint()
     {
         _Timer.ResetHint();
@@ -191,23 +206,44 @@ public class GameManager : MonoBehaviour
                         break;
 
                     case START_STEP.SIZE:
-                        SetMapSize();
-                        WaitTimeReset(1.0f);
+                        {
+                            _CurMapData = _listMapData[_iStage];
+                            StartCoroutine(_BoxMapManager.SetBoxMap(_CurMapData));
+
+                            _StartStep = START_STEP.COLOR;
+
+                            WaitTimeReset(1.0f);
+                        }
                         break;
 
                     case START_STEP.COLOR:
-                        SetMapColoring();
-                        WaitTimeReset(1.0f);
+                        {
+                            _BoxMapManager.BoxColoring();
+
+                            _StartStep = START_STEP.COUNT;
+
+                            WaitTimeReset(1.0f);
+                        }
                         break;
 
                     case START_STEP.COUNT:
-                        Count();
-                        WaitTimeReset(3.0f);
+                        {
+                            _Timer.BlinkStart();
+
+                            _StartStep = START_STEP.SHUFFLE;
+
+                            WaitTimeReset(3.0f);
+                        }
                         break;
 
                     case START_STEP.SHUFFLE:
-                        SetMapShuffing();
-                        WaitTimeReset(0.7f);
+                        {
+                            StartCoroutine(_BoxMapManager.BoxShuffling());
+
+                            _StartStep = START_STEP.PLAY;
+
+                            WaitTimeReset(0.7f);
+                        }
                         break;
 
                     case START_STEP.PLAY:
@@ -253,7 +289,66 @@ public class GameManager : MonoBehaviour
                             StartCoroutine(StartGame());
                             
                             SetClear(false);
+                        }
+                        break;
+                }
+            }
 
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    IEnumerator Original()
+    {
+        while (_bOriginal)
+        {
+            if (WaitTime())
+            {
+                switch (_OriginalStep)
+                {
+                    case ORIGINAL_STEP.EFFECT1:
+                        {
+                            _OriginalStep = ORIGINAL_STEP.ORIGIN;
+                        }
+                        break;
+                    case ORIGINAL_STEP.ORIGIN:
+                        {
+                            _Timer.BlinkStart();
+
+                            _BoxMapManager.ShowOrigin();
+
+                            _OriginalStep = ORIGINAL_STEP.SHUTTER;
+
+                            WaitTimeReset(3.0f);
+                        }
+                        break;
+                    case ORIGINAL_STEP.SHUTTER:
+                        {
+                            _Timer.BlinkStop();
+
+                            StartCoroutine(_BoxMapManager.ShutterPlay(true));
+
+                            _OriginalStep = ORIGINAL_STEP.CURRENT;
+
+                            WaitTimeReset(0.33f);
+                        }
+                        break;
+                    case ORIGINAL_STEP.CURRENT:
+                        {
+                            _BoxMapManager.ShowCur();
+
+                            StartCoroutine(_BoxMapManager.ShutterPlay(false));
+
+                            _OriginalStep = ORIGINAL_STEP.END;
+
+                            WaitTimeReset(0.33f);
+                        }
+                        break;
+                    case ORIGINAL_STEP.END:
+                        {
+                            _bOriginal = false;
+
+                            _Timer.TimerStart();
                         }
                         break;
                 }
@@ -306,35 +401,6 @@ public class GameManager : MonoBehaviour
         _StartStep = START_STEP.SIZE;
 
         SetClear(false);
-    }
-
-    void SetMapSize()
-    {
-        _CurMapData = _listMapData[_iStage];
-        StartCoroutine(_BoxMapManager.SetBoxMap(_CurMapData));
-
-        _StartStep = START_STEP.COLOR;
-    }
-
-    void SetMapColoring()
-    {
-        _BoxMapManager.BoxColoring();
-
-        _StartStep = START_STEP.COUNT;
-    }
-
-    void SetMapShuffing()
-    {
-        StartCoroutine(_BoxMapManager.BoxShuffling());
-
-        _StartStep = START_STEP.PLAY;
-    }
-
-    void Count()
-    {
-        _Timer.BlinkStart();
-
-        _StartStep = START_STEP.SHUFFLE;
     }
 
     void Play()

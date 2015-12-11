@@ -38,6 +38,7 @@ public class GoogleAds : MonoBehaviour
 
         CreateBanner();
         //CreateInterstital();
+        LoadInterstitial();
     }
 
     // Banner
@@ -90,7 +91,12 @@ public class GoogleAds : MonoBehaviour
         //_bLoadInterstital = false;
 
         if (OnInterstitialClosed != null)
+        {
+            LoadInterstitial();
+
             OnInterstitialClosed();
+            OnInterstitialClosed = null;
+        }
     }
 
     void HandleOnInterstitialLoadFail()
@@ -100,7 +106,10 @@ public class GoogleAds : MonoBehaviour
         //_bLoadInterstital = false;
 
         if (OnInterstitialLoadFail != null)
+        {
             OnInterstitialLoadFail();
+            OnInterstitialLoadFail = null;
+        }
     }
 
     void HandleOnInterstitialLoaded()
@@ -110,6 +119,9 @@ public class GoogleAds : MonoBehaviour
         _bInterstitialLoaded = true;
 
         if (OnInterstitialLoaded != null)
+        {
             OnInterstitialLoaded();
+            OnInterstitialLoaded = null;
+        }
     }
 }
