@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
 
     ORIGINAL_STEP _OriginalStep;
 
+    public enum CONTINUE_STEP { ADDTIME, START };
+
+    CONTINUE_STEP _ContinueStep;
+
     public BoxMapManager _BoxMapManager = null;
 
     public Timer _Timer = null;
@@ -53,6 +57,7 @@ public class GameManager : MonoBehaviour
     bool _bGaemReady;
     bool _bNextReady;
     bool _bOriginal;
+    bool _bContinue;
 
     float _fProgressTime;
     float _fWaitTime;
@@ -96,7 +101,6 @@ public class GameManager : MonoBehaviour
     {
         Init();
 
-        _Timer.gameObject.SetActive(true);
         _Timer.Init();
 
         _bPause = false;
@@ -111,7 +115,7 @@ public class GameManager : MonoBehaviour
 
         _iStageScore = (_CurMapData.iRow * _CurMapData.iCol) + _CurMapData.idx;
 
-        Debug.Log(string.Format("StageScore : {0} / Time : {1}", _iStageScore, (int)_Timer._fRemainTime));
+        //Debug.Log(string.Format("StageScore : {0} / Time : {1}", _iStageScore, (int)_Timer._fRemainTime));
 
         _iTotalScore += _iStageScore + (int)_Timer._fRemainTime;
 
@@ -178,6 +182,11 @@ public class GameManager : MonoBehaviour
         _BoxMapManager.ShowHint();
     }
 
+    public void resetHint()
+    {
+        _Timer.ResetHint();
+    }
+
     public void ShowOriginal()
     {
         _bOriginal = true;
@@ -188,9 +197,16 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Original());
     }
 
-    public void resetHint()
+    public void ADContinue()
     {
-        _Timer.ResetHint();
+        _ResultPop.gameObject.SetActive(false);
+
+        _bContinue = true;
+        _ContinueStep = CONTINUE_STEP.ADDTIME;
+
+        WaitTimeReset(1f);
+
+        StartCoroutine(Continue());
     }
 
     IEnumerator StartGame()
@@ -266,8 +282,14 @@ public class GameManager : MonoBehaviour
                 {
                     case NEXT_STEP.ADDTIME:
                         {
-                            _Timer.AddTime(_CurMapData, 1.0f);
-                            WaitTimeReset(1.0f);
+                            float stageSpendTime = _Timer.GetStageSpendTime();
+
+                            if (stageSpendTime <= _CurMapData.iBonusTerms)
+                            {
+                                _Timer.AddTime(_CurMapData.iBonusTime);
+
+                                WaitTimeReset(1.0f);
+                            }
 
                             _NextStep = NEXT_STEP.NEXT;
                         }
@@ -313,6 +335,7 @@ public class GameManager : MonoBehaviour
                         break;
                     case ORIGINAL_STEP.ORIGIN:
                         {
+                            _Timer.TimerStop();
                             _Timer.BlinkStart();
 
                             _BoxMapManager.ShowOrigin();
@@ -349,6 +372,41 @@ public class GameManager : MonoBehaviour
                             _bOriginal = false;
 
                             _Timer.TimerStart();
+                            _Timer.ResetHint();
+                        }
+                        break;
+                }
+            }
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    IEnumerator Continue()
+    {
+        while (_bContinue)
+        {
+            if (WaitTime())
+            {
+                switch (_ContinueStep)
+                {
+                    case CONTINUE_STEP.ADDTIME:
+                        {
+                            _Timer.AddTime(15.0f);
+
+                            _ContinueStep = CONTINUE_STEP.START;
+
+                            WaitTimeReset(0.5f);
+                        }
+                        break;
+                    case CONTINUE_STEP.START:
+                        {
+                            _bContinue = false;
+                            _bGaemReady = true;
+
+                            _StartStep = START_STEP.SIZE;
+
+                            StartCoroutine(StartGame());
                         }
                         break;
                 }

@@ -123,6 +123,18 @@ public class UIManager : MonoBehaviour
 #endif
         }
     }
+
+    public void AD_CONTINUE()
+    {
+
+#if UNITY_EDITOR
+        GameManager._Instance.ADContinue();
+#else
+        UnityAds._Instance.OnAdFinished += new Action(GameManager._Instance.ADContinue);
+        UnityAds._Instance.ShowRewardedAd();
+#endif
+
+    }
     
 
 
