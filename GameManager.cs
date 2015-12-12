@@ -137,6 +137,8 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.END;
 
+        _BoxMapManager.DismissHint();
+
         _ResultPop.gameObject.SetActive(true);
         _ResultPop.SetResult(_iCurScore);
     }
@@ -193,6 +195,8 @@ public class GameManager : MonoBehaviour
         _OriginalStep = ORIGINAL_STEP.EFFECT1;
 
         _Timer.TimerStop();
+
+        _BoxMapManager.DismissHint();
 
         StartCoroutine(Original());
     }
