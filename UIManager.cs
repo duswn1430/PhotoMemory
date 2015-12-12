@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
 
     public UIButton _btnStart = null;
     public UIButton _btnHelp = null;
+    public UIButton _btnAudio = null;
+    public UIButton _btnRank = null;
 
     bool _bGoogleLoaded = false;
     bool _bUnityAdsLoaded = false;
@@ -18,6 +20,8 @@ public class UIManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        BGM._Instance.Play();
+
         _StartPanel.gameObject.SetActive(true);
         _GamePanel.gameObject.SetActive(false);
         _ResultPanel.gameObject.SetActive(false);
@@ -27,6 +31,8 @@ public class UIManager : MonoBehaviour
 
         _btnStart.gameObject.SetActive(true);
         _btnHelp.gameObject.SetActive(true);
+        _btnAudio.gameObject.SetActive(true);
+        _btnRank.gameObject.SetActive(true);
 
 #else
 
@@ -48,6 +54,8 @@ public class UIManager : MonoBehaviour
 
                 _btnStart.gameObject.SetActive(true);
                 _btnHelp.gameObject.SetActive(true);
+                _btnAudio.gameObject.SetActive(true);
+                _btnRank.gameObject.SetActive(true);
             }
             yield return new WaitForFixedUpdate();
         }
@@ -105,6 +113,7 @@ public class UIManager : MonoBehaviour
     public void SOUND()
     {
         Debug.Log("????????????");
+        BGM._Instance.BGMChange();
     }
 
     public void SHOW_ORIGINAL()
@@ -127,15 +136,12 @@ public class UIManager : MonoBehaviour
     public void AD_CONTINUE()
     {
 
-#if UNITY_EDITOR
-        GameManager._Instance.ADContinue();
-#else
+//#if UNITY_EDITOR
+//        GameManager._Instance.ADContinue();
+//#else
         UnityAds._Instance.OnAdFinished += new Action(GameManager._Instance.ADContinue);
         UnityAds._Instance.ShowRewardedAd();
-#endif
+//#endif
 
     }
-    
-
-
 }
