@@ -56,8 +56,8 @@ public class UnityAds : MonoBehaviour
         }
     }
 
-    public void IsLoaded()
+    public bool IsLoaded()
     {
-        Advertisement.IsReady();
+        return Advertisement.IsReady();
     }
 }

@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
     string _sMapFile = "MapData";
 
     int _iStage;
-    int _iCount = 3;
 
     int _iStageScore;
     int _iTotalScore;
@@ -170,6 +169,14 @@ public class GameManager : MonoBehaviour
     public void MAINMENU()
     {
         _Step = STEP.END;
+
+        _bGaemReady = false;
+        _bNextReady = false;
+        _bOriginal = false;
+        _bContinue = false;
+
+        _Timer.TimerStop();
+        _Timer.BlinkStop();
 
         _BoxMapManager.ClearBoxMap();
     }
