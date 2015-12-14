@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
         GoogleAds._Instance.Init();
         StartCoroutine(GoogleLoadWait());
         StartCoroutine(UnityAdsWait());
+        StartCoroutine(Loading());
 #endif
     }
     
