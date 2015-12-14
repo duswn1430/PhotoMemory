@@ -14,7 +14,8 @@ public class UIManager : MonoBehaviour
     public UIButton _btnAudio = null;
     public UIButton _btnRank = null;
 
-    bool _bGoogleLoaded = false;
+    bool _bGoogleBannerLoaded = false;
+    bool _bGoogleInsterstitialLoaded = false;
     bool _bUnityAdsLoaded = false;
 
     // Use this for initialization
@@ -38,38 +39,64 @@ public class UIManager : MonoBehaviour
 
         GoogleAds._Instance.Init();
         StartCoroutine(GoogleLoadWait());
+        StartCoroutine(UnityAdsWait());
+        StartCoroutine(Loading());
 
 #endif
     }
 
     IEnumerator GoogleLoadWait()
     {
-        while (_bGoogleLoaded == false)
+        while (_bGoogleBannerLoaded == false)
         {
-            //if (GoogleAds._Instance.IsBannerLoaded())
-            if(GoogleAds._Instance._bInterstitialLoaded)
+            if(GoogleAds._Instance.IsBannerLoaded())
             {
-                _bGoogleLoaded = true;
+                _bGoogleBannerLoaded = true;
                 GoogleAds._Instance.HideBanner();
+            }
+            yield return new WaitForFixedUpdate();
+        }
 
-                _btnStart.gameObject.SetActive(true);
-                _btnHelp.gameObject.SetActive(true);
-                _btnAudio.gameObject.SetActive(true);
-                _btnRank.gameObject.SetActive(true);
+        while (_bGoogleInsterstitialLoaded == false)
+        {
+            if (GoogleAds._Instance._bInterstitialLoaded)
+            {
+                _bGoogleInsterstitialLoaded = true;
             }
             yield return new WaitForFixedUpdate();
         }
     }
 
-    //IEnumerator UnityAdsWait()
-    //{
-    //    while (_bUnityAdsLoaded == false)
-    //    {
-    //        if(UnityAds._Instance.isActiveAndEnabled)
+    IEnumerator UnityAdsWait()
+    {
+        while (_bUnityAdsLoaded == false)
+        {
+            if (UnityAds._Instance.IsLoaded())
+            {
+                _bUnityAdsLoaded = true;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+    }
 
-    //        yield return new WaitForFixedUpdate();
-    //    }
-    //}
+    IEnumerator Loading()
+    {
+        while (_bGoogleBannerLoaded == false || _bGoogleInsterstitialLoaded == false || _bUnityAdsLoaded == false)
+        {
+            if (_bGoogleBannerLoaded && _bGoogleBannerLoaded && _bUnityAdsLoaded)
+            {
+                _btnStart.gameObject.SetActive(true);
+                _btnHelp.gameObject.SetActive(true);
+                _btnAudio.gameObject.SetActive(true);
+                _btnRank.gameObject.SetActive(true);
+
+                yield break;
+            }
+
+            yield return new WaitForFixedUpdate();
+        }
+
+    }
 
     public void START()
     {
@@ -101,8 +128,10 @@ public class UIManager : MonoBehaviour
         _GamePanel.gameObject.SetActive(false);
         _ResultPanel.gameObject.SetActive(false);
         _PausePanel.gameObject.SetActive(false);
-
+        
+#if !UNITY_EDITOR
         GoogleAds._Instance.HideBanner();
+#endif
     }
 
     public void RANK()
@@ -135,13 +164,11 @@ public class UIManager : MonoBehaviour
 
     public void AD_CONTINUE()
     {
-
-//#if UNITY_EDITOR
-//        GameManager._Instance.ADContinue();
-//#else
+#if UNITY_EDITOR
+        GameManager._Instance.ADContinue();
+#else
         UnityAds._Instance.OnAdFinished += new Action(GameManager._Instance.ADContinue);
         UnityAds._Instance.ShowRewardedAd();
-//#endif
-
+#endif
     }
 }
