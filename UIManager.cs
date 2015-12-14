@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     bool _bGoogleBannerLoaded = false;
     bool _bGoogleInsterstitialLoaded = false;
     bool _bUnityAdsLoaded = false;
+    bool _bAD = false;
 
     float _fAlpha = 1;
 
@@ -73,10 +74,11 @@ public class UIManager : MonoBehaviour
 
     IEnumerator Loading()
     {
-        while (_bGoogleBannerLoaded == false || _bGoogleInsterstitialLoaded == false || _bUnityAdsLoaded == false)
+        while (_bAD == false)
         {
-            if (_bGoogleBannerLoaded && _bGoogleBannerLoaded && _bUnityAdsLoaded)
+            if (_bGoogleBannerLoaded && _bGoogleInsterstitialLoaded && _bUnityAdsLoaded)
             {
+                _bAD = true;
                 StartCoroutine(EnterGame());
                 yield break;
             }
