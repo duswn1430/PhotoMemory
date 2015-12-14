@@ -4,44 +4,35 @@ using System;
 
 public class UIManager : MonoBehaviour
 {
-    public UIPanel _StartPanel = null;
-    public UIPanel _GamePanel = null;
-    public UIPanel _ResultPanel = null;
-    public UIPanel _PausePanel = null;
-
-    public UIButton _btnStart = null;
-    public UIButton _btnHelp = null;
-    public UIButton _btnAudio = null;
-    public UIButton _btnRank = null;
+    public UIPanel _LoadingPanel = null;
+    public GameObject _StartPanel = null;
+    public GameObject _GamePanel = null;
+    public GameObject _ResultPanel = null;
+    public GameObject _PausePanel = null;
 
     bool _bGoogleBannerLoaded = false;
     bool _bGoogleInsterstitialLoaded = false;
     bool _bUnityAdsLoaded = false;
+
+    float _fAlpha = 1;
+
+    void Awake()
+    {
+#if !UNITY_EDITOR
+        GoogleAds._Instance.Init();
+        StartCoroutine(GoogleLoadWait());
+        StartCoroutine(UnityAdsWait());
+#endif
+    }
+    
 
     // Use this for initialization
     void Start()
     {
         BGM._Instance.Play();
 
-        _StartPanel.gameObject.SetActive(true);
-        _GamePanel.gameObject.SetActive(false);
-        _ResultPanel.gameObject.SetActive(false);
-        _PausePanel.gameObject.SetActive(false);
-        
-#if UNITY_EDITOR        
-
-        _btnStart.gameObject.SetActive(true);
-        _btnHelp.gameObject.SetActive(true);
-        _btnAudio.gameObject.SetActive(true);
-        _btnRank.gameObject.SetActive(true);
-
-#else
-
-        GoogleAds._Instance.Init();
-        StartCoroutine(GoogleLoadWait());
-        StartCoroutine(UnityAdsWait());
-        StartCoroutine(Loading());
-
+#if UNITY_EDITOR
+        StartCoroutine(EnterGame());
 #endif
     }
 
@@ -85,11 +76,7 @@ public class UIManager : MonoBehaviour
         {
             if (_bGoogleBannerLoaded && _bGoogleBannerLoaded && _bUnityAdsLoaded)
             {
-                _btnStart.gameObject.SetActive(true);
-                _btnHelp.gameObject.SetActive(true);
-                _btnAudio.gameObject.SetActive(true);
-                _btnRank.gameObject.SetActive(true);
-
+                StartCoroutine(EnterGame());
                 yield break;
             }
 
@@ -98,12 +85,38 @@ public class UIManager : MonoBehaviour
 
     }
 
+    IEnumerator EnterGame()
+    {
+        yield return new WaitForSeconds(1f);
+
+        _GamePanel.SetActive(false);
+        _ResultPanel.SetActive(false);
+        _PausePanel.SetActive(false);
+
+        while (_fAlpha >= 0)
+        {
+            _fAlpha -= 0.1f;
+            _LoadingPanel.alpha = _fAlpha;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        if (_fAlpha <= 0)
+        {
+            _fAlpha = 0f;
+            _LoadingPanel.alpha = _fAlpha;
+
+            _LoadingPanel.gameObject.SetActive(false);
+        }
+    }
+
     public void START()
     {
         _StartPanel.gameObject.SetActive(false);
         _GamePanel.gameObject.SetActive(true);
-
+        
+#if !UNITY_EDITOR
         GoogleAds._Instance.ShowBanner();
+#endif
     }
 
     public void HELP()
