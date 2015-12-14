@@ -509,11 +509,16 @@ public class GameManager : MonoBehaviour
     {
         if (show)
         {
-            LeanTween.scale(_UIClear.gameObject, new Vector3(1, 1, 1), 0.4f).setEase(LeanTweenType.easeSpring);
+            LeanTween.scale(_UIClear.gameObject, new Vector3(1, 1, 1), 0.4f).setEase(LeanTweenType.easeSpring).setOnStart(
+                () => {
+                    _UIStage.gameObject.SetActive(false);
+                });
         }
         else
         {
-            LeanTween.scale(_UIClear.gameObject, Vector3.zero, 0.4f).setEase(LeanTweenType.easeSpring);
+            LeanTween.scale(_UIClear.gameObject, Vector3.zero, 0.4f).setEase(LeanTweenType.easeSpring).setOnComplete(
+                () => { _UIStage.gameObject.SetActive(true); 
+                });
         }
     }
 }
