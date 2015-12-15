@@ -127,7 +127,8 @@ public class BoxMapManager : MonoBehaviour
         obj.name = box._Idx.ToString();
         obj.parent = _MyTransform;
         obj.position = box._Pos;
-        AmiscGame.SetColor(obj, box._CurType);
+        //AmiscGame.SetColor(obj, box._CurType);
+        AmiscGame.SetBoxColor(obj, box._CurType);
     }
 
     // 카메라 타겟팅 잡아주기.
@@ -173,7 +174,8 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            AmiscGame.SetColor(obj, box._CurType);
+            //AmiscGame.SetColor(obj, box._CurType);
+            AmiscGame.SetBoxColor(obj, box._CurType);
 
             if (box._OriginTpye != Type.NONE)
                 LeanTween.moveY(obj.gameObject, 1f, 1.0f).setEase(LeanTweenType.punch);
@@ -196,7 +198,8 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            AmiscGame.SetColor(obj, box._CurType);
+            //AmiscGame.SetColor(obj, box._CurType);
+            AmiscGame.SetBoxColor(obj, box._CurType);
         }
 
         yield return StartCoroutine(ShutterPlay(false));
@@ -269,8 +272,10 @@ public class BoxMapManager : MonoBehaviour
         box1._CurType = box2._CurType;
         box2._CurType = tmpType;
 
-        AmiscGame.SetColor(obj1, box1._CurType);
-        AmiscGame.SetColor(obj2, box2._CurType);
+        //AmiscGame.SetColor(obj1, box1._CurType);
+        //AmiscGame.SetColor(obj2, box2._CurType);
+        AmiscGame.SetBoxColor(obj1, box1._CurType);
+        AmiscGame.SetBoxColor(obj2, box2._CurType);
 
         LeanTween.moveLocalY(obj1.gameObject, 0, 0.2f).setFrom(-6).setEase(LeanTweenType.easeSpring);
         LeanTween.moveLocalY(obj2.gameObject, 0, 0.2f).setFrom(6).setEase(LeanTweenType.easeSpring);
@@ -320,7 +325,8 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            AmiscGame.SetColor(obj, box._OriginTpye);
+            //AmiscGame.SetColor(obj, box._OriginTpye);
+            AmiscGame.SetBoxColor(obj, box._OriginTpye);
 
             if (box._OriginTpye != Type.NONE)
                 LeanTween.moveY(obj.gameObject, 1f, 1.0f).setEase(LeanTweenType.punch);
@@ -374,7 +380,8 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            AmiscGame.SetColor(obj, box._OriginTpye);
+            //AmiscGame.SetColor(obj, box._OriginTpye);
+            AmiscGame.SetBoxColor(obj, box._OriginTpye);
         }
     }
 
@@ -385,7 +392,8 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            AmiscGame.SetColor(obj, box._CurType);
+            //AmiscGame.SetColor(obj, box._CurType);
+            AmiscGame.SetBoxColor(obj, box._CurType);
         }
     }
 }

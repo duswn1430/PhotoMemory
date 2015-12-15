@@ -7,8 +7,6 @@ public class MovingBox : MonoBehaviour
 
     public Renderer _Renderer = null;
 
-    public Light _Light = null;
-
     private bool _bMove = false;
 
     private Vector3 MovePos;
@@ -53,10 +51,11 @@ public class MovingBox : MonoBehaviour
             _MyTransform.position = obj.position;
 
             MeshRenderer objrender = obj.GetComponent<MeshRenderer>();
-            Color color = objrender.material.color;
+            Color diffuse = objrender.material.GetColor("_Diffuse");
+            Color emission = objrender.material.GetColor("_Emission");
 
-            _Renderer.material.color = color;
-            _Light.color = color;
+            _Renderer.material.SetColor("_Diffuse", diffuse);
+            _Renderer.material.SetColor("_Emission", emission);
 
             initMousePos = _MainCamera.ScreenToWorldPoint(Input.mousePosition);
 
