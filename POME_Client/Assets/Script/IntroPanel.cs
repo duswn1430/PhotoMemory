@@ -92,6 +92,8 @@ public class IntroPanel : MonoBehaviour
                             StartCoroutine(GoogleLoadWait());
                             StartCoroutine(UnityAdsWait());
                             StartCoroutine(Loading());
+
+                            _Step = STEP.ENTER;
                         }
                         break;
                     case STEP.ENTER:
