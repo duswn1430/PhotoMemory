@@ -30,8 +30,9 @@ public class IntroPanel : MonoBehaviour
     string _sStep = "";
 
     // Use this for initialization
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitForEndOfFrame();
 
 #if UNITY_EDITOR
         StartCoroutine(EnterGame());
@@ -39,8 +40,8 @@ public class IntroPanel : MonoBehaviour
         WaitTimeReset(1f);
         StartCoroutine(IntroProcess());
 #endif
-    }
 
+    }
 
     bool WaitTime()
     {
@@ -105,7 +106,7 @@ public class IntroPanel : MonoBehaviour
                 }
             }
 
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -121,7 +122,7 @@ public class IntroPanel : MonoBehaviour
                 _sStep += ".";
                 _text.text = _sStep;
             }
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
 
         while (_bGoogleInsterstitialLoaded == false)
@@ -133,7 +134,7 @@ public class IntroPanel : MonoBehaviour
                 _sStep += ".";
                 _text.text = _sStep;
             }
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -148,7 +149,7 @@ public class IntroPanel : MonoBehaviour
                 _sStep += ".";
                 _text.text = _sStep;
             }
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -164,7 +165,7 @@ public class IntroPanel : MonoBehaviour
                 yield break;
             }
 
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
     }
 
