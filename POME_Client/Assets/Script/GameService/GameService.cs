@@ -17,7 +17,7 @@ public class GameService : MonoBehaviour
         }
     }
 
-    public event Action HnadlePlayerConnected;
+    public event Action HandlePlayerConnected;
     public event Action HandlePlayerDisconnected;
 
     //public event Action HandleScoreSubmitted;
@@ -45,8 +45,11 @@ public class GameService : MonoBehaviour
     {
         Debug.Log("Player Connected");
 
-        if (HnadlePlayerConnected != null)
-            HnadlePlayerConnected();
+        if (HandlePlayerConnected != null)
+        {
+            HandlePlayerConnected();
+            HandlePlayerConnected = null;
+        }
     }
 
     private void OnPlayerDisconnected()
@@ -54,7 +57,10 @@ public class GameService : MonoBehaviour
         Debug.Log("Player Disconnected");
 
         if (HandlePlayerDisconnected != null)
+        {
             HandlePlayerDisconnected();
+            HandlePlayerDisconnected = null;
+        }
     }
 
     public void ShowLeaderBoard()

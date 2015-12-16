@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class IntroPanel : MonoBehaviour
 {
-    public enum STEP { LOGO1, LOGO2, LOADING, ENTER };
+    public enum STEP {NONE, LOGO1, LOGO2, LOADING, LOGIN, ENTER };
 
-    public STEP _Step = STEP.LOGO1;
+    public STEP _Step = STEP.NONE;
 
     public UIPanel _LoadingPanel = null;
     public GameObject _StartPanel = null;
@@ -33,10 +34,10 @@ public class IntroPanel : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-
 #if UNITY_EDITOR
         StartCoroutine(EnterGame());
 #else
+        _Step = STEP.LOGO1;
         WaitTimeReset(1f);
         StartCoroutine(IntroProcess());
 #endif
@@ -94,13 +95,28 @@ public class IntroPanel : MonoBehaviour
                             StartCoroutine(UnityAdsWait());
                             StartCoroutine(Loading());
 
-                            _Step = STEP.ENTER;
+                            _Step = STEP.NONE;
+                        }
+                        break;
+                    case STEP.LOGIN:
+                        {
+                            _sStep = "LOGIN";
+                            _text.text = _sStep;
+
+                            GameService._Instance.HandlePlayerConnected += new Action(Enter);
+                            GameService._Instance.Connect();
+
+                            _Step = STEP.NONE;
                         }
                         break;
                     case STEP.ENTER:
                         {
-                            _bDone = true;
+                            _sStep = "ENTER";
+                            _text.text = _sStep;
 
+                            StartCoroutine(EnterGame());
+
+                            _bDone = true;
                         }
                         break;
                 }
@@ -160,13 +176,17 @@ public class IntroPanel : MonoBehaviour
             if (_bGoogleBannerLoaded && _bGoogleInsterstitialLoaded && _bUnityAdsLoaded)
             {
                 _bAD = true;
-                _Step = STEP.ENTER;
-                StartCoroutine(EnterGame());
+                _Step = STEP.LOGIN;
                 yield break;
             }
 
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    void Enter()
+    {
+        _Step = STEP.ENTER;
     }
 
     IEnumerator EnterGame()
