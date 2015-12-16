@@ -7,6 +7,8 @@ public class Timer : MonoBehaviour
 
     public float _fRemainTime;
 
+    public const float _fGameTime = 10.0f;
+
     private float _fTotalTime = 6.0f;
 
     float _fHintSetTime;
@@ -31,7 +33,8 @@ public class Timer : MonoBehaviour
         _bHint = false;
 
         _fTimer = 0;
-        _fRemainTime = _fTotalTime;
+        _fTotalTime = _fGameTime;
+        _fRemainTime = _fGameTime;
 
         _label.text = _fTotalTime.ToString("N2");
     }
