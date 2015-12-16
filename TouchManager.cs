@@ -18,6 +18,18 @@ public class TouchManager : MonoBehaviour
     {
         _goMark.SetActive(false);
         _MovingBox.Visible(null, false);
+
+        if(_SellectBox1 != null)
+        {
+            BoxVisible(_SellectBox1, true);
+            _SellectBox1 = null;
+        }
+
+        if (_SellectBox2 != null)
+        {
+            BoxVisible(_SellectBox2, true);
+            _SellectBox2 = null;
+        }
     }
 
     // Update is called once per frame
