@@ -21,8 +21,7 @@ public class UIManager : MonoBehaviour
 
     public void HELP()
     {
-        //Debug.Log("????????????");
-        UnityAds._Instance.ShowRewardedAd();
+        Debug.Log("????????????");
     }
 
     public void PAUSE()
@@ -49,12 +48,13 @@ public class UIManager : MonoBehaviour
 
     public void RANK()
     {
-        Debug.Log("????????????");
+#if !UNITY_EDITOR
+        GameService._Instance.ShowLeaderBoard();
+#endif
     }
 
     public void SOUND()
     {
-        Debug.Log("????????????");
         BGM._Instance.BGMChange();
     }
 
