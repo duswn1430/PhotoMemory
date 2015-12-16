@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     CONTINUE_STEP _ContinueStep;
 
     public BoxMapManager _BoxMapManager = null;
+    public TouchManager _TouchManager = null;
 
     public Timer _Timer = null;
 
@@ -137,6 +138,8 @@ public class GameManager : MonoBehaviour
         _Step = STEP.END;
 
         _BoxMapManager.DismissHint();
+
+        _TouchManager.Init();
 
         _ResultPop.gameObject.SetActive(true);
         _ResultPop.SetResult(_iCurScore);
@@ -462,6 +465,8 @@ public class GameManager : MonoBehaviour
 
         _BoxMapManager.ClearBoxMap();
         _BoxMapManager.Init();
+
+        _TouchManager.Init();
 
         SetScore(0);
         SetBest(_iBestScore);
