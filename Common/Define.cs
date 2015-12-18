@@ -8,7 +8,9 @@ namespace Define
 
     public enum BOX_STATE { NONE, INIT, IDLE, SELLECT };
 
-    public enum BACK_STEP {NONE, QUIT, MAIN, GAME, PAUSE, RESULT, AD };
+    public enum BACK_STEP { NONE, QUIT, MAIN, GAME, PAUSE, RESULT, AD };
+
+    public enum LANGUAGE { KR, EN, CN, JP };
 
     public class BoxMapData
     {

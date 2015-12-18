@@ -9,6 +9,8 @@ public class IntroPanel : MonoBehaviour
 
     public STEP _Step = STEP.NONE;
 
+    public UIManager _UIManager = null;
+
     public UIPanel _LoadingPanel = null;
     public GameObject _StartPanel = null;
     public GameObject _GamePanel = null;
@@ -34,6 +36,9 @@ public class IntroPanel : MonoBehaviour
     // Use this for initialization
     IEnumerator Start()
     {
+        StringData._Instance.LoadStringData();
+        StringData._LANGUAGE = LANGUAGE.KR;
+            
         yield return new WaitForEndOfFrame();
 #if UNITY_EDITOR
         StartCoroutine(EnterGame());
@@ -195,6 +200,8 @@ public class IntroPanel : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         BGM._Instance.Play();
+
+        _UIManager.Init();
 
         _GamePanel.SetActive(false);
         _ResultPanel.SetActive(false);

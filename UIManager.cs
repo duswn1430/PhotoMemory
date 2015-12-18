@@ -10,11 +10,18 @@ public class UIManager : MonoBehaviour
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
 
+    public UILabel _txtGameStart = null;
+
     public UIButton _btnPause = null;
     public UIButton _btnContinue = null;
     public UIButton _btnMainMenu = null;
 
     public static BACK_STEP _BackStep;
+
+    public void Init()
+    {
+        _txtGameStart.text = StringData._Instance.GetText(1001);
+    }
 
     public void START()
     {
