@@ -137,6 +137,8 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.END;
 
+        UIManager._BackStep = BACK_STEP.RESULT;
+
         _BoxMapManager.DismissHint();
 
         _TouchManager.Init();
@@ -204,6 +206,8 @@ public class GameManager : MonoBehaviour
         _bOriginal = true;
         _OriginalStep = ORIGINAL_STEP.EFFECT1;
 
+        UIManager._BackStep = BACK_STEP.GAME;
+
         _Timer.TimerStop();
 
         _BoxMapManager.DismissHint();
@@ -217,6 +221,8 @@ public class GameManager : MonoBehaviour
 
         _bContinue = true;
         _ContinueStep = CONTINUE_STEP.ADDTIME;
+
+        UIManager._BackStep = BACK_STEP.GAME;
 
         WaitTimeReset(1f);
 

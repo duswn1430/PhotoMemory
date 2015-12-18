@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Define;
 
 public class IntroPanel : MonoBehaviour
 {
@@ -210,6 +211,8 @@ public class IntroPanel : MonoBehaviour
         {
             _fAlpha = 0f;
             _LoadingPanel.alpha = _fAlpha;
+
+            UIManager._BackStep = BACK_STEP.MAIN;
 
             _LoadingPanel.gameObject.SetActive(false);
         }

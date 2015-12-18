@@ -17,11 +17,11 @@ public class Box
     public Type _OriginTpye;
     public Type _CurType;
 
-    public STATE _State = STATE.NONE;
+    public BOX_STATE _State = BOX_STATE.NONE;
 
     public void Init()
     {
-        _State = STATE.INIT;
+        _State = BOX_STATE.INIT;
 
         _OriginTpye = Type.NONE;
         _CurType = Type.NONE;
@@ -31,7 +31,7 @@ public class Box
 
     public void Setting(Type type)
     {
-        _State = STATE.IDLE;
+        _State = BOX_STATE.IDLE;
 
         _OriginTpye = type;
         _CurType = type;
