@@ -45,10 +45,10 @@ public class Timer : MonoBehaviour
         {
             _fTimerAfter = Time.time;
 
+            _fTimer += _fTimerAfter - _fTimerBefore;
+
             CalculateRemainTIme();
             Hint();
-
-            _fTimer += _fTimerAfter - _fTimerBefore;
 
             _fTimerBefore = Time.time;
         }
@@ -75,6 +75,8 @@ public class Timer : MonoBehaviour
     void TimerEnd()
     {
         _bTimerPreccess = false;
+
+        _fTimer = _fTotalTime;
 
         _label.text = "00.00";
 
