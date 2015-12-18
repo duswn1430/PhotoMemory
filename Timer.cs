@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour
 
     public const float _fGameTime = 10.0f;
 
-    private float _fTotalTime = 6.0f;
+    private float _fTotalTime;
 
     float _fHintSetTime;
     float _fHintTimer;

@@ -93,7 +93,7 @@ public class BoxMapManager : MonoBehaviour
     {
         _bTouchLock = true;
 
-        List<Box> spawnList = _BoxList.Where(row => row._State == STATE.NONE).ToList();
+        List<Box> spawnList = _BoxList.Where(row => row._State == BOX_STATE.NONE).ToList();
 
         float rate = _fSpwanTime / spawnList.Count;
         
