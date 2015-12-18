@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     BoxMapData _CurMapData;
 
     JSONNode _JsonRoot = null;
-    string _sMapFile = "MapData";
+    string _sMapFile = "Data/MapData";
 
     int _iStage;
 
