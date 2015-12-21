@@ -36,6 +36,11 @@ public class GameService : MonoBehaviour
         UM_GameServiceManager.instance.Connect();
     }
 
+    public bool IsConnected()
+    {
+        return UM_GameServiceManager.instance.ConnectionSate == UM_ConnectionState.CONNECTING;
+    }
+
     public void Disconnect()
     {
         UM_GameServiceManager.instance.Disconnect();
@@ -69,6 +74,18 @@ public class GameService : MonoBehaviour
     }
 
     public void ScoreSubmit(int score)
+    {
+        UM_GameServiceManager.instance.SubmitScore(_sBoard, score);
+    }
+
+    public long GetBestScore()
+    {
+        long score = UM_GameServiceManager.instance.GetCurrentPlayerScore(_sBoard);
+
+        return score;
+    }
+
+    public void SetBestScore(long score)
     {
         UM_GameServiceManager.instance.SubmitScore(_sBoard, score);
     }

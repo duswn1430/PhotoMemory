@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     int _iStageScore;
     int _iTotalScore;
     int _iCurScore;
-    int _iBestScore;
+    long _lBestScore;
 
     bool _bPause;
     bool _bGaemReady;
@@ -143,8 +143,20 @@ public class GameManager : MonoBehaviour
 
         _TouchManager.Init();
 
+        if (_iCurScore > _lBestScore)
+        {
+            _lBestScore = _iCurScore;
+
+            PlayerPrefs.SetInt("BestScore", _iCurScore);            
+
+#if !UNITY_EDITOR
+            if (GameService._Instance.IsConnected())
+                GameService._Instance.SetBestScore(_lBestScore);
+#endif
+        }
+
         _ResultPop.gameObject.SetActive(true);
-        _ResultPop.SetResult(_iCurScore);
+        _ResultPop.SetResult(_lBestScore, _iCurScore);
     }
 
     public void PAUSE()
@@ -467,7 +479,15 @@ public class GameManager : MonoBehaviour
         _iStageScore = 0;
         _iTotalScore = 0;
         _iCurScore = 0;
-        _iBestScore = PlayerPrefs.GetInt("BestScore");
+
+#if !UNITY_EDITOR
+        if (GameService._Instance.IsConnected())
+            _lBestScore = GameService._Instance.GetBestScore();
+        else
+            _lBestScore = PlayerPrefs.GetInt("BestScore");
+#else
+        _lBestScore = PlayerPrefs.GetInt("BestScore");
+#endif
 
         _BoxMapManager.ClearBoxMap();
         _BoxMapManager.Init();
@@ -475,7 +495,7 @@ public class GameManager : MonoBehaviour
         _TouchManager.Init();
 
         SetScore(0);
-        SetBest(_iBestScore);
+        SetBest(_lBestScore);
 
         _Step = STEP.START;
         _StartStep = START_STEP.SIZE;
@@ -502,16 +522,16 @@ public class GameManager : MonoBehaviour
                 //_UIScore.text = _iCurScore.ToString();
                 _UIScore.text = string.Format("SCORE : {0}", _iCurScore);
 
-                if(_iBestScore < _iCurScore)
-                {
-                    _iBestScore = _iCurScore;
-                    SetBest(_iBestScore);
-                }                
+                //if (_lBestScore < _iCurScore)
+                //{
+                //    _lBestScore = _iCurScore;
+                //    SetBest(_lBestScore);
+                //}                
             }
         );
     }
 
-    void SetBest(int score)
+    void SetBest(long score)
     {
         _UIBest.text = string.Format("BEST    : {0}", score);
     }
