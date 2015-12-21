@@ -10,7 +10,6 @@ public class BoxMapManager : MonoBehaviour
 
     public GameManager _GameManager = null;
 
-    public GameObject _BoxPrefab = null;
     public GameObject _DustPrefab = null;
 
     public Shutter _Shutter = null;
@@ -113,11 +112,16 @@ public class BoxMapManager : MonoBehaviour
     // 박스 오브젝트 생성.
     Transform CreateBox(Box box)
     {
-        Transform obj = Instantiate(_BoxPrefab).transform;
+        Sound._Instance.BoxDown();
 
-        SetBoxPrefab(obj, box);
+        GameObject obj = ObjectPlooer._Instance.GetPooledBox();
+        obj.SetActive(true);
 
-        return obj;
+        Transform trans = obj.transform;
+
+        SetBoxPrefab(trans, box);
+
+        return trans;
 
     }
 
@@ -127,7 +131,7 @@ public class BoxMapManager : MonoBehaviour
         obj.name = box._Idx.ToString();
         obj.parent = _MyTransform;
         obj.position = box._Pos;
-        //AmiscGame.SetColor(obj, box._CurType);
+
         AmiscGame.SetBoxColor(obj, box._CurType);
     }
 
@@ -174,12 +178,13 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            //AmiscGame.SetColor(obj, box._CurType);
             AmiscGame.SetBoxColor(obj, box._CurType);
 
             if (box._OriginTpye != Type.NONE)
                 LeanTween.moveY(obj.gameObject, 1f, 1.0f).setEase(LeanTweenType.punch);
         }
+
+        Sound._Instance.BoxDown();
     }
 
     // 박스 셔플링.
@@ -198,7 +203,6 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            //AmiscGame.SetColor(obj, box._CurType);
             AmiscGame.SetBoxColor(obj, box._CurType);
         }
 
@@ -272,16 +276,21 @@ public class BoxMapManager : MonoBehaviour
         box1._CurType = box2._CurType;
         box2._CurType = tmpType;
 
-        //AmiscGame.SetColor(obj1, box1._CurType);
-        //AmiscGame.SetColor(obj2, box2._CurType);
         AmiscGame.SetBoxColor(obj1, box1._CurType);
         AmiscGame.SetBoxColor(obj2, box2._CurType);
 
         LeanTween.moveLocalY(obj1.gameObject, 0, 0.2f).setFrom(-6).setEase(LeanTweenType.easeSpring);
         LeanTween.moveLocalY(obj2.gameObject, 0, 0.2f).setFrom(6).setEase(LeanTweenType.easeSpring);
 
-        Transform obj = Instantiate(_DustPrefab).transform;
-        obj.position = obj2.position;
+        // Dust Effect.
+        Transform dustTrans = Instantiate(_DustPrefab).transform;
+        dustTrans.position = obj2.position;
+        //GameObject dustObj = ObjectPlooer._Instance.GetPooledDust();
+        //dustObj.SetActive(true);
+
+        //Transform dustTrans = dustObj.transform;
+
+        dustTrans.position = obj2.position;
 
         DismissHint();
 
@@ -305,7 +314,8 @@ public class BoxMapManager : MonoBehaviour
 
         for (int i = 0; i < _BoxTrans.Count; ++i)
         {
-            Destroy(_BoxTrans[i].gameObject);
+            //Destroy(_BoxTrans[i].gameObject);
+            _BoxTrans[i].gameObject.SetActive(false);
         }
 
         _BoxTrans.Clear();
@@ -325,7 +335,6 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            //AmiscGame.SetColor(obj, box._OriginTpye);
             AmiscGame.SetBoxColor(obj, box._OriginTpye);
 
             if (box._OriginTpye != Type.NONE)
@@ -380,7 +389,6 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            //AmiscGame.SetColor(obj, box._OriginTpye);
             AmiscGame.SetBoxColor(obj, box._OriginTpye);
         }
     }
@@ -392,7 +400,6 @@ public class BoxMapManager : MonoBehaviour
             Box box = _BoxList[i];
             Transform obj = _BoxTrans[box._Idx];
 
-            //AmiscGame.SetColor(obj, box._CurType);
             AmiscGame.SetBoxColor(obj, box._CurType);
         }
     }
