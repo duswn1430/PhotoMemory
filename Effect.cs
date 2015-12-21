@@ -11,5 +11,11 @@ public class Effect : MonoBehaviour {
     void AutoDestroy()
     {
         Destroy(this.gameObject);
+        //gameObject.SetActive(false);
+    }
+
+    void OnDisalbe()
+    {
+        CancelInvoke();
     }
 }
