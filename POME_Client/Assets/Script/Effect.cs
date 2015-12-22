@@ -1,21 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Effect : MonoBehaviour {
+public class Effect : MonoBehaviour
+{
+    public EllipsoidParticleEmitter _emSmoke = null;
+    public EllipsoidParticleEmitter _emCicle = null;
 
-	// Use this for initialization
-	void Start () {
-        Invoke("AutoDestroy", 3);
-	}
-
-    void AutoDestroy()
+    public void Play()
     {
-        Destroy(this.gameObject);
-        //gameObject.SetActive(false);
-    }
-
-    void OnDisalbe()
-    {
-        CancelInvoke();
+        _emSmoke.Emit();
+        _emCicle.Emit();
     }
 }
