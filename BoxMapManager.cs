@@ -10,7 +10,7 @@ public class BoxMapManager : MonoBehaviour
 
     public GameManager _GameManager = null;
 
-    public GameObject _DustPrefab = null;
+    public Effect _DustEffect = null;
 
     public Shutter _Shutter = null;
 
@@ -283,14 +283,8 @@ public class BoxMapManager : MonoBehaviour
         LeanTween.moveLocalY(obj2.gameObject, 0, 0.2f).setFrom(6).setEase(LeanTweenType.easeSpring);
 
         // Dust Effect.
-        Transform dustTrans = Instantiate(_DustPrefab).transform;
-        dustTrans.position = obj2.position;
-        //GameObject dustObj = ObjectPlooer._Instance.GetPooledDust();
-        //dustObj.SetActive(true);
-
-        //Transform dustTrans = dustObj.transform;
-
-        dustTrans.position = obj2.position;
+        _DustEffect.transform.position = obj2.position;
+        _DustEffect.Play();
 
         DismissHint();
 
