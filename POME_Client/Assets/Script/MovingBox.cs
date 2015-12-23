@@ -15,6 +15,9 @@ public class MovingBox : MonoBehaviour
 
     Transform _MyTransform = null;
 
+    Vector3 worldPoint;
+    Vector3 diffPos;
+
     void Start()
     {
         _MyTransform = transform;
@@ -27,10 +30,10 @@ public class MovingBox : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                Vector3 worldPoint = Input.mousePosition;
+                worldPoint = Input.mousePosition;
                 worldPoint = _MainCamera.ScreenToWorldPoint(worldPoint);
 
-                Vector3 diffPos = worldPoint - initMousePos;
+                diffPos = worldPoint - initMousePos;
 
                 initMousePos = Input.mousePosition;
                 initMousePos = _MainCamera.ScreenToWorldPoint(initMousePos);

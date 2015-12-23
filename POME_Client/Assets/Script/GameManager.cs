@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 게임시작 버튼.
     public void GAMESTART()
     {
         Init();
@@ -109,6 +110,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartGame());
     }
 
+    // 게임 스테이지 클리어.
     public void COMPLETE()
     {
         _Step = STEP.COMPLETE;
@@ -133,6 +135,7 @@ public class GameManager : MonoBehaviour
         SetClear(true);
     }
 
+    // 게임 종료.
     public void END()
     {
         _Step = STEP.END;
@@ -159,6 +162,7 @@ public class GameManager : MonoBehaviour
         _ResultPop.SetResult(_lBestScore, _iCurScore);
     }
 
+    // 일시정지.
     public void PAUSE()
     {
         _bPause = true;
@@ -169,6 +173,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 계속 버튼.
     public void CONTINUE()
     {
         _bPause = false;
@@ -182,7 +187,8 @@ public class GameManager : MonoBehaviour
             StartCoroutine(StartGame());
         }        
     }
-
+    
+   // 메인메뉴 버튼.
     public void MAINMENU()
     {
         _Step = STEP.END;
@@ -198,21 +204,25 @@ public class GameManager : MonoBehaviour
         _BoxMapManager.ClearBoxMap();
     }
 
+    // TEST용(스테이지 넘기기).
     public void PASS()
     {
         COMPLETE();
     }
 
+    // 힌트 요청.
     public void ShowHint()
     {
         _BoxMapManager.ShowHint();
     }
 
+    // 힌트 타이밍 다시 셋팅.
     public void resetHint()
     {
         _Timer.ResetHint();
     }
 
+    // 정답 박스 요청.
     public void ShowOriginal()
     {
         _bOriginal = true;
@@ -227,6 +237,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Original());
     }
 
+    // 광고 보고 이어하기 요청.
     public void ADContinue()
     {
         _ResultPop.gameObject.SetActive(false);
@@ -241,6 +252,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Continue());
     }
 
+    // 게임 시작 루틴.
     IEnumerator StartGame()
     {
         while (_bGaemReady)
@@ -304,6 +316,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 다음 스테이지 루틴.
     IEnumerator NextGame()
     {
         while (_bNextReady)
@@ -352,6 +365,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 정답 보기 루틴.
     IEnumerator Original()
     {
         while (_bOriginal)
@@ -414,6 +428,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 광고보고 난후 이어하기 루틴.
     IEnumerator Continue()
     {
         while (_bContinue)
@@ -448,6 +463,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 루틴 도는 동안 기다리기.
     bool WaitTime()
     {
         if (_bPause == false)
@@ -465,12 +481,14 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    // 기다리는 시간 셋팅.
     void WaitTimeReset(float wait)
     {
         _fProgressTime = Time.time;
         _fWaitTime = wait;
     }
 
+    // 초기화.
     void Init()
     {
         _iStage = 0;
@@ -503,6 +521,7 @@ public class GameManager : MonoBehaviour
         SetClear(false);
     }
 
+    // 게임시작.
     void Play()
     {
         _Step = STEP.PLAY;
@@ -513,6 +532,7 @@ public class GameManager : MonoBehaviour
         _Timer.TimerStart();
     }
 
+    // 현재 스코어 셋팅.
     void SetScore(int score)
     {
         LeanTween.value(gameObject, _iCurScore, score, 1f).setEase(LeanTweenType.easeOutCirc).setOnUpdate(
@@ -531,11 +551,13 @@ public class GameManager : MonoBehaviour
         );
     }
 
+    // 베스트 스토어 셋팅.
     void SetBest(long score)
     {
         _UIBest.text = string.Format("BEST    : {0}", score);
     }
 
+    // 클리어 문구 보여주기.
     void SetClear(bool show)
     {
         if (show)

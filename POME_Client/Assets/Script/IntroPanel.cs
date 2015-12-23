@@ -50,6 +50,7 @@ public class IntroPanel : MonoBehaviour
 
     }
 
+    // 루틴 도는 동안 기다리기.
     bool WaitTime()
     {
         if (Time.time - _fProgressTime > _fWaitTime)
@@ -59,12 +60,14 @@ public class IntroPanel : MonoBehaviour
         return false;
     }
 
+    // 기다리는 시간 셋팅.
     void WaitTimeReset(float wait)
     {
         _fProgressTime = Time.time;
         _fWaitTime = wait;
     }
 
+    // 인트로 화면 루틴(로그인, 로딩 포함).
     IEnumerator IntroProcess()
     {
         while (_bDone == false)
@@ -97,8 +100,9 @@ public class IntroPanel : MonoBehaviour
                             _text.text = _sStep;
 
                             GoogleAds._Instance.Init();
-                            StartCoroutine(GoogleLoadWait());
-                            StartCoroutine(UnityAdsWait());
+                            StartCoroutine(GoogleBannerLoading());
+                            StartCoroutine(GoogleInstertitialLoading());
+                            StartCoroutine(UnityAdsLoading());
                             StartCoroutine(Loading());
 
                             _Step = STEP.NONE;
@@ -132,7 +136,8 @@ public class IntroPanel : MonoBehaviour
         }
     }
 
-    IEnumerator GoogleLoadWait()
+    // 구글 광고 로딩(배너).
+    IEnumerator GoogleBannerLoading()
     {
         while (_bGoogleBannerLoaded == false)
         {
@@ -146,7 +151,11 @@ public class IntroPanel : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+    }
 
+    // 구글 광고 로딩(전면).
+    IEnumerator GoogleInstertitialLoading()
+    {
         while (_bGoogleInsterstitialLoaded == false)
         {
             if (GoogleAds._Instance._bInterstitialLoaded)
@@ -160,7 +169,8 @@ public class IntroPanel : MonoBehaviour
         }
     }
 
-    IEnumerator UnityAdsWait()
+    // 유니티 광고 로딩.
+    IEnumerator UnityAdsLoading()
     {
         while (_bUnityAdsLoaded == false)
         {
@@ -175,6 +185,7 @@ public class IntroPanel : MonoBehaviour
         }
     }
 
+    // 모든 광고 로딩 끝나면 로그인 하기.
     IEnumerator Loading()
     {
         while (_bAD == false)
@@ -190,18 +201,20 @@ public class IntroPanel : MonoBehaviour
         }
     }
 
+    // 게임화면 입장.
     void Enter()
     {
         _Step = STEP.ENTER;
     }
 
+    // 게임화면 입장.
     IEnumerator EnterGame()
     {
         yield return new WaitForSeconds(1f);
 
         BGM._Instance.Play();
 
-        _UIManager.Init();
+        _UIManager.StringInit();
 
         _GamePanel.SetActive(false);
         _ResultPanel.SetActive(false);
