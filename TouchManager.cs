@@ -39,6 +39,7 @@ public class TouchManager : MonoBehaviour
             UpdateTouch();
     }
 
+    // 터치 상황별 처리.
     void UpdateTouch()
     {
         if (Input.GetMouseButtonDown(0))
@@ -98,6 +99,7 @@ public class TouchManager : MonoBehaviour
         }
     }
 
+    // Down일때 박스1 & 무빙 박스 셋팅.
     void OnTouchDown(Transform obj)
     {
         if (GameManager._Step == GameManager.STEP.PLAY)
@@ -114,6 +116,7 @@ public class TouchManager : MonoBehaviour
         }
     }
 
+    // Up일때 교체 처리.
     void OnTouchUp(Transform obj)
     {
         if(_SellectBox1 != null)
@@ -136,12 +139,14 @@ public class TouchManager : MonoBehaviour
         _MovingBox.Visible(null, false);
     }
 
+    // Move일때 마크 포지션 셋팅.
     void OnTouchMove(Transform obj)
     {
         if (_SellectBox1 != null)
             _transMark.position = obj.position;
     }
 
+    // 무빙박스가 나타날 동안 선택한 박스는 투명 처리.
     void BoxVisible(Transform obj, bool visible)
     {
         if (obj != null)
@@ -152,6 +157,7 @@ public class TouchManager : MonoBehaviour
         }
     }
 
+    // 박스1 박스2 교체.
     void BoxChange()
     {
         if(_SellectBox1 == _SellectBox2)

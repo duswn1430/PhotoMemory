@@ -51,6 +51,7 @@ public class BoxMapManager : MonoBehaviour
 
     }
 
+    // 박스 맵 셋팅.
     public IEnumerator SetBoxMap(BoxMapData mapdata)
     {
         if (_bTouchLock) yield break;
@@ -234,6 +235,7 @@ public class BoxMapManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
     }
 
+    // 셔터 플레이.
     public IEnumerator ShutterPlay(bool close)
     {
         if (close)
@@ -300,7 +302,6 @@ public class BoxMapManager : MonoBehaviour
         }            
     }
 
-
     // 박스맵 리셋.
     public void ClearBoxMap()
     {
@@ -321,21 +322,7 @@ public class BoxMapManager : MonoBehaviour
         _stCameraControl.TargetsClear();
     }
 
-    // 정답 보여주기.
-    public void ShowOriginBox()
-    {
-        for (int i = 0; i < _BoxList.Count; ++i)
-        {
-            Box box = _BoxList[i];
-            Transform obj = _BoxTrans[box._Idx];
-
-            AmiscGame.SetBoxColor(obj, box._OriginTpye);
-
-            if (box._OriginTpye != Type.NONE)
-                LeanTween.moveY(obj.gameObject, 1f, 1.0f).setEase(LeanTweenType.punch);
-        }
-    }
-
+    // 힌트 보여주기.
     public void ShowHint()
     {
         List<Box> listColorBox = _BoxList.Where(row => row._OriginTpye != Type.NONE && row._OriginTpye != row._CurType).ToList();
@@ -360,6 +347,7 @@ public class BoxMapManager : MonoBehaviour
         _Hint2.tween = LeanTween.moveY(_Hint2.obj, 0.5f, 0.5f).setEase(LeanTweenType.punch).setLoopClamp();
     }
 
+    // 힌트 표시 제거.
     public void DismissHint()
     {
         if (_Hint1.tween != null)
@@ -376,6 +364,7 @@ public class BoxMapManager : MonoBehaviour
         }
     }
 
+    // 정답 표시.
     public void ShowOrigin()
     {
         for (int i = 0; i < _BoxList.Count; ++i)
@@ -387,6 +376,7 @@ public class BoxMapManager : MonoBehaviour
         }
     }
 
+    // 현재 상황 표시.
     public void ShowCur()
     {
         for (int i = 0; i < _BoxList.Count; ++i)

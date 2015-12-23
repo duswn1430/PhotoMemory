@@ -19,13 +19,9 @@ public class Shutter : MonoBehaviour
         Invisible();
 
         transform.localPosition = new Vector3(0, 0, -500);
-
-        //for (int i = 0; i < renderers.Length; ++i)
-        //{
-        //    renderers[i].material.renderQueue = 10000;
-        //}
     }
 
+    // 에니메이션에서 trigger로 호출.
     void Visible()
     {
         for (int i = 0; i < renderers.Length; ++i)
@@ -34,6 +30,7 @@ public class Shutter : MonoBehaviour
         }
     }
 
+    // 에니메이션에서 trigger로 호출.
     void Invisible()
     {
         for (int i = 0; i < renderers.Length; ++i)
