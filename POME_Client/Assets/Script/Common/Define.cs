@@ -4,7 +4,7 @@ using System.Collections;
 namespace Define
 {
     //public enum Type { NONE, RED, YELLOW, BLUE, ORANGE, GREEN, INDIGO, VIOLET };
-    public enum Type { NONE, RED, BLUE, YELLOW, VIOLET, GREEN, INDIGO, ORANGE };
+    public enum Type { NONE, RED, BLUE, YELLOW, GREEN, PINK, WHITE, ORANGE };
 
     public enum BOX_STATE { NONE, INIT, IDLE, SELLECT };
 
