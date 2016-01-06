@@ -14,6 +14,8 @@ public class BoxMapManager : MonoBehaviour
 
     public Shutter _Shutter = null;
 
+    public Transform _Floor = null;
+
     BoxMapData _stMapData = null;
 
     List<Box> _BoxList = null;
@@ -61,6 +63,11 @@ public class BoxMapManager : MonoBehaviour
         yield return StartCoroutine(SpwanBox());
 
         SettingTartgets();
+
+        //_Floor.localPosition = AmiscGame.GetBackgroundPos(mapdata.iRow, mapdata.iCol);
+        _Floor.localScale = AmiscGame.GetBackgroundScale(mapdata.iRow, mapdata.iCol);
+
+        yield return new WaitForEndOfFrame();
     }
 
     // 맵 셋팅.

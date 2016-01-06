@@ -76,6 +76,14 @@ public class GameManager : MonoBehaviour
         LoadMapData();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PASS();
+        }
+    }
+
     // json에서 맵 데이터 가져오기.
     void LoadMapData()
     {
@@ -344,7 +352,7 @@ public class GameManager : MonoBehaviour
                             if(_iStage < _listMapData.Count - 1)
                             {
                                 _iStage++;
-                                _UIStage.text = string.Format("Stage {0}", _iStage + 1);
+                                _UIStage.text = string.Format("STAGE {0}", _iStage + 1);
                             }
 
                             _bNextReady = false;
@@ -492,7 +500,7 @@ public class GameManager : MonoBehaviour
     void Init()
     {
         _iStage = 0;
-        _UIStage.text = string.Format("Stage {0}", _iStage + 1);
+        _UIStage.text = string.Format("STAGE {0}", _iStage + 1);
 
         _iStageScore = 0;
         _iTotalScore = 0;

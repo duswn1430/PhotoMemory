@@ -114,4 +114,124 @@ public class AmiscGame
 
         return level;
     }
+
+    public static Vector3 GetBackgroundScale(int row, int col)
+    {
+        Vector3 scale = new Vector3(6, 11, 1);
+
+        if (row == 2 && col == 2)
+        {
+            scale = new Vector3(8, 14, 1);
+        }
+        else if (row == 3 && col == 2)
+        {
+            scale = new Vector3(9, 16, 1);
+        }
+        else if (row == 3 && col == 3)
+        {
+            scale = new Vector3(9, 16, 1);
+        }
+        else if (row == 4 && col == 3)
+        {
+            scale = new Vector3(11, 20, 1);
+        }
+        else if (row == 4 && col == 4)
+        {
+            scale = new Vector3(11, 20, 1);
+        }
+        else if (row == 5 && col == 4)
+        {
+            scale = new Vector3(13, 24, 1);
+        }
+        else if (row == 5 && col == 5)
+        {
+            scale = new Vector3(13, 24, 1);
+        }
+        else if (row == 6 && col == 5)
+        {
+            scale = new Vector3(15, 28, 1);
+        }
+        else if (row == 6 && col == 6)
+        {
+            scale = new Vector3(15, 28, 1);
+        }
+        else if (row == 7 && col == 6)
+        {
+            scale = new Vector3(17, 31, 1);
+        }
+        else if (row == 7 && col == 7)
+        {
+            scale = new Vector3(17, 31, 1);
+        }
+        else if (row == 8 && col == 7)
+        {
+            scale = new Vector3(19, 35, 1);
+        }
+        else if (row == 8 && col == 8)
+        {
+            scale = new Vector3(19, 35, 1);
+        }
+
+        return scale;
+    }
+
+    public static Vector3 GetBackgroundPos(int row, int col)
+    {
+        Vector3 scale = new Vector3(0, 0, 1);
+
+        if (row == 2 && col == 2)
+        {
+            scale = new Vector3(1, 0, 2);
+        }
+        else if (row == 3 && col == 2)
+        {
+            scale = new Vector3(2, 0, 2);
+        }
+        else if (row == 3 && col == 3)
+        {
+            scale = new Vector3(2, 0, 3);
+        }
+        else if (row == 4 && col == 3)
+        {
+            scale = new Vector3(3, 0, 3);
+        }
+        else if (row == 4 && col == 4)
+        {
+            scale = new Vector3(3, 0, 4);
+        }
+        else if (row == 5 && col == 4)
+        {
+            scale = new Vector3(4, 0, 4);
+        }
+        else if (row == 5 && col == 5)
+        {
+            scale = new Vector3(4, 0, 5);
+        }
+        else if (row == 6 && col == 5)
+        {
+            scale = new Vector3(5, 0, 5);
+        }
+        else if (row == 6 && col == 6)
+        {
+            scale = new Vector3(5, 0, 6);
+        }
+        else if (row == 7 && col == 6)
+        {
+            scale = new Vector3(6, 0, 6);
+        }
+        else if (row == 7 && col == 7)
+        {
+            scale = new Vector3(6, 0, 7);
+        }
+        else if (row == 8 && col == 7)
+        {
+            scale = new Vector3(7, 0, 7);
+        }
+        else if (row == 8 && col == 8)
+        {
+            scale = new Vector3(7, 0, 8);
+        }
+
+        return scale;
+    }
 }

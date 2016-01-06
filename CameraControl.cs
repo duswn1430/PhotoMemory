@@ -7,6 +7,8 @@ public class CameraControl : MonoBehaviour
     public float m_ScreenEdgeBuffer = 4f;
     public float m_MinSize = 6.5f;
 
+    public Transform _Floor = null;
+
     [HideInInspector]
     public Transform[] m_Targets;
 
@@ -47,6 +49,7 @@ public class CameraControl : MonoBehaviour
             (Vector3 value) =>
             {
                 _MyTransform.position = value;
+                _Floor.localPosition = new Vector3(value.x, 0, value.z + 1);
             }
         );
     }
