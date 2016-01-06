@@ -23,13 +23,13 @@ public class AmiscGame
         switch (type)
         {
             case Type.NONE: color = GetColor(180, 180, 180); break;
-            case Type.RED: color = GetColor(202, 144, 143); break;
-            case Type.ORANGE: color = GetColor(202, 173, 143); break;
-            case Type.YELLOW: color = GetColor(202, 194, 142); break;
-            case Type.GREEN: color = GetColor(186, 202, 143); break;
+            case Type.RED: color = GetColor(255, 198, 198); break;
             case Type.BLUE: color = GetColor(142, 202, 194); break;
-            case Type.INDIGO: color = GetColor(42, 114, 154); break;
-            case Type.VIOLET: color = GetColor(154, 151, 196); break;
+            case Type.YELLOW: color = GetColor(212, 214, 79); break;
+            case Type.GREEN: color = GetColor(188, 234, 219); break;
+            case Type.PINK: color = GetColor(202, 144, 143); break;
+            case Type.WHITE: color = GetColor(221, 213, 247); break;
+            case Type.ORANGE: color = GetColor(214, 177, 141); break;
         }
 
         return color;
@@ -42,13 +42,13 @@ public class AmiscGame
         switch (type)
         {
             case Type.NONE: color = GetColor(180, 180, 180); break;
-            case Type.RED: color = GetColor(195, 60, 57); break;
-            case Type.ORANGE: color = GetColor(193, 116, 37); break;
-            case Type.YELLOW: color = GetColor(191, 169, 27); break;
-            case Type.GREEN: color = GetColor(124, 165, 12); break;
-            case Type.BLUE: color = GetColor(42, 126, 206); break;
-            case Type.INDIGO: color = GetColor(6, 100, 156); break;
-            case Type.VIOLET: color = GetColor(66, 59, 158); break;
+            case Type.RED: color = GetColor(193, 97, 97); break;
+            case Type.BLUE: color = GetColor(75, 134, 191); break;
+            case Type.YELLOW: color = GetColor(168, 171, 118); break;
+            case Type.GREEN: color = GetColor(90, 159, 148); break;
+            case Type.PINK: color = GetColor(206, 77, 185); break;
+            case Type.WHITE: color = GetColor(156, 169, 201); break;
+            case Type.ORANGE: color = GetColor(195, 127, 68); break;
         }
 
         return color;
