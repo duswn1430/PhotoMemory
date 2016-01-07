@@ -17,37 +17,39 @@ public class UIManager : MonoBehaviour
     public UIButton _btnContinue = null;
     public UIButton _btnMainMenu = null;
 
-    /* 
-     * [0] : 시작 : 1001.
-     * [1] : 도움말 : 1002.
-     * [2] : 일시 정지 : 2001.
-     * [3] : 이어 하기 : 2002.
-     * [4] : 메인 메뉴 : 2003.
-     * [5] : 결과 : 3001.
-     * [6] : 최고 점수 : 3002.
-     * [7] : 점수 : 3003.
-     * [8] : 광고 보기 : 4001.
-     * [9] : 광고 보기하면 15초 추가 진행 : 4002.
-     * [10] : 광고 보기하면 3초 정답 확인 : 4003.
-     * 
-     */
+    public Font _fontPen = null;
+    public Font _fontGothic = null;
+
     public List<UILabel> _ListFont = null;
 
     public static BACK_STEP _BackStep;
 
     public void StringInit()
     {
-        _ListFont[0].text = StringData._Instance.GetText(1001);
-        //_ListFont[1].text = StringData._Instance.GetText(1002);
-        //_ListFont[2].text = StringData._Instance.GetText(2001);
-        //_ListFont[3].text = StringData._Instance.GetText(2002);
-        //_ListFont[4].text = StringData._Instance.GetText(2003);
-        //_ListFont[5].text = StringData._Instance.GetText(3001);
-        //_ListFont[6].text = StringData._Instance.GetText(3002);
-        //_ListFont[7].text = StringData._Instance.GetText(3003);
-        //_ListFont[8].text = StringData._Instance.GetText(4001);
-        //_ListFont[9].text = StringData._Instance.GetText(4002);
-        //_ListFont[10].text = StringData._Instance.GetText(4003);
+        for (int i = 0; i < _ListFont.Count; ++i)
+        {
+            if(StringData._LANGUAGE == LANGUAGE.CN || StringData._LANGUAGE == LANGUAGE.JP)
+            {
+                _ListFont[i].trueTypeFont = _fontGothic;
+            }
+            else
+            {
+                _ListFont[i].trueTypeFont = _fontPen;
+            }
+        }
+
+        _ListFont[0].text = StringData._Instance.GetText(1001); // 시작.
+        _ListFont[1].text = StringData._Instance.GetText(1002); // 도움말.
+        _ListFont[2].text = "Clear"; // Clear.
+        _ListFont[3].text = StringData._Instance.GetText(3002); // 최고 점수.
+        _ListFont[4].text = StringData._Instance.GetText(3003); // 점수.
+        _ListFont[5].text = "CONTINUE"; // 계속.
+        _ListFont[6].text = StringData._Instance.GetText(2003); // 메인 메뉴.
+        _ListFont[7].text = StringData._Instance.GetText(3001); // 결과.
+        _ListFont[8].text = StringData._Instance.GetText(2001); // 일시 정지.
+        _ListFont[9].text = StringData._Instance.GetText(2002); // 이어 하기.
+        _ListFont[10].text = StringData._Instance.GetText(1002);// 도움말.
+        _ListFont[11].text = StringData._Instance.GetText(2003);// 메인 메뉴.
     }
 
     public void START()

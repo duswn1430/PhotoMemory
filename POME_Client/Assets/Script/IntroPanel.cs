@@ -37,7 +37,8 @@ public class IntroPanel : MonoBehaviour
     IEnumerator Start()
     {
         StringData._Instance.LoadStringData();
-        StringData._LANGUAGE = LANGUAGE.EN;
+        StringData._Instance.SetLanguage();
+        //StringData._LANGUAGE = LANGUAGE.EN;
             
         yield return new WaitForEndOfFrame();
 #if UNITY_EDITOR
