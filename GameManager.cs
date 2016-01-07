@@ -62,6 +62,10 @@ public class GameManager : MonoBehaviour
     float _fProgressTime;
     float _fWaitTime;
 
+    string _sBest;
+    string _sScore;
+    string _sStage;
+
 
     void Awake()
     {
@@ -71,9 +75,15 @@ public class GameManager : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitForEndOfFrame();
+
         LoadMapData();
+
+        _sBest = StringData._Instance.GetText(3002);    // 최고 점수.
+        _sScore = StringData._Instance.GetText(3003);   // 점수.
+        _sStage = "STAGE";   // 스테이지.
     }
 
     void Update()
@@ -352,7 +362,7 @@ public class GameManager : MonoBehaviour
                             if(_iStage < _listMapData.Count - 1)
                             {
                                 _iStage++;
-                                _UIStage.text = string.Format("STAGE {0}", _iStage + 1);
+                                _UIStage.text = string.Format("{0} {1}", _sStage, _iStage + 1);
                             }
 
                             _bNextReady = false;
@@ -500,7 +510,7 @@ public class GameManager : MonoBehaviour
     void Init()
     {
         _iStage = 0;
-        _UIStage.text = string.Format("STAGE {0}", _iStage + 1);
+        _UIStage.text = string.Format("{0} {1}", _sStage, _iStage + 1);
 
         _iStageScore = 0;
         _iTotalScore = 0;
@@ -548,7 +558,7 @@ public class GameManager : MonoBehaviour
             {
                 _iCurScore = (int)value;
                 //_UIScore.text = _iCurScore.ToString();
-                _UIScore.text = string.Format("SCORE : {0}", _iCurScore);
+                _UIScore.text = string.Format("{0}  :  {1}", _sScore, _iCurScore);
 
                 //if (_lBestScore < _iCurScore)
                 //{
@@ -562,7 +572,7 @@ public class GameManager : MonoBehaviour
     // 베스트 스토어 셋팅.
     void SetBest(long score)
     {
-        _UIBest.text = string.Format("BEST    : {0}", score);
+        _UIBest.text = string.Format("{0}  :  {1}", _sBest, score);
     }
 
     // 클리어 문구 보여주기.
