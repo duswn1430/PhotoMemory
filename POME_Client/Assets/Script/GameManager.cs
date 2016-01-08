@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager _Instance = null;
 
-    public enum STEP {START, PLAY, COMPLETE, END };
+    public enum STEP {START, PLAY, PAUSE, COMPLETE, END };
 
     public static STEP _Step;
 
@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
 
     float _fProgressTime;
     float _fWaitTime;
+    float _fRemainTime;
 
     string _sBest;
     string _sScore;
@@ -245,6 +246,7 @@ public class GameManager : MonoBehaviour
     {
         _bOriginal = true;
         _OriginalStep = ORIGINAL_STEP.EFFECT1;
+        _Step = STEP.PAUSE;
 
         UIManager._BackStep = BACK_STEP.GAME;
 
@@ -435,6 +437,8 @@ public class GameManager : MonoBehaviour
                         {
                             _bOriginal = false;
 
+                            _Step = STEP.PLAY;
+
                             _Timer.TimerStart();
                             _Timer.ResetHint();
                         }
@@ -490,10 +494,14 @@ public class GameManager : MonoBehaviour
             {
                 return true;
             }
+            else
+            {
+                _fRemainTime = Time.time - _fProgressTime;
+            }
         }
         else
         {
-            _fProgressTime = Time.time;
+            _fProgressTime = Time.time - _fRemainTime;
             return false;
         }
         return false;
