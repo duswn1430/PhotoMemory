@@ -143,6 +143,13 @@ public class UIManager : MonoBehaviour
                     _BackStep = BACK_STEP.AD;
 
                     GameManager._Instance._Timer.TimerStop();
+
+                    if (AudioListener.volume >= 1)
+                    {
+                        AudioListener.volume = 0;
+                        GoogleAds._Instance.OnInterstitialClosed += new Action(SoundOn);
+                    }
+
                     GoogleAds._Instance.OnInterstitialClosed += new Action(GameManager._Instance.ShowOriginal);
                     GoogleAds._Instance.ShowInterstital();
                 }
@@ -162,6 +169,12 @@ public class UIManager : MonoBehaviour
         if(GameManager._iADContinue > 0)
         {
             _BackStep = BACK_STEP.AD;
+
+            if (AudioListener.volume >= 1)
+            {
+                AudioListener.volume = 0;
+                UnityAds._Instance.OnAdFinished += new Action(SoundOn);
+            }
 
             UnityAds._Instance.OnAdFinished += new Action(GameManager._Instance.ADContinue);
             UnityAds._Instance.ShowRewardedAd();
@@ -218,5 +231,10 @@ public class UIManager : MonoBehaviour
         _BackStep = BACK_STEP.MAIN;
 
         // 토스트 감추기.
+    }
+
+    public void SoundOn()
+    {
+        AudioListener.volume = 1;
     }
 }
