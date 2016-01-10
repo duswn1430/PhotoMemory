@@ -35,7 +35,7 @@ public class TouchManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager._Step == GameManager.STEP.PLAY)
+        if (GameManager._Step == GameManager.STEP.PLAY && GameManager._bPause == false)
             UpdateTouch();
     }
 
