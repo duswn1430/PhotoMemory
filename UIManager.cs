@@ -106,7 +106,10 @@ public class UIManager : MonoBehaviour
 
     public void SOUND()
     {
-        BGM._Instance.BGMChange();
+        if (AudioListener.volume >= 1)
+            AudioListener.volume = 0;
+        else
+            AudioListener.volume = 1;
     }
 
     public void SHOW_ORIGINAL()
@@ -114,15 +117,21 @@ public class UIManager : MonoBehaviour
         if (GameManager._Step == GameManager.STEP.PLAY)
         {
 #if UNITY_EDITOR
-            GameManager._Instance.ShowOriginal();
-#else
-            if (GoogleAds._Instance._bInterstitialLoaded)
+            if(GameManager._iOriginCnt > 0)
             {
-                _BackStep = BACK_STEP.AD;
+                GameManager._Instance.ShowOriginal();
+            }
+#else
+            if (GameManager._iOriginCnt > 0)
+            {
+                if (GoogleAds._Instance._bInterstitialLoaded)
+                {
+                    _BackStep = BACK_STEP.AD;
 
-                GameManager._Instance._Timer.TimerStop();
-                GoogleAds._Instance.OnInterstitialClosed += new Action(GameManager._Instance.ShowOriginal);
-                GoogleAds._Instance.ShowInterstital();
+                    GameManager._Instance._Timer.TimerStop();
+                    GoogleAds._Instance.OnInterstitialClosed += new Action(GameManager._Instance.ShowOriginal);
+                    GoogleAds._Instance.ShowInterstital();
+                }
             }
 #endif
         }
@@ -131,12 +140,18 @@ public class UIManager : MonoBehaviour
     public void AD_CONTINUE()
     {
 #if UNITY_EDITOR
-        GameManager._Instance.ADContinue();
-#else        
-        _BackStep = BACK_STEP.AD;
+        if (GameManager._iADContinue > 0)
+        {
+            GameManager._Instance.ADContinue();
+        }
+#else
+        if(GameManager._iADContinue > 0)
+        {
+            _BackStep = BACK_STEP.AD;
 
-        UnityAds._Instance.OnAdFinished += new Action(GameManager._Instance.ADContinue);
-        UnityAds._Instance.ShowRewardedAd();
+            UnityAds._Instance.OnAdFinished += new Action(GameManager._Instance.ADContinue);
+            UnityAds._Instance.ShowRewardedAd();
+        }
 #endif
     }
 
