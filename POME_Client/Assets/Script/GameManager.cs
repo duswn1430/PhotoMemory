@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     int _iCurScore;
     long _lBestScore;
 
-    bool _bPause;
+    public static bool _bPause;
     bool _bGaemReady;
     bool _bNextReady;
     bool _bOriginal;
