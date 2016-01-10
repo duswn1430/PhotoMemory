@@ -11,11 +11,13 @@ public class UIManager : MonoBehaviour
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
 
-    //public UILabel _txtGameStart = null;
+    public GameObject _btnSound = null;
 
     public UIButton _btnPause = null;
     public UIButton _btnContinue = null;
     public UIButton _btnMainMenu = null;
+
+    
 
     public Font _fontPen = null;
     public Font _fontGothic = null;
@@ -106,10 +108,22 @@ public class UIManager : MonoBehaviour
 
     public void SOUND()
     {
+        UISprite label = _btnSound.GetComponent<UISprite>();
+        UIButton button = _btnSound.GetComponent<UIButton>();
+
         if (AudioListener.volume >= 1)
+        {
             AudioListener.volume = 0;
+            label.spriteName = "btn_volume_off";
+            button.normalSprite = "btn_volume_off";
+        }
         else
+        {
             AudioListener.volume = 1;
+            label.spriteName = "btn_volume_on";
+            button.normalSprite = "btn_volume_on";
+        }
+            
     }
 
     public void SHOW_ORIGINAL()
