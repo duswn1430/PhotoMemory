@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public UILabel _UIBest = null;
     public UILabel _UIStage = null;
     public UILabel _UIClear = null;
+    public UILabel _UIOriginalCnt = null;
 
     public ResultPopup _ResultPop = null;
 
@@ -66,6 +67,9 @@ public class GameManager : MonoBehaviour
     string _sBest;
     string _sScore;
     string _sStage;
+
+    public static int _iOriginCnt = 0;
+    public static int _iADContinue = 0;
 
 
     void Awake()
@@ -244,32 +248,42 @@ public class GameManager : MonoBehaviour
     // 정답 박스 요청.
     public void ShowOriginal()
     {
-        _bOriginal = true;
-        _OriginalStep = ORIGINAL_STEP.EFFECT1;
-        _Step = STEP.PAUSE;
+        if(_iOriginCnt > 0)
+        {
+            _bOriginal = true;
+            _OriginalStep = ORIGINAL_STEP.EFFECT1;
+            _Step = STEP.PAUSE;
 
-        UIManager._BackStep = BACK_STEP.GAME;
+            UIManager._BackStep = BACK_STEP.GAME;
 
-        _Timer.TimerStop();
+            _Timer.TimerStop();
 
-        _BoxMapManager.DismissHint();
+            _BoxMapManager.DismissHint();
 
-        StartCoroutine(Original());
+            SetOriginCount(_iOriginCnt - 1);
+
+            StartCoroutine(Original());
+        }
     }
 
     // 광고 보고 이어하기 요청.
     public void ADContinue()
     {
-        _ResultPop.gameObject.SetActive(false);
+        if (_iADContinue > 0)
+        {
+            _iADContinue = -1;
 
-        _bContinue = true;
-        _ContinueStep = CONTINUE_STEP.ADDTIME;
+            _ResultPop.gameObject.SetActive(false);
 
-        UIManager._BackStep = BACK_STEP.GAME;
+            _bContinue = true;
+            _ContinueStep = CONTINUE_STEP.ADDTIME;
 
-        WaitTimeReset(1f);
+            UIManager._BackStep = BACK_STEP.GAME;
 
-        StartCoroutine(Continue());
+            WaitTimeReset(1f);
+
+            StartCoroutine(Continue());
+        }
     }
 
     // 게임 시작 루틴.
@@ -545,6 +559,9 @@ public class GameManager : MonoBehaviour
         _StartStep = START_STEP.SIZE;
 
         SetClear(false);
+
+        SetOriginCount(2);
+        _iADContinue = 1;
     }
 
     // 게임시작.
@@ -599,5 +616,11 @@ public class GameManager : MonoBehaviour
                 () => { _UIStage.gameObject.SetActive(true); 
                 });
         }
+    }
+
+    void SetOriginCount(int count)
+    {
+        _iOriginCnt = count;
+        _UIOriginalCnt.text = _iOriginCnt.ToString();
     }
 }
