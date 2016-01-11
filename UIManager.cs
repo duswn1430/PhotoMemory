@@ -45,11 +45,11 @@ public class UIManager : MonoBehaviour
         _ListFont[2].text = "Clear"; // Clear.
         _ListFont[3].text = StringData._Instance.GetText(3002); // 최고 점수.
         _ListFont[4].text = StringData._Instance.GetText(3003); // 점수.
-        _ListFont[5].text = "CONTINUE"; // 계속.
+        _ListFont[5].text = StringData._Instance.GetText(2002); // 이어 하기(+15초)
         _ListFont[6].text = StringData._Instance.GetText(2003); // 메인 메뉴.
         _ListFont[7].text = StringData._Instance.GetText(3001); // 결과.
         _ListFont[8].text = StringData._Instance.GetText(2001); // 일시 정지.
-        _ListFont[9].text = StringData._Instance.GetText(2002); // 이어 하기.
+        _ListFont[9].text = "Continue";
         _ListFont[10].text = StringData._Instance.GetText(1002);// 도움말.
         _ListFont[11].text = StringData._Instance.GetText(2003);// 메인 메뉴.
     }
