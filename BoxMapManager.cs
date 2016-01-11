@@ -51,6 +51,8 @@ public class BoxMapManager : MonoBehaviour
         //_iRow = 0;
         _listCol.Clear();
 
+        _stCameraControl.Init();
+
     }
 
     // 박스 맵 셋팅.

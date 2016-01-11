@@ -24,6 +24,13 @@ public class CameraControl : MonoBehaviour
         _MyTransform = transform;
     }
 
+    public void Init()
+    {
+        m_Camera.orthographicSize = 6.5f;
+        _MyTransform.position = new Vector3(1, 0, 1);
+        _Floor.position = new Vector3(1, 0, 2);
+    }
+
     public void FindAveragePosition()
     {
         Vector3 averagePos = new Vector3();
