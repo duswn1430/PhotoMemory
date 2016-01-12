@@ -5,31 +5,28 @@ using Define;
 
 public class IntroPanel : MonoBehaviour
 {
-    public enum STEP {NONE, LOGO1, LOGO2, LOADING, LOGIN, ENTER };
+    public enum STEP {NONE, LOGO1, LOADING, LOGIN, ENTER };
 
     public STEP _Step = STEP.NONE;
 
     public UIManager _UIManager = null;
 
     public UIPanel _LoadingPanel = null;
-    public GameObject _StartPanel = null;
+
+    public StartPanel _StartPanel = null;
+
     public GameObject _GamePanel = null;
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
 
-    public UILabel _text = null;
+    public UILabel _UILoading = null;
 
     bool _bDone = false;
-
-    float _fProgressTime;
-    float _fWaitTime;
 
     bool _bGoogleBannerLoaded = false;
     bool _bGoogleInsterstitialLoaded = false;
     bool _bUnityAdsLoaded = false;
     bool _bAD = false;
-
-    float _fAlpha = 1;
 
     string _sStep = "";
 
@@ -41,31 +38,9 @@ public class IntroPanel : MonoBehaviour
         //StringData._LANGUAGE = LANGUAGE.EN;
             
         yield return new WaitForEndOfFrame();
-#if UNITY_EDITOR
-        StartCoroutine(EnterGame());
-#else
+
         _Step = STEP.LOGO1;
-        WaitTimeReset(1f);
         StartCoroutine(IntroProcess());
-#endif
-
-    }
-
-    // 루틴 도는 동안 기다리기.
-    bool WaitTime()
-    {
-        if (Time.time - _fProgressTime > _fWaitTime)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    // 기다리는 시간 셋팅.
-    void WaitTimeReset(float wait)
-    {
-        _fProgressTime = Time.time;
-        _fWaitTime = wait;
     }
 
     // 인트로 화면 루틴(로그인, 로딩 포함).
@@ -73,68 +48,83 @@ public class IntroPanel : MonoBehaviour
     {
         while (_bDone == false)
         {
-            if (WaitTime())
+            switch (_Step)
             {
-                switch (_Step)
-                {
-                    case STEP.LOGO1:
-                        {
-                            _text.text = "LOGO 1";
+                case STEP.LOGO1:
+                    {
+                        _UIManager.StringInit();
 
-                            _Step = STEP.LOGO2;
+                        _GamePanel.SetActive(false);
+                        _ResultPanel.SetActive(false);
+                        _PausePanel.SetActive(false);
 
-                            WaitTimeReset(2f);
-                        }
-                        break;
-                    case STEP.LOGO2:
-                        {
-                            _text.text = "LOGO 2";
+                        yield return new WaitForSeconds(2f);
 
-                            _Step = STEP.LOADING;
+                        yield return StartCoroutine(FadeOutGoogle());
 
-                            WaitTimeReset(2f);
-                        }
-                        break;
-                    case STEP.LOADING:
-                        {
-                            _sStep = "LOADING";
-                            _text.text = _sStep;
+#if UNITY_EDITOR
+                        _Step = STEP.ENTER;
+#else
+                        _Step = STEP.LOADING;
+#endif
+                    }
+                    break;
+                case STEP.LOADING:
+                    {
+                        GoogleAds._Instance.Init();
 
-                            GoogleAds._Instance.Init();
-                            StartCoroutine(GoogleBannerLoading());
-                            StartCoroutine(GoogleInstertitialLoading());
-                            StartCoroutine(UnityAdsLoading());
-                            StartCoroutine(Loading());
+                        StartCoroutine(GoogleBannerLoading());
+                        StartCoroutine(GoogleInstertitialLoading());
+                        StartCoroutine(UnityAdsLoading());
 
-                            _Step = STEP.NONE;
-                        }
-                        break;
-                    case STEP.LOGIN:
-                        {
-                            _sStep = "LOGIN";
-                            _text.text = _sStep;
+                        yield return StartCoroutine(Loading());
 
-                            GameService._Instance.HandlePlayerConnected += new Action(Enter);
-                            GameService._Instance.Connect();
+                        _Step = STEP.LOGIN;
+                    }
+                    break;
+                case STEP.LOGIN:
+                    {
+                        _sStep += ".";
+                        _UILoading.text = _sStep;
 
-                            _Step = STEP.NONE;
-                        }
-                        break;
-                    case STEP.ENTER:
-                        {
-                            _sStep = "ENTER";
-                            _text.text = _sStep;
+                        GameService._Instance.HandlePlayerConnected += new Action(Enter);
+                        GameService._Instance.Connect();
 
-                            StartCoroutine(EnterGame());
+                        _Step = STEP.NONE;
+                    }
+                    break;
+                case STEP.ENTER:
+                    {
+                        _sStep += ".";
+                        _UILoading.text = _sStep;
 
-                            _bDone = true;
-                        }
-                        break;
-                }
+                        StartCoroutine(EnterGame());
+
+                        _Step = STEP.NONE;
+                        _bDone = true;
+                    }
+                    break;
             }
 
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    // 구글 스플래시 이미지 페이드 아웃.
+    IEnumerator FadeOutGoogle()
+    {
+        float alpha = 1;
+
+        while (alpha > 0)
+        {
+            _LoadingPanel.alpha = alpha;
+
+            yield return new WaitForSeconds(0.05f);
+
+            alpha -= 0.1f;
+        }
+
+        _LoadingPanel.alpha = 0f;
     }
 
     // 구글 광고 로딩(배너).
@@ -148,7 +138,7 @@ public class IntroPanel : MonoBehaviour
                 GoogleAds._Instance.HideBanner();
 
                 _sStep += ".";
-                _text.text = _sStep;
+                _UILoading.text = _sStep;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -164,7 +154,7 @@ public class IntroPanel : MonoBehaviour
                 _bGoogleInsterstitialLoaded = true;
 
                 _sStep += ".";
-                _text.text = _sStep;
+                _UILoading.text = _sStep;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -180,7 +170,7 @@ public class IntroPanel : MonoBehaviour
                 _bUnityAdsLoaded = true;
 
                 _sStep += ".";
-                _text.text = _sStep;
+                _UILoading.text = _sStep;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -211,31 +201,17 @@ public class IntroPanel : MonoBehaviour
     // 게임화면 입장.
     IEnumerator EnterGame()
     {
-        yield return new WaitForSeconds(1f);
-
         BGM._Instance.Play();
 
-        _UIManager.StringInit();
+        yield return new WaitForSeconds(1f);
 
-        _GamePanel.SetActive(false);
-        _ResultPanel.SetActive(false);
-        _PausePanel.SetActive(false);
+        _UILoading.gameObject.SetActive(false);
 
-        while (_fAlpha >= 0)
-        {
-            _fAlpha -= 0.1f;
-            _LoadingPanel.alpha = _fAlpha;
-            yield return new WaitForSeconds(0.1f);
-        }
+        yield return new WaitForSeconds(1f);
 
-        if (_fAlpha <= 0)
-        {
-            _fAlpha = 0f;
-            _LoadingPanel.alpha = _fAlpha;
+        _StartPanel.MainLaunch();
 
-            UIManager._BackStep = BACK_STEP.MAIN;
-
-            _LoadingPanel.gameObject.SetActive(false);
-        }
+        _UILoading.gameObject.SetActive(false);
+        _LoadingPanel.gameObject.SetActive(false);
     }
 }
