@@ -44,23 +44,24 @@ public class StartPanel : MonoBehaviour
             {
                 case LAUNCH_STEP.TITLE:
                     {
-                        LeanTween.moveLocalY(_Title, 512.5F, 2.0f).setEase(LeanTweenType.easeOutCubic);
+                        LeanTween.moveLocalY(_Title, 512.5F, 1.5f).setEase(LeanTweenType.easeOutCubic);
+                        LeanTween.moveLocalY(_Cube, 126.0f, 3.0f).setEase(LeanTweenType.easeOutCubic);
 
-                        yield return new WaitForSeconds(2.0f);
-
-                        _Step = LAUNCH_STEP.CUBE;
-                    }
-                    break;
-                case LAUNCH_STEP.CUBE:
-                    {
-                        LeanTween.moveLocalY(_Cube, 126.0f, 2.0f).setEase(LeanTweenType.easeOutCubic);
-
-                        yield return new WaitForSeconds(2.0f);
+                        yield return new WaitForSeconds(3.0f);
 
                         _Step = LAUNCH_STEP.BUTTON;
-
                     }
                     break;
+                //case LAUNCH_STEP.CUBE:
+                //    {
+                //        LeanTween.moveLocalY(_Cube, 126.0f, 2.0f).setEase(LeanTweenType.easeOutCubic);
+
+                //        yield return new WaitForSeconds(2.0f);
+
+                //        _Step = LAUNCH_STEP.BUTTON;
+
+                //    }
+                //    break;
                 case LAUNCH_STEP.BUTTON:
                     {
                         _btnStart.transform.localPosition = new Vector3(_btnStart.transform.localPosition.x, 255.5f, _btnStart.transform.localPosition.z);
