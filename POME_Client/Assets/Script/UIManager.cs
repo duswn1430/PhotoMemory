@@ -59,11 +59,7 @@ public class UIManager : MonoBehaviour
         _BackStep = BACK_STEP.GAME;
 
         _StartPanel.gameObject.SetActive(false);
-        _GamePanel.gameObject.SetActive(true);
-        
-#if !UNITY_EDITOR
-        GoogleAds._Instance.ShowBanner();
-#endif
+        _GamePanel.gameObject.SetActive(true);        
     }
 
     public void HELP()
@@ -94,9 +90,9 @@ public class UIManager : MonoBehaviour
         _ResultPanel.gameObject.SetActive(false);
         _PausePanel.gameObject.SetActive(false);
         
-#if !UNITY_EDITOR
-        GoogleAds._Instance.HideBanner();
-#endif
+//#if !UNITY_EDITOR
+//        GoogleAds._Instance.HideBanner();
+//#endif
     }
 
     public void RANK()
