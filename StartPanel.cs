@@ -23,8 +23,11 @@ public class StartPanel : MonoBehaviour
     public GameObject _Logo = null;
     public GameObject _Title = null;
     public GameObject _Cube = null;
+
     public GameObject _btnStart = null;
     public GameObject _btnHelp = null;
+    public GameObject _btnSound = null;
+    public GameObject _btnRank = null;
 
     public List<Cube> _listCube;
 
@@ -33,6 +36,8 @@ public class StartPanel : MonoBehaviour
     {
         TweenAlpha.Begin(_btnStart, 1f, 0);
         TweenAlpha.Begin(_btnHelp, 1f, 0);
+        TweenAlpha.Begin(_btnSound, 1f, 0);
+        TweenAlpha.Begin(_btnRank, 1f, 0);
 
     }
 
@@ -88,8 +93,14 @@ public class StartPanel : MonoBehaviour
                     {
                         TweenAlpha.Begin(_btnStart, 1f, 1);
                         TweenAlpha.Begin(_btnHelp, 1f, 1);
+                        TweenAlpha.Begin(_btnSound, 1f, 1);
+                        TweenAlpha.Begin(_btnRank, 1f, 1);
 
                         yield return new WaitForSeconds(1f);
+
+#if !UNITY_EDITOR
+        GoogleAds._Instance.ShowBanner();
+#endif
 
                         _Step = LAUNCH_STEP.NONE;
                         _bDone = true;
