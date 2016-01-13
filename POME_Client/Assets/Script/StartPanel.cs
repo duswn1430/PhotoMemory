@@ -14,22 +14,25 @@ public class StartPanel : MonoBehaviour
         public LTDescr _Tween;
     }
 
-    enum LAUNCH_STEP {NONE, TITLE, CUBE, BUTTON };
+    enum LAUNCH_STEP {NONE, LOGO, TITLE, CUBE, BUTTON };
 
     LAUNCH_STEP _Step = LAUNCH_STEP.NONE;
 
     bool _bDone = false;
-
+    
+    public GameObject _Logo = null;
     public GameObject _Title = null;
     public GameObject _Cube = null;
-    public UISprite _btnStart = null;
-    public UISprite _btnHelp = null;
+    public GameObject _btnStart = null;
+    public GameObject _btnHelp = null;
 
     public List<Cube> _listCube;
 
     // Use this for initialization
     void Start()
     {
+        TweenAlpha.Begin(_btnStart, 1f, 0);
+        TweenAlpha.Begin(_btnHelp, 1f, 0);
 
     }
 
@@ -41,11 +44,8 @@ public class StartPanel : MonoBehaviour
 
     public void MainLaunch()
     {
-        _Step = LAUNCH_STEP.TITLE;
-
-        _btnStart.alpha = 0;
-        _btnHelp.alpha = 0;
-
+        _Step = LAUNCH_STEP.LOGO;
+        
         StartCoroutine(LaunchProcess());
     }
 
@@ -55,10 +55,20 @@ public class StartPanel : MonoBehaviour
         {
             switch(_Step)
             {
+                case LAUNCH_STEP.LOGO:
+                    {
+                        TweenAlpha.Begin(_Logo, 1f, 0);
+                        TweenAlpha.Begin(_Title, 1f, 1);
+
+                        yield return new WaitForSeconds(2f);
+
+                        _Step = LAUNCH_STEP.TITLE;
+                    }
+                    break;
                 case LAUNCH_STEP.TITLE:
                     {
                         LeanTween.moveLocalY(_Title, 512.5F, 1.5f).setEase(LeanTweenType.easeOutCubic);
-                        LeanTween.moveLocalY(_Cube, 126.0f, 3.0f).setEase(LeanTweenType.easeOutCubic);
+                        LeanTween.moveLocalY(_Cube, 0.0f, 3.0f).setEase(LeanTweenType.easeOutCubic);
 
                         yield return new WaitForSeconds(3.5f);
 
@@ -76,10 +86,10 @@ public class StartPanel : MonoBehaviour
                     break;
                 case LAUNCH_STEP.BUTTON:
                     {
-                        _btnStart.transform.localPosition = new Vector3(_btnStart.transform.localPosition.x, 255.5f, _btnStart.transform.localPosition.z);
-                        _btnHelp.transform.localPosition = new Vector3(_btnHelp.transform.localPosition.x, 255.5f, _btnHelp.transform.localPosition.z);
+                        TweenAlpha.Begin(_btnStart, 1f, 1);
+                        TweenAlpha.Begin(_btnHelp, 1f, 1);
 
-                        yield return StartCoroutine(FadeInButtons());
+                        yield return new WaitForSeconds(1f);
 
                         _Step = LAUNCH_STEP.NONE;
                         _bDone = true;
@@ -89,24 +99,6 @@ public class StartPanel : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-    }
-
-    IEnumerator FadeInButtons()
-    {
-        float alpha = 0;
-
-        while(alpha < 1)
-        {
-            _btnStart.alpha = alpha;
-            _btnHelp.alpha = alpha;
-
-            yield return new WaitForSeconds(0.05f);
-
-            alpha += 0.1f;
-        }
-
-        _btnStart.alpha = 1;
-        _btnHelp.alpha = 1;
     }
 
     void SetCubeMove()
