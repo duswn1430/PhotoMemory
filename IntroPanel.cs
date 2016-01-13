@@ -11,10 +11,10 @@ public class IntroPanel : MonoBehaviour
 
     public UIManager _UIManager = null;
 
-    public UIPanel _LoadingPanel = null;
 
     public StartPanel _StartPanel = null;
-
+    
+    public GameObject _LoadingPanel = null;
     public GameObject _GamePanel = null;
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
@@ -60,7 +60,9 @@ public class IntroPanel : MonoBehaviour
 
                         yield return new WaitForSeconds(2f);
 
-                        yield return StartCoroutine(FadeOutGoogle());
+                        TweenAlpha.Begin(_LoadingPanel, 1f, 0);
+
+                        yield return new WaitForSeconds(1f);
 
 #if UNITY_EDITOR
                         _Step = STEP.ENTER;
@@ -108,23 +110,6 @@ public class IntroPanel : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-    }
-
-    // 구글 스플래시 이미지 페이드 아웃.
-    IEnumerator FadeOutGoogle()
-    {
-        float alpha = 1;
-
-        while (alpha > 0)
-        {
-            _LoadingPanel.alpha = alpha;
-
-            yield return new WaitForSeconds(0.05f);
-
-            alpha -= 0.1f;
-        }
-
-        _LoadingPanel.alpha = 0f;
     }
 
     // 구글 광고 로딩(배너).
@@ -203,15 +188,15 @@ public class IntroPanel : MonoBehaviour
     {
         BGM._Instance.Play();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         _UILoading.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         _StartPanel.MainLaunch();
 
         _UILoading.gameObject.SetActive(false);
-        _LoadingPanel.gameObject.SetActive(false);
+        _LoadingPanel.SetActive(false);
     }
 }
