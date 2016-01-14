@@ -98,7 +98,8 @@ public class UIManager : MonoBehaviour
     public void RANK()
     {
 #if !UNITY_EDITOR
-        GameService._Instance.ShowLeaderBoard();
+        if (GameService._Instance.IsConnected())
+            GameService._Instance.ShowLeaderBoard();
 #endif
     }
 
