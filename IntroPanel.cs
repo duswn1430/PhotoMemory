@@ -85,8 +85,6 @@ public class IntroPanel : MonoBehaviour
                         StartCoroutine(UnityAdsLoading());
 
                         yield return StartCoroutine(Loading());
-
-                        _Step = STEP.LOGIN;
                     }
                     break;
                 case STEP.LOGIN:
@@ -94,10 +92,12 @@ public class IntroPanel : MonoBehaviour
                         _sStep += ".";
                         _UILoading.text = _sStep;
 
+                        _Step = STEP.NONE;
+
                         GameService._Instance.HandlePlayerConnected += new Action(Enter);
+                        GameService._Instance.HandlePlayerDisconnected += new Action(Enter);
                         GameService._Instance.Connect();
 
-                        _Step = STEP.NONE;
                     }
                     break;
                 case STEP.ENTER:
