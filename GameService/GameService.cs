@@ -38,7 +38,11 @@ public class GameService : MonoBehaviour
 
     public bool IsConnected()
     {
-        return UM_GameServiceManager.instance.ConnectionSate == UM_ConnectionState.CONNECTING;
+        if (UM_GameServiceManager.instance.ConnectionSate == UM_ConnectionState.CONNECTED || 
+            UM_GameServiceManager.instance.ConnectionSate == UM_ConnectionState.CONNECTING)
+            return true;
+
+        return false;
     }
 
     public void Disconnect()
