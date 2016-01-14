@@ -101,6 +101,7 @@ public class StartPanel : MonoBehaviour
 #if !UNITY_EDITOR
         GoogleAds._Instance.ShowBanner();
 #endif
+                        UIManager._BackStep = Define.BACK_STEP.MAIN;
 
                         _Step = LAUNCH_STEP.NONE;
                         _bDone = true;
