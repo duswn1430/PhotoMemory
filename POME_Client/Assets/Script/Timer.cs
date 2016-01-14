@@ -39,11 +39,6 @@ public class Timer : MonoBehaviour
         _label.text = _fTotalTime.ToString("N2");
     }
 
-    void Update()
-    {
-        SetTimerText();
-    }
-
     void FixedUpdate()
     {
         if (_bTimerPreccess)
@@ -71,10 +66,10 @@ public class Timer : MonoBehaviour
         {
             TimerEnd();
         }
-        //else
-        //{
-        //    SetTimerText();
-        //}
+        else
+        {
+            SetTimerText();
+        }
     }
 
     void TimerEnd()

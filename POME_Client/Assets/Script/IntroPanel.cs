@@ -30,6 +30,11 @@ public class IntroPanel : MonoBehaviour
 
     string _sStep = "";
 
+    void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     // Use this for initialization
     IEnumerator Start()
     {
