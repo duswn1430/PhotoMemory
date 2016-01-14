@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Effect : MonoBehaviour
 {
-    public EllipsoidParticleEmitter _emSmoke = null;
-    public EllipsoidParticleEmitter _emCicle = null;
+    public List<EllipsoidParticleEmitter> _listEffect = null;
 
     public void Play()
     {
-        _emSmoke.Emit();
-        _emCicle.Emit();
+        for (int i = 0; i < _listEffect.Count; ++i)
+        {
+            EllipsoidParticleEmitter effect = _listEffect[i];
+            effect.Emit();
+        }
     }
 }
