@@ -301,7 +301,9 @@ public class GameManager : MonoBehaviour
 
                     case START_STEP.SIZE:
                         {
-                            _CurMapData = _listMapData[_iStage];
+                            if (_iStage < _listMapData.Count)
+                                _CurMapData = _listMapData[_iStage];
+
                             StartCoroutine(_BoxMapManager.SetBoxMap(_CurMapData));
 
                             _StartStep = START_STEP.COLOR;
@@ -375,11 +377,8 @@ public class GameManager : MonoBehaviour
                         break;
                     case NEXT_STEP.NEXT:
                         {
-                            if(_iStage < _listMapData.Count - 1)
-                            {
-                                _iStage++;
-                                _UIStage.text = string.Format("{0} {1}", _sStage, _iStage + 1);
-                            }
+                            _iStage++;
+                            _UIStage.text = string.Format("{0} {1}", _sStage, _iStage + 1);
 
                             _bNextReady = false;
                             _bGaemReady = true;
@@ -388,7 +387,7 @@ public class GameManager : MonoBehaviour
 
                             WaitTimeReset(0.0f);
                             StartCoroutine(StartGame());
-                            
+
                             SetClear(false);
                         }
                         break;
