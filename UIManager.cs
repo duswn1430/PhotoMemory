@@ -111,24 +111,30 @@ public class UIManager : MonoBehaviour
 
     public void SOUND()
     {
+        string sLabel = "";
+        string sButton = ""; 
+        
+        if (AudioListener.volume >= 1)
+        {
+            AudioListener.volume = 0;
+            sLabel = "btn_volume_off";
+            sButton = "btn_volume_off";
+        }
+        else
+        {
+            AudioListener.volume = 1;
+            sLabel = "btn_volume_on";
+            sButton = "btn_volume_on";
+
+        }
+
         for (int i = 0; i < _btnSounds.Length; ++i)
         {
             UISprite label = _btnSounds[i].GetComponent<UISprite>();
             UIButton button = _btnSounds[i].GetComponent<UIButton>();
 
-            if (AudioListener.volume >= 1)
-            {
-                AudioListener.volume = 0;
-                label.spriteName = "btn_volume_off";
-                button.normalSprite = "btn_volume_off";
-            }
-            else
-            {
-                AudioListener.volume = 1;
-                label.spriteName = "btn_volume_on";
-                button.normalSprite = "btn_volume_on";
-
-            }
+            label.spriteName = sLabel;
+            button.normalSprite = sButton;            
         }            
     }
 
