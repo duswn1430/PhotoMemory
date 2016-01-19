@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
 
-    public GameObject _btnSound = null;
+    public GameObject[] _btnSounds = null;
 
     public UIButton _btnPause = null;
     public UIButton _btnContinue = null;
@@ -105,22 +105,25 @@ public class UIManager : MonoBehaviour
 
     public void SOUND()
     {
-        UISprite label = _btnSound.GetComponent<UISprite>();
-        UIButton button = _btnSound.GetComponent<UIButton>();
+        for (int i = 0; i < _btnSounds.Length; ++i)
+        {
+            UISprite label = _btnSounds[i].GetComponent<UISprite>();
+            UIButton button = _btnSounds[i].GetComponent<UIButton>();
 
-        if (AudioListener.volume >= 1)
-        {
-            AudioListener.volume = 0;
-            label.spriteName = "btn_volume_off";
-            button.normalSprite = "btn_volume_off";
-        }
-        else
-        {
-            AudioListener.volume = 1;
-            label.spriteName = "btn_volume_on";
-            button.normalSprite = "btn_volume_on";
-        }
-            
+            if (AudioListener.volume >= 1)
+            {
+                AudioListener.volume = 0;
+                label.spriteName = "btn_volume_off";
+                button.normalSprite = "btn_volume_off";
+            }
+            else
+            {
+                AudioListener.volume = 1;
+                label.spriteName = "btn_volume_on";
+                button.normalSprite = "btn_volume_on";
+
+            }
+        }            
     }
 
     public void SHOW_ORIGINAL()
