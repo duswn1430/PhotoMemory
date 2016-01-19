@@ -73,7 +73,7 @@ public class StartPanel : MonoBehaviour
                 case LAUNCH_STEP.TITLE:
                     {
                         LeanTween.moveLocalY(_Title, 512.5F, 1.5f).setEase(LeanTweenType.easeOutCubic);
-                        LeanTween.moveLocalY(_Cube, 0.0f, 3.0f).setEase(LeanTweenType.easeOutCubic);
+                        //LeanTween.moveLocalY(_Cube, 0.0f, 3.0f).setEase(LeanTweenType.easeOutCubic);
 
                         yield return new WaitForSeconds(3.5f);
 
@@ -82,7 +82,7 @@ public class StartPanel : MonoBehaviour
                     break;
                 case LAUNCH_STEP.CUBE:
                     {
-                        SetCubeMove();
+                        //SetCubeMove();
 
                         yield return new WaitForSeconds(0.5f);
 
