@@ -125,7 +125,6 @@ public class UIManager : MonoBehaviour
             AudioListener.volume = 1;
             sLabel = "btn_volume_on";
             sButton = "btn_volume_on";
-
         }
 
         for (int i = 0; i < _btnSounds.Length; ++i)
