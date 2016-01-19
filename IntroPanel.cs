@@ -19,7 +19,8 @@ public class IntroPanel : MonoBehaviour
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
 
-    public UILabel _UILoading = null;
+    //public UILabel _UILoading = null;
+    public GameObject _Loading2 = null;
 
     bool _bDone = false;
 
@@ -78,6 +79,8 @@ public class IntroPanel : MonoBehaviour
                     break;
                 case STEP.LOADING:
                     {
+                        _Loading2.SetActive(true);
+
                         GoogleAds._Instance.Init();
 
                         StartCoroutine(GoogleBannerLoading());
@@ -89,9 +92,6 @@ public class IntroPanel : MonoBehaviour
                     break;
                 case STEP.LOGIN:
                     {
-                        _sStep += ".";
-                        _UILoading.text = _sStep;
-
                         _Step = STEP.NONE;
 
                         GameService._Instance.HandlePlayerConnected += new Action(Enter);
@@ -102,9 +102,6 @@ public class IntroPanel : MonoBehaviour
                     break;
                 case STEP.ENTER:
                     {
-                        _sStep += ".";
-                        _UILoading.text = _sStep;
-
                         StartCoroutine(EnterGame());
 
                         _Step = STEP.NONE;
@@ -126,9 +123,6 @@ public class IntroPanel : MonoBehaviour
             {
                 _bGoogleBannerLoaded = true;
                 GoogleAds._Instance.HideBanner();
-
-                _sStep += ".";
-                _UILoading.text = _sStep;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -142,9 +136,6 @@ public class IntroPanel : MonoBehaviour
             if (GoogleAds._Instance._bInterstitialLoaded)
             {
                 _bGoogleInsterstitialLoaded = true;
-
-                _sStep += ".";
-                _UILoading.text = _sStep;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -158,9 +149,6 @@ public class IntroPanel : MonoBehaviour
             if (UnityAds._Instance.IsLoaded())
             {
                 _bUnityAdsLoaded = true;
-
-                _sStep += ".";
-                _UILoading.text = _sStep;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -195,13 +183,12 @@ public class IntroPanel : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        _UILoading.gameObject.SetActive(false);
+        _Loading2.SetActive(false);
 
         yield return new WaitForSeconds(0.5f);
 
         _StartPanel.MainLaunch();
 
-        _UILoading.gameObject.SetActive(false);
         _LoadingPanel.SetActive(false);
     }
 }

@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
 
     public Font _fontPen = null;
     public Font _fontGothic = null;
+    public Font _fontLibreCaslon = null;
+    public Font _fontOSeongandHanEum = null;
 
     public List<UILabel> _ListFont = null;
 
@@ -34,9 +36,13 @@ public class UIManager : MonoBehaviour
             {
                 _ListFont[i].trueTypeFont = _fontGothic;
             }
-            else
+            else if (StringData._LANGUAGE == LANGUAGE.EN)
             {
-                _ListFont[i].trueTypeFont = _fontPen;
+                _ListFont[i].trueTypeFont = _fontLibreCaslon;
+            }
+            else if (StringData._LANGUAGE == LANGUAGE.KR)
+            {
+                _ListFont[i].trueTypeFont = _fontOSeongandHanEum;
             }
         }
 
