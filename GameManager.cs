@@ -225,6 +225,8 @@ public class GameManager : MonoBehaviour
         _Timer.BlinkStop();
 
         _BoxMapManager.ClearBoxMap();
+
+        BGM._Instance.PlayT5();
     }
 
     // TEST용(스테이지 넘기기).

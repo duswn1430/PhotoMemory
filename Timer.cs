@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
 
     public float _fRemainTime;
 
-    public const float _fGameTime = 10.0f;
+    public const float _fGameTime = 30.0f;
 
     private float _fTotalTime;
 
@@ -22,6 +22,7 @@ public class Timer : MonoBehaviour
 
     bool _bTimerPreccess;
     bool _bHint;
+    bool _bTension;
 
     float _fStageStartTime = 0;
 
@@ -31,6 +32,7 @@ public class Timer : MonoBehaviour
     {
         _bTimerPreccess = false;
         _bHint = false;
+        _bTension = false;
 
         _fTimer = 0;
         _fTotalTime = _fGameTime;
@@ -49,6 +51,7 @@ public class Timer : MonoBehaviour
 
             CalculateRemainTIme();
             Hint();
+            SetTension();
 
             _fTimerBefore = Time.time;
         }
@@ -101,6 +104,18 @@ public class Timer : MonoBehaviour
                 _bHint = false;
 
                 GameManager._Instance.ShowHint();
+            }
+        }
+    }
+
+    void SetTension()
+    {
+        if (_fRemainTime <= 10)
+        {
+            if (_bTension == false)
+            {
+                _bTension = true;
+                BGM._Instance.PlayT2();
             }
         }
     }
@@ -166,4 +181,6 @@ public class Timer : MonoBehaviour
             }
         );
     }
+
+   
 }

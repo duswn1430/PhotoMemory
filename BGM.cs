@@ -9,25 +9,25 @@ public class BGM : MonoBehaviour
 
     public AudioClip[] _Clips;
 
-    enum SORT { FANTASY, RHYTHMICAL };
+    enum TRACK { NONE, T2, T5 };
 
-    SORT _Sort;
+    TRACK _Track;
 
     void Awake()
     {
         _Instance = this;
 
-        _Sort = SORT.FANTASY;
+        _Track = TRACK.NONE;
     }
 
-    public void Play()
+    void Play()
     {
-        switch (_Sort)
+        switch (_Track)
         {
-            case SORT.FANTASY:
+            case TRACK.T2:
                 _audio.clip = _Clips[0];
                 break;
-            case SORT.RHYTHMICAL:
+            case TRACK.T5:
                 _audio.clip = _Clips[1];
                 break;
         }
@@ -35,10 +35,19 @@ public class BGM : MonoBehaviour
         _audio.Play();
     }
 
-    public void BGMChange()
+    public void PlayT2()
     {
-        _Sort = _Sort == SORT.FANTASY ? SORT.RHYTHMICAL : SORT.FANTASY;
+        if (_Track == TRACK.T2) return;
 
+        _Track = TRACK.T2;
+        Play();
+    }
+
+    public void PlayT5()
+    {
+        if (_Track == TRACK.T5) return;
+
+        _Track = TRACK.T5;
         Play();
     }
 
