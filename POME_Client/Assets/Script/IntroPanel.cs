@@ -120,6 +120,7 @@ public class IntroPanel : MonoBehaviour
         }
     }
 
+    // 스플래시 기다리기.
     IEnumerator WaitSplash()
     {
         while (Application.isShowingSplashScreen)
