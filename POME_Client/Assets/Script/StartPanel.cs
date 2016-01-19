@@ -92,7 +92,7 @@ public class StartPanel : MonoBehaviour
 
                         yield return new WaitForSeconds(1f);
 
-#if !UNITY_EDITOR || !NO_AD
+#if !UNITY_EDITOR && !NO_AD
         GoogleAds._Instance.ShowBanner();
 #endif
                         UIManager._BackStep = Define.BACK_STEP.MAIN;
