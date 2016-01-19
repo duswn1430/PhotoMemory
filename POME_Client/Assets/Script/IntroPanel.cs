@@ -5,7 +5,7 @@ using Define;
 
 public class IntroPanel : MonoBehaviour
 {
-    public enum STEP {NONE, LOGO1, LOADING, LOGIN, ENTER };
+    public enum STEP {NONE, SPLASH, LOGO, LOADING, LOGIN, ENTER };
 
     public STEP _Step = STEP.NONE;
 
@@ -44,7 +44,7 @@ public class IntroPanel : MonoBehaviour
             
         yield return new WaitForEndOfFrame();
 
-        _Step = STEP.LOGO1;
+        _Step = STEP.SPLASH;
         StartCoroutine(IntroProcess());
     }
 
@@ -55,7 +55,14 @@ public class IntroPanel : MonoBehaviour
         {
             switch (_Step)
             {
-                case STEP.LOGO1:
+                case STEP.SPLASH:
+                    {
+                        yield return StartCoroutine(WaitSplash());
+
+                        _Step = STEP.LOGO;
+                    }                    
+                    break;
+                case STEP.LOGO:
                     {
                         _UIManager.StringInit();
 
@@ -109,6 +116,14 @@ public class IntroPanel : MonoBehaviour
                     break;
             }
 
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    IEnumerator WaitSplash()
+    {
+        while (Application.isShowingSplashScreen)
+        {
             yield return new WaitForEndOfFrame();
         }
     }
