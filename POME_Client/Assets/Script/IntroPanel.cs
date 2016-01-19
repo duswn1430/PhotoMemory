@@ -19,8 +19,7 @@ public class IntroPanel : MonoBehaviour
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
 
-    //public UILabel _UILoading = null;
-    public GameObject _Loading2 = null;
+    public GameObject _Loading = null;
 
     bool _bDone = false;
 
@@ -79,7 +78,7 @@ public class IntroPanel : MonoBehaviour
                     break;
                 case STEP.LOADING:
                     {
-                        _Loading2.SetActive(true);
+                        _Loading.SetActive(true);
 
                         GoogleAds._Instance.Init();
 
@@ -183,7 +182,7 @@ public class IntroPanel : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        _Loading2.SetActive(false);
+        _Loading.SetActive(false);
 
         yield return new WaitForSeconds(0.5f);
 

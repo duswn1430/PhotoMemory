@@ -22,7 +22,7 @@ public class StartPanel : MonoBehaviour
     
     public GameObject _Logo = null;
     public GameObject _Title = null;
-    public GameObject _Cube = null;
+    public GameObject _CubeParent = null;
 
     public GameObject _btnStart = null;
     public GameObject _btnHelp = null;
@@ -38,12 +38,6 @@ public class StartPanel : MonoBehaviour
         TweenAlpha.Begin(_btnHelp, 1f, 0);
         TweenAlpha.Begin(_btnSound, 1f, 0);
         TweenAlpha.Begin(_btnRank, 1f, 0);
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
 
@@ -73,7 +67,7 @@ public class StartPanel : MonoBehaviour
                 case LAUNCH_STEP.TITLE:
                     {
                         LeanTween.moveLocalY(_Title, 512.5F, 1.5f).setEase(LeanTweenType.easeOutCubic);
-                        //LeanTween.moveLocalY(_Cube, 0.0f, 3.0f).setEase(LeanTweenType.easeOutCubic);
+                        LeanTween.moveLocalY(_CubeParent, 0.0f, 3.0f).setEase(LeanTweenType.easeOutCubic);
 
                         yield return new WaitForSeconds(3.5f);
 
@@ -82,7 +76,7 @@ public class StartPanel : MonoBehaviour
                     break;
                 case LAUNCH_STEP.CUBE:
                     {
-                        //SetCubeMove();
+                        SetCubesMove();
 
                         yield return new WaitForSeconds(0.5f);
 
@@ -113,7 +107,7 @@ public class StartPanel : MonoBehaviour
         }
     }
 
-    void SetCubeMove()
+    void SetCubesMove()
     {
         for (int i = 0; i < _listCube.Count; ++i)
         {
@@ -128,7 +122,7 @@ public class StartPanel : MonoBehaviour
         }
     }
 
-    void ReleaseCubeMove()
+    void ReleaseCubesMove()
     {
         for (int i = 0; i < _listCube.Count; ++i)
         {
