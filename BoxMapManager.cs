@@ -366,7 +366,7 @@ public class BoxMapManager : MonoBehaviour
 
         }
 
-        if (_Hint1.tween != null)
+        if (_Hint2.tween != null)
         {
             LeanTween.cancel(_Hint2.obj, _Hint2.tween.uniqueId);
             _Hint2.obj.transform.position = _Hint2.pos;
