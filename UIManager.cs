@@ -136,7 +136,7 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager._Step == GameManager.STEP.PLAY)
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || NO_AD
             if(GameManager._iOriginCnt > 0)
             {
                 GameManager._Instance.ShowOriginal();
@@ -166,7 +166,7 @@ public class UIManager : MonoBehaviour
 
     public void AD_CONTINUE()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || NO_AD
         if (GameManager._iADContinue > 0)
         {
             GameManager._Instance.ADContinue();
