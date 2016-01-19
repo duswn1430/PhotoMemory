@@ -191,7 +191,7 @@ public class IntroPanel : MonoBehaviour
     // 게임화면 입장.
     IEnumerator EnterGame()
     {
-        BGM._Instance.Play();
+        BGM._Instance.PlayT5();
 
         yield return new WaitForSeconds(0.5f);
 
