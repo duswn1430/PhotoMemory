@@ -4,25 +4,9 @@ using System.Collections.Generic;
 using SimpleJSON;
 using Define;
 
-public class StringData : MonoBehaviour
+public class StringManager : MonoBehaviour
 {
-    private static StringData instance = null;
-    public static StringData _Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = (new GameObject("StringData")).AddComponent<StringData>();
-            }
-            return instance;
-        }
-    }
-
     public static LANGUAGE _LANGUAGE;
-
-    JSONNode _JsonRoot = null;
-    string _StringFile = "Data/StringData";
 
     public class GameText
     {
@@ -35,7 +19,23 @@ public class StringData : MonoBehaviour
 
     public Dictionary<int, GameText> _dicGameText = new Dictionary<int, GameText>();
 
-    public void SetLanguage()
+    public List<UILabel> _ListFont = null;
+
+    public Font _fontGothic = null;
+    public Font _fontLibreCaslon = null;
+    public Font _fontOSeongandHanEum = null;
+
+    JSONNode _JsonRoot = null;
+    string _StringFile = "Data/StringData";
+
+    public void Init()
+    {
+        LoadStringData();
+        SetLanguage();
+        SetLabelsFont();
+    }
+
+    void SetLanguage()
     {
         SystemLanguage sl = Application.systemLanguage;
 
@@ -66,7 +66,7 @@ public class StringData : MonoBehaviour
         }
     }
 
-    public void LoadStringData()
+    void LoadStringData()
     {
         TextAsset asset = (TextAsset)Resources.Load(_StringFile);
         _JsonRoot = JSON.Parse(asset.text);
@@ -104,5 +104,40 @@ public class StringData : MonoBehaviour
                 break;
         }
         return text;
+    }
+
+    public void SetLabelsFont()
+    {
+        for (int i = 0; i < _ListFont.Count; ++i)
+        {
+            if (_LANGUAGE == LANGUAGE.CN || _LANGUAGE == LANGUAGE.JP)
+            {
+                _ListFont[i].trueTypeFont = _fontGothic;
+            }
+            else if (_LANGUAGE == LANGUAGE.EN)
+            {
+                _ListFont[i].trueTypeFont = _fontLibreCaslon;
+            }
+            else if (_LANGUAGE == LANGUAGE.KR)
+            {
+                _ListFont[i].trueTypeFont = _fontOSeongandHanEum;
+            }
+        }    
+    }
+
+    public void SetLabelsText()
+    {
+        _ListFont[0].text = GetText(1001); // 시작.
+        _ListFont[1].text = GetText(1002); // 도움말.
+        _ListFont[2].text = "Clear"; // Clear.
+        _ListFont[3].text = GetText(3002); // 최고 점수.
+        _ListFont[4].text = GetText(3003); // 점수.
+        _ListFont[5].text = GetText(2002); // 이어 하기(+15초)
+        _ListFont[6].text = GetText(2003); // 메인 메뉴.
+        _ListFont[7].text = GetText(3001); // 결과.
+        _ListFont[8].text = GetText(2001); // 일시 정지.
+        _ListFont[9].text = "Continue";
+        _ListFont[10].text = GetText(1002);// 도움말.
+        _ListFont[11].text = GetText(2003);// 메인 메뉴.
     }
 }

@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     public BoxMapManager _BoxMapManager = null;
     public TouchManager _TouchManager = null;
+    public StringManager _StringManager = null;
 
     public Timer _Timer = null;
 
@@ -86,8 +87,8 @@ public class GameManager : MonoBehaviour
 
         LoadMapData();
 
-        _sBest = StringData._Instance.GetText(3002);    // 최고 점수.
-        _sScore = StringData._Instance.GetText(3003);   // 점수.
+        _sBest = _StringManager.GetText(3002);    // 최고 점수.
+        _sScore = _StringManager.GetText(3003);   // 점수.
         _sStage = "STAGE";   // 스테이지.
     }
 
