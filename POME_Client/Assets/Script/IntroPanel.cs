@@ -10,6 +10,7 @@ public class IntroPanel : MonoBehaviour
     public STEP _Step = STEP.NONE;
 
     public UIManager _UIManager = null;
+    public StringManager _StringManager = null;
 
 
     public StartPanel _StartPanel = null;
@@ -38,9 +39,7 @@ public class IntroPanel : MonoBehaviour
     // Use this for initialization
     IEnumerator Start()
     {
-        StringData._Instance.LoadStringData();
-        StringData._Instance.SetLanguage();
-        //StringData._LANGUAGE = LANGUAGE.EN;
+        _StringManager.Init();
             
         yield return new WaitForEndOfFrame();
 
@@ -64,7 +63,7 @@ public class IntroPanel : MonoBehaviour
                     break;
                 case STEP.LOGO:
                     {
-                        _UIManager.StringInit();
+                        _StringManager.SetLabelsText();
 
                         _GamePanel.SetActive(false);
                         _ResultPanel.SetActive(false);
