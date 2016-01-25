@@ -6,7 +6,7 @@ public class AmiscGame
 {
     public static string[] arrShutterName = { "shutter_01", "shutter_02", "shutter_03", "shutter_04", "shutter_05", "shutter_06" };
 
-    public static void SetBoxColor(Transform obj, Type type)
+    public static void SetBoxColor(Transform obj, BOX_TYPE type)
     {
         MeshRenderer renderer = obj.GetComponent<MeshRenderer>();
         Color diffuse = GetTypeColorDiffuse(type);
@@ -16,39 +16,39 @@ public class AmiscGame
         renderer.material.SetColor("_Emission", emission);
     }
 
-    public static Color GetTypeColorDiffuse(Type type)
+    public static Color GetTypeColorDiffuse(BOX_TYPE type)
     {
         Color color = GetColor(180, 180, 180);
 
         switch (type)
         {
-            case Type.NONE: color = GetColor(180, 180, 180); break;
-            case Type.RED: color = GetColor(255, 198, 198); break;
-            case Type.BLUE: color = GetColor(142, 202, 194); break;
-            case Type.YELLOW: color = GetColor(212, 214, 79); break;
-            case Type.GREEN: color = GetColor(188, 234, 219); break;
-            case Type.PINK: color = GetColor(202, 144, 143); break;
-            case Type.WHITE: color = GetColor(221, 213, 247); break;
-            case Type.ORANGE: color = GetColor(214, 177, 141); break;
+            case BOX_TYPE.NONE: color = GetColor(180, 180, 180); break;
+            case BOX_TYPE.RED: color = GetColor(255, 198, 198); break;
+            case BOX_TYPE.BLUE: color = GetColor(142, 202, 194); break;
+            case BOX_TYPE.YELLOW: color = GetColor(212, 214, 79); break;
+            case BOX_TYPE.GREEN: color = GetColor(188, 234, 219); break;
+            case BOX_TYPE.PINK: color = GetColor(202, 144, 143); break;
+            case BOX_TYPE.WHITE: color = GetColor(221, 213, 247); break;
+            case BOX_TYPE.ORANGE: color = GetColor(214, 177, 141); break;
         }
 
         return color;
     }
 
-    public static Color GetTypeColorEmission(Type type)
+    public static Color GetTypeColorEmission(BOX_TYPE type)
     {
         Color color = GetColor(180, 180, 180);
 
         switch (type)
         {
-            case Type.NONE: color = GetColor(180, 180, 180); break;
-            case Type.RED: color = GetColor(193, 97, 97); break;
-            case Type.BLUE: color = GetColor(75, 134, 191); break;
-            case Type.YELLOW: color = GetColor(168, 171, 118); break;
-            case Type.GREEN: color = GetColor(90, 159, 148); break;
-            case Type.PINK: color = GetColor(206, 77, 185); break;
-            case Type.WHITE: color = GetColor(156, 169, 201); break;
-            case Type.ORANGE: color = GetColor(195, 127, 68); break;
+            case BOX_TYPE.NONE: color = GetColor(180, 180, 180); break;
+            case BOX_TYPE.RED: color = GetColor(193, 97, 97); break;
+            case BOX_TYPE.BLUE: color = GetColor(75, 134, 191); break;
+            case BOX_TYPE.YELLOW: color = GetColor(168, 171, 118); break;
+            case BOX_TYPE.GREEN: color = GetColor(90, 159, 148); break;
+            case BOX_TYPE.PINK: color = GetColor(206, 77, 185); break;
+            case BOX_TYPE.WHITE: color = GetColor(156, 169, 201); break;
+            case BOX_TYPE.ORANGE: color = GetColor(195, 127, 68); break;
         }
 
         return color;

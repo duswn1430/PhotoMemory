@@ -14,6 +14,7 @@ public class IntroPanel : MonoBehaviour
 
 
     public StartPanel _StartPanel = null;
+    public HelpPanel _HelpPanel = null;
     
     public GameObject _LoadingPanel = null;
     public GameObject _GamePanel = null;
@@ -40,6 +41,7 @@ public class IntroPanel : MonoBehaviour
     IEnumerator Start()
     {
         _StringManager.Init();
+        _HelpPanel.Init();
             
         yield return new WaitForEndOfFrame();
 

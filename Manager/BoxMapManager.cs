@@ -177,7 +177,7 @@ public class BoxMapManager : MonoBehaviour
             {
                 int rnd = rd.Next(listBox.Count);
                 Box box = listBox[rnd];
-                box.Setting((Type)i);
+                box.Setting((BOX_TYPE)i);
 
                 listBox.Remove(box);
             }
@@ -190,7 +190,7 @@ public class BoxMapManager : MonoBehaviour
 
             AmiscGame.SetBoxColor(obj, box._CurType);
 
-            if (box._OriginTpye != Type.NONE)
+            if (box._OriginTpye != BOX_TYPE.NONE)
                 LeanTween.moveY(obj.gameObject, 1f, 1.0f).setEase(LeanTweenType.punch);
         }
 
@@ -230,7 +230,7 @@ public class BoxMapManager : MonoBehaviour
         {
             int k = (rnd.Next(0, n) % n);
             n--;
-            Type vType = list[k]._CurType;
+            BOX_TYPE vType = list[k]._CurType;
             list[k]._CurType = list[n]._CurType;
             list[n]._CurType = vType;
         }
@@ -283,7 +283,7 @@ public class BoxMapManager : MonoBehaviour
         Box box1 = _BoxList[idx1];
         Box box2 = _BoxList[idx2];
 
-        Type tmpType = box1._CurType;
+        BOX_TYPE tmpType = box1._CurType;
         box1._CurType = box2._CurType;
         box2._CurType = tmpType;
 
@@ -334,7 +334,7 @@ public class BoxMapManager : MonoBehaviour
     // 힌트 보여주기.
     public void ShowHint()
     {
-        List<Box> listColorBox = _BoxList.Where(row => row._OriginTpye != Type.NONE && row._OriginTpye != row._CurType).ToList();
+        List<Box> listColorBox = _BoxList.Where(row => row._OriginTpye != BOX_TYPE.NONE && row._OriginTpye != row._CurType).ToList();
 
         int colorRnd = Random.Range(0, listColorBox.Count);
 
