@@ -4,13 +4,15 @@ using System.Collections;
 namespace Define
 {
     //public enum Type { NONE, RED, YELLOW, BLUE, ORANGE, GREEN, INDIGO, VIOLET };
-    public enum Type { NONE, RED, BLUE, YELLOW, GREEN, PINK, WHITE, ORANGE };
+    public enum BOX_TYPE { NONE, RED, BLUE, YELLOW, GREEN, PINK, WHITE, ORANGE };
 
     public enum BOX_STATE { NONE, INIT, IDLE, SELLECT };
 
-    public enum BACK_STEP { NONE, QUIT, MAIN, GAME, PAUSE, RESULT, AD };
+    public enum BACK_STEP { NONE, QUIT, MAIN, GAME, PAUSE, RESULT, AD, HELP };
 
     public enum LANGUAGE { KR, EN, CN, JP };
+
+    public enum HELP_TYPE { TUTORIAL, MAIN, GAME };
 
     public class BoxMapData
     {

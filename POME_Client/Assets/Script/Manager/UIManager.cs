@@ -6,6 +6,10 @@ using Define;
 
 public class UIManager : MonoBehaviour
 {
+    public GameManager _GameManager = null;
+
+    public HelpPanel _HelpPanel = null;
+
     public GameObject _StartPanel = null;
     public GameObject _GamePanel = null;
     public GameObject _ResultPanel = null;
@@ -21,15 +25,42 @@ public class UIManager : MonoBehaviour
 
     public void START()
     {
-        _BackStep = BACK_STEP.GAME;
+        int tutorial = PlayerPrefs.GetInt("TUTORIAL", 1);
 
         _StartPanel.gameObject.SetActive(false);
-        _GamePanel.gameObject.SetActive(true);        
+        _GamePanel.gameObject.SetActive(true);
+
+        if (tutorial == 1)
+        {
+            _BackStep = BACK_STEP.HELP;
+
+            _HelpPanel.Show(HELP_TYPE.TUTORIAL, true);
+        }
+        else
+        {
+            _BackStep = BACK_STEP.GAME;
+
+            _GameManager.GAMESTART();
+        }      
     }
 
-    public void HELP()
+    public void MAIN_HELP()
     {
-        Debug.Log("????????????");
+        _BackStep = BACK_STEP.HELP;
+
+        _HelpPanel.Show(HELP_TYPE.MAIN, false);
+    }
+
+    public void GAME_HELP()
+    {
+        _BackStep = BACK_STEP.HELP;
+
+        _HelpPanel.Show(HELP_TYPE.GAME, false);
+    }
+
+    public void HELP_EXIT()
+    {
+        _HelpPanel.Dismiss();
     }
 
     public void PAUSE()
@@ -190,6 +221,11 @@ public class UIManager : MonoBehaviour
                 case BACK_STEP.RESULT:
                     {
                         _btnMainMenu.OnClick();
+                    }
+                    break;
+                case BACK_STEP.HELP:
+                    {
+                        _HelpPanel.Dismiss();
                     }
                     break;
             }

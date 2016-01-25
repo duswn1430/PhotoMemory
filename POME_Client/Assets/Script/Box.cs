@@ -14,8 +14,8 @@ public class Box
 
     public Vector3 _Pos;
 
-    public Type _OriginTpye;
-    public Type _CurType;
+    public BOX_TYPE _OriginTpye;
+    public BOX_TYPE _CurType;
 
     public BOX_STATE _State = BOX_STATE.NONE;
 
@@ -23,13 +23,13 @@ public class Box
     {
         _State = BOX_STATE.INIT;
 
-        _OriginTpye = Type.NONE;
-        _CurType = Type.NONE;
+        _OriginTpye = BOX_TYPE.NONE;
+        _CurType = BOX_TYPE.NONE;
 
         _Pos = new Vector3((_Size + _Dist) * _X, 0.0f, (_Size + _Dist) * _Y);
     }
 
-    public void Setting(Type type)
+    public void Setting(BOX_TYPE type)
     {
         _State = BOX_STATE.IDLE;
 

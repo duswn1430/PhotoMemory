@@ -136,8 +136,16 @@ public class StringManager : MonoBehaviour
         _ListFont[6].text = GetText(2003); // 메인 메뉴.
         _ListFont[7].text = GetText(3001); // 결과.
         _ListFont[8].text = GetText(2001); // 일시 정지.
-        _ListFont[9].text = "Continue";
+        _ListFont[9].text = GetText(2001); // 돌아가기.
         _ListFont[10].text = GetText(1002);// 도움말.
         _ListFont[11].text = GetText(2003);// 메인 메뉴.
+
+        _ListFont[17].text = GetText(4001); // 정답 보기.
+        _ListFont[18].text = GetText(2001); // 일시 정지.
+        _ListFont[19].text = GetText(4002); // 제한 시간.
+        _ListFont[20].text = GetText(4003); // 기억 할 블록.
+        _ListFont[21].text = GetText(4004); // 3초 뒤.
+        _ListFont[22].text = GetText(4005); // 3초 뒤 블록의 배치가 섞입니다.\n섞인 블록을 최초 자리오 이동 시키세요.
+        _ListFont[23].text = GetText(4006); // 이동 시킬 블록을 터치하여 들고\n터치 한 상태로 원하는 곳에 내려 놓으세요.
     }
 }
