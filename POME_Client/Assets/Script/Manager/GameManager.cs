@@ -477,7 +477,7 @@ public class GameManager : MonoBehaviour
                 {
                     case CONTINUE_STEP.ADDTIME:
                         {
-                            _Timer.AddTime(10.0f);
+                            _Timer.AddTime(15.0f);
 
                             _ContinueStep = CONTINUE_STEP.START;
 
