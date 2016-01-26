@@ -149,6 +149,9 @@ public class GameManager : MonoBehaviour
 
         _Timer.TimerStop();
 
+        AmiscGame.AchivStage(_iStage);
+        AmiscGame.AchivScore(_iTotalScore);
+
         _bNextReady = true;
         _NextStep = NEXT_STEP.ADDTIME;
 

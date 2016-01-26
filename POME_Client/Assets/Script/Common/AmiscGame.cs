@@ -54,53 +54,6 @@ public class AmiscGame
         return color;
     }
 
-
-    //public static void SetColor(Transform obj, Type type)
-    //{
-    //    MeshRenderer renderer = obj.GetComponent<MeshRenderer>();
-    //    Color color = GetTypeColorPastel(type);
-
-    //    renderer.material.color = color;
-    //}
-
-    //public static Color GetTypeColorPastel(Type type)
-    //{
-    //    Color color = GetColor(180, 180, 180);
-
-    //    switch (type)
-    //    {
-    //        case Type.NONE: color = GetColor(180, 180, 180); break;
-    //        case Type.RED: color = GetColor(253, 179, 180); break;
-    //        case Type.ORANGE: color = GetColor(253, 215, 179); break;
-    //        case Type.YELLOW: color = GetColor(252, 241, 179); break;
-    //        case Type.GREEN: color = GetColor(232, 252, 180); break;
-    //        case Type.BLUE: color = GetColor(179, 252, 243); break;
-    //        case Type.INDIGO: color = GetColor(111, 171, 208); break;
-    //        case Type.VIOLET: color = GetColor(193, 188, 246); break;
-    //    }
-
-    //    return color;
-    //}
-
-    //public static Color GetTypeColor(Type type)
-    //{
-    //    Color color = GetColor(76, 76, 76);
-
-    //    switch (type)
-    //    {
-    //        case Type.NONE: color = GetColor(76, 76, 76); break;
-    //        case Type.RED: color = GetColor(222, 46, 33); break;
-    //        case Type.ORANGE: color = GetColor(247, 143, 30); break;
-    //        case Type.YELLOW: color = GetColor(244, 225, 0); break;
-    //        case Type.GREEN: color = GetColor(109, 190, 69); break;
-    //        case Type.BLUE: color = GetColor(0, 153, 211); break;
-    //        case Type.INDIGO: color = GetColor(64, 100, 174); break;
-    //        case Type.VIOLET: color = GetColor(145, 116, 180); break;
-    //    }
-
-    //    return color;
-    //}
-
     public static Color GetColor(float r, float g, float b, float a = 255)
     {
         return new Color(r / 255.0F, g / 255.0F, b / 255.0F, a / 255.0F);
@@ -233,5 +186,119 @@ public class AmiscGame
         }
 
         return scale;
+    }
+
+    public static void AchivUnlock(int idx)
+    {
+        string id = string.Format("achiv_{0}", idx + 1);
+
+        GameService._Instance.AchivUnlock(id);
+    }
+
+    public static void AchivStage(int stage)
+    {
+        int idx = -1;
+
+        switch (stage)
+        {
+            case 1:
+                    idx = 1;
+                break;
+            case 3:
+                    idx = 2;
+                break;
+            case 5:
+                    idx = 3;
+                break;
+            case 10:
+                    idx = 4;
+                break;
+            case 20:
+                    idx = 5;
+                break;
+            case 30:
+                    idx = 6;
+                break;
+            case 40:
+                    idx = 7;
+                break;
+            case 60:
+                    idx = 8;
+                break;
+        }
+
+        if (idx != -1)
+            AchivUnlock(idx);
+    }
+
+    public static void AchivScore(int score)
+    {
+        int idx = -1;
+
+        if (50 <= score)
+        {
+            idx = 9;
+            AchivUnlock(idx);
+        }
+        
+        if (100 <= score)
+        {
+            idx = 10;
+            AchivUnlock(idx);
+        }
+        
+        if (500 <= score)
+        {
+            idx = 11;
+            AchivUnlock(idx);
+        }
+
+        if (1000 <= score)
+        {
+            idx = 12;
+            AchivUnlock(idx);
+        }
+
+        if (2000 <= score)
+        {
+            idx = 13;
+            AchivUnlock(idx);
+        }
+
+        if (5000 <= score)
+        {
+            idx = 14;
+            AchivUnlock(idx);
+        }
+
+        if (8000 <= score)
+        {
+            idx = 15;
+            AchivUnlock(idx);
+        }
+
+        if (10000 <= score)
+        {
+            idx = 16;
+            AchivUnlock(idx);
+        }
+
+        if (20000 <= score)
+        {
+            idx = 17;
+            AchivUnlock(idx);
+        }
+
+        if (50000 <= score)
+        {
+            idx = 18;
+            AchivUnlock(idx);
+        }
+
+        if (100000 <= score)
+        {
+            idx = 19;
+            AchivUnlock(idx);
+        }
     }
 }
