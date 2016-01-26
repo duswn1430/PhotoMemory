@@ -108,20 +108,25 @@ public class StringManager : MonoBehaviour
 
     public void SetLabelsFont()
     {
+        Font font = null;
+
+        if (_LANGUAGE == LANGUAGE.CN || _LANGUAGE == LANGUAGE.JP)
+        {
+            font = _fontGothic;
+        }
+        else if (_LANGUAGE == LANGUAGE.EN)
+        {
+            font = _fontLibreCaslon;
+        }
+        else if (_LANGUAGE == LANGUAGE.KR)
+        {
+            font = _fontOSeongandHanEum;
+        }
+
         for (int i = 0; i < _ListFont.Count; ++i)
         {
-            if (_LANGUAGE == LANGUAGE.CN || _LANGUAGE == LANGUAGE.JP)
-            {
-                _ListFont[i].trueTypeFont = _fontGothic;
-            }
-            else if (_LANGUAGE == LANGUAGE.EN)
-            {
-                _ListFont[i].trueTypeFont = _fontLibreCaslon;
-            }
-            else if (_LANGUAGE == LANGUAGE.KR)
-            {
-                _ListFont[i].trueTypeFont = _fontOSeongandHanEum;
-            }
+            if (_ListFont[i] != null)
+                _ListFont[i].trueTypeFont = font;
         }    
     }
 
@@ -129,14 +134,14 @@ public class StringManager : MonoBehaviour
     {
         _ListFont[0].text = GetText(1001); // 시작.
         _ListFont[1].text = GetText(1002); // 도움말.
-        _ListFont[2].text = "Clear"; // Clear.
+        //_ListFont[2].text = "Clear"; // Clear.
         _ListFont[3].text = GetText(3002); // 최고 점수.
         _ListFont[4].text = GetText(3003); // 점수.
         _ListFont[5].text = GetText(2002); // 이어 하기(+15초)
         _ListFont[6].text = GetText(2003); // 메인 메뉴.
         _ListFont[7].text = GetText(3001); // 결과.
         _ListFont[8].text = GetText(2001); // 일시 정지.
-        _ListFont[9].text = GetText(2001); // 돌아가기.
+        _ListFont[9].text = GetText(2004); // 돌아가기.
         _ListFont[10].text = GetText(1002);// 도움말.
         _ListFont[11].text = GetText(2003);// 메인 메뉴.
 
