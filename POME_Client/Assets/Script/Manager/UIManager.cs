@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
 
     public void START()
     {
+        PlayerPrefs.DeleteKey("TUTORIAL");
         int tutorial = PlayerPrefs.GetInt("TUTORIAL", 1);
 
         _StartPanel.gameObject.SetActive(false);
