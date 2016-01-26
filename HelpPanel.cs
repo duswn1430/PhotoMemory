@@ -57,6 +57,8 @@ public class HelpPanel : MonoBehaviour
 
                 _Parent.SetActive(false);
                 _GameManager.GAMESTART();
+
+                AmiscGame.AchivUnlock(0);
             }
         }
         else if (_Type == HELP_TYPE.MAIN)

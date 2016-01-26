@@ -22,7 +22,7 @@ public class GameService : MonoBehaviour
 
     //public event Action HandleScoreSubmitted;
 
-    string _sBoard = "score";
+    string _sBoard = "ScoreRanking";
 
     // Use this for initialization
     void Start()
@@ -80,6 +80,13 @@ public class GameService : MonoBehaviour
     public void ScoreSubmit(int score)
     {
         UM_GameServiceManager.instance.SubmitScore(_sBoard, score);
+    }
+
+    public void AchivUnlock(string id)
+    {
+        UM_GameServiceManager.instance.UnlockAchievement(id);
+
+        //UM_GameServiceManager.instance.GetAchievementProgress(id);
     }
 
     public long GetBestScore()
