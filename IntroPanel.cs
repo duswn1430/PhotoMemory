@@ -16,12 +16,13 @@ public class IntroPanel : MonoBehaviour
     public StartPanel _StartPanel = null;
     public HelpPanel _HelpPanel = null;
     
-    public GameObject _LoadingPanel = null;
+    public GameObject _IntroPanel = null;
     public GameObject _GamePanel = null;
     public GameObject _ResultPanel = null;
     public GameObject _PausePanel = null;
 
     public GameObject _Loading = null;
+    public GameObject _GoogleLogo = null;
 
     bool _bDone = false;
 
@@ -42,7 +43,11 @@ public class IntroPanel : MonoBehaviour
     {
         _StringManager.Init();
         _HelpPanel.Init();
-            
+
+#if UNITY_IPHONE
+        _GoogleLogo.SetActive(false);
+#endif
+
         yield return new WaitForEndOfFrame();
 
         _Step = STEP.SPLASH;
@@ -58,22 +63,25 @@ public class IntroPanel : MonoBehaviour
             {
                 case STEP.SPLASH:
                     {
-                        yield return StartCoroutine(WaitSplash());
-
-                        _Step = STEP.LOGO;
-                    }                    
-                    break;
-                case STEP.LOGO:
-                    {
                         _StringManager.SetLabelsText();
 
                         _GamePanel.SetActive(false);
                         _ResultPanel.SetActive(false);
                         _PausePanel.SetActive(false);
 
+                        yield return StartCoroutine(WaitSplash());
+#if UNITY_IPHONE
+                        _Step = STEP.LOADING;
+#else
+                        _Step = STEP.LOGO;
+#endif
+                    }                    
+                    break;
+                case STEP.LOGO:
+                    {
                         yield return new WaitForSeconds(2f);
 
-                        TweenAlpha.Begin(_LoadingPanel, 1f, 0);
+                        TweenAlpha.Begin(_IntroPanel, 1f, 0);
 
                         yield return new WaitForSeconds(1f);
 
@@ -205,6 +213,6 @@ public class IntroPanel : MonoBehaviour
 
         _StartPanel.MainLaunch();
 
-        _LoadingPanel.SetActive(false);
+        _IntroPanel.SetActive(false);
     }
 }
