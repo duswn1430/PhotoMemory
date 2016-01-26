@@ -199,6 +199,10 @@ public class GameManager : MonoBehaviour
                 GoogleAds._Instance.OnInterstitialClosed += new Action(ShowResultPop);
                 GoogleAds._Instance.ShowInterstital();
             }
+            else
+            {
+                ShowResultPop();
+            }
         }
 #else
         ShowResultPop();
