@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
 
         _Timer.TimerStop();
 
-        AmiscGame.AchivStage(_iStage);
+        AmiscGame.AchivStage(_iStage + 1);
         AmiscGame.AchivScore(_iTotalScore);
 
         _bNextReady = true;
