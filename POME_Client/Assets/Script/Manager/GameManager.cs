@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Define;
 using SimpleJSON;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -167,8 +168,6 @@ public class GameManager : MonoBehaviour
     {
         _Step = STEP.END;
 
-        UIManager._BackStep = BACK_STEP.RESULT;
-
         _BoxMapManager.DismissHint();
 
         _TouchManager.Init();
@@ -185,8 +184,25 @@ public class GameManager : MonoBehaviour
 #endif
         }
 
-        _ResultPop.gameObject.SetActive(true);
-        _ResultPop.SetResult(_lBestScore, _iCurScore);
+#if !UNITY_EDITOR
+        if (GoogleAds._Instance._bInterstitialLoaded)
+        {
+            if (UnityEngine.Random.Range(1, 100) <= 30)
+            {
+                UIManager._BackStep = BACK_STEP.AD;
+
+                if (AudioListener.volume > 0)
+                {
+                    AudioListener.volume = 0;
+                    GoogleAds._Instance.OnInterstitialClosed += new Action(SoundOn);
+                }
+                GoogleAds._Instance.OnInterstitialClosed += new Action(ShowResultPop);
+                GoogleAds._Instance.ShowInterstital();
+            }
+        }
+#else
+        ShowResultPop();
+#endif
     }
 
     // 일시정지.
@@ -627,5 +643,18 @@ public class GameManager : MonoBehaviour
     {
         _iOriginCnt = count;
         _UIOriginalCnt.text = _iOriginCnt.ToString();
+    }
+
+    void ShowResultPop()
+    {
+        UIManager._BackStep = BACK_STEP.RESULT;
+
+        _ResultPop.gameObject.SetActive(true);
+        _ResultPop.SetResult(_lBestScore, _iCurScore);
+    }
+
+    public void SoundOn()
+    {
+        AudioListener.volume = 1;
     }
 }
