@@ -103,9 +103,9 @@ public class UIManager : MonoBehaviour
     public void SOUND()
     {
         string sLabel = "";
-        string sButton = ""; 
-        
-        if (AudioListener.volume >= 1)
+        string sButton = "";
+
+        if (AudioListener.volume > 0)
         {
             AudioListener.volume = 0;
             sLabel = "btn_volume_off";
@@ -146,7 +146,7 @@ public class UIManager : MonoBehaviour
 
                     GameManager._Instance._Timer.TimerStop();
 
-                    if (AudioListener.volume >= 1)
+                    if (AudioListener.volume > 0)
                     {
                         AudioListener.volume = 0;
                         GoogleAds._Instance.OnInterstitialClosed += new Action(SoundOn);
@@ -172,7 +172,7 @@ public class UIManager : MonoBehaviour
         {
             _BackStep = BACK_STEP.AD;
 
-            if (AudioListener.volume >= 1)
+            if (AudioListener.volume > 0)
             {
                 AudioListener.volume = 0;
                 UnityAds._Instance.OnAdFinished += new Action(SoundOn);
