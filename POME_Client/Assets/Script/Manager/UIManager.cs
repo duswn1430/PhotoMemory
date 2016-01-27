@@ -137,6 +137,10 @@ public class UIManager : MonoBehaviour
             {
                 GameManager._Instance.ShowOriginal();
             }
+            else
+            {
+                Toast._Instance.Show(TOAST_TYPE.ORIGIN);
+            }
 #else
             if (GameManager._iOriginCnt > 0)
             {
@@ -155,6 +159,10 @@ public class UIManager : MonoBehaviour
                     GoogleAds._Instance.OnInterstitialClosed += new Action(GameManager._Instance.ShowOriginal);
                     GoogleAds._Instance.ShowInterstital();
                 }
+            }
+            else
+            {
+                Toast._Instance.Show(TOAST_TYPE.ORIGIN);
             }
 #endif
         }
@@ -205,6 +213,7 @@ public class UIManager : MonoBehaviour
                         _BackStep = BACK_STEP.QUIT;
 
                         // 토스트 띄우기.
+                        Toast._Instance.Show(TOAST_TYPE.EXIT);
 
                         Invoke("CancelQuit", 3.0f);
                     }

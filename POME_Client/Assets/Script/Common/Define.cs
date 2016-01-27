@@ -14,6 +14,8 @@ namespace Define
 
     public enum HELP_TYPE { TUTORIAL, MAIN, GAME };
 
+    public enum TOAST_TYPE { EXIT, ORIGIN };
+
     public class BoxMapData
     {
         public int idx;
