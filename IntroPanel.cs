@@ -95,7 +95,9 @@ public class IntroPanel : MonoBehaviour
                 case STEP.LOADING:
                     {
                         _Loading.SetActive(true);
-
+#if NO_AD
+                        _Step = STEP.LOGIN;
+#else
                         GoogleAds._Instance.Init();
 
                         StartCoroutine(GoogleBannerLoading());
@@ -103,6 +105,7 @@ public class IntroPanel : MonoBehaviour
                         StartCoroutine(UnityAdsLoading());
 
                         yield return StartCoroutine(Loading());
+#endif
                     }
                     break;
                 case STEP.LOGIN:

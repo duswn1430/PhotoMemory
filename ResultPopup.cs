@@ -20,7 +20,7 @@ public class ResultPopup : MonoBehaviour
         _uiBestScore.text = bestScore.ToString();
         _uiCurScore.text = curScore.ToString();
         
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && !NO_AD
         Invoke("ShowAd", 0.5f);
 #endif
     }
