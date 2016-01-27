@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Define;
 using SimpleJSON;
-using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -184,29 +183,7 @@ public class GameManager : MonoBehaviour
 #endif
         }
 
-#if !UNITY_EDITOR
-        if (GoogleAds._Instance._bInterstitialLoaded)
-        {
-            if (UnityEngine.Random.Range(1, 100) <= 30)
-            {
-                UIManager._BackStep = BACK_STEP.AD;
-
-                if (AudioListener.volume > 0)
-                {
-                    AudioListener.volume = 0;
-                    GoogleAds._Instance.OnInterstitialClosed += new Action(SoundOn);
-                }
-                GoogleAds._Instance.OnInterstitialClosed += new Action(ShowResultPop);
-                GoogleAds._Instance.ShowInterstital();
-            }
-            else
-            {
-                ShowResultPop();
-            }
-        }
-#else
         ShowResultPop();
-#endif
     }
 
     // 일시정지.
@@ -567,9 +544,9 @@ public class GameManager : MonoBehaviour
         if (GameService._Instance.IsConnected())
             _lBestScore = GameService._Instance.GetBestScore();
         else
-            _lBestScore = PlayerPrefs.GetInt("BestScore");
+            _lBestScore = PlayerPrefs.GetInt("BestScore", 0);
 #else
-        _lBestScore = PlayerPrefs.GetInt("BestScore");
+        _lBestScore = PlayerPrefs.GetInt("BestScore", 0);
 #endif
 
         _BoxMapManager.ClearBoxMap();
@@ -622,6 +599,9 @@ public class GameManager : MonoBehaviour
     // 베스트 스토어 셋팅.
     void SetBest(long score)
     {
+        if (score < 0)
+            score = 0;
+
         _UIBest.text = string.Format("{0}  :  {1}", _sBest, score);
     }
 
@@ -655,10 +635,5 @@ public class GameManager : MonoBehaviour
 
         _ResultPop.gameObject.SetActive(true);
         _ResultPop.SetResult(_lBestScore, _iCurScore);
-    }
-
-    public void SoundOn()
-    {
-        AudioListener.volume = 1;
     }
 }
