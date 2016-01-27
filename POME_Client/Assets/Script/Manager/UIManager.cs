@@ -244,9 +244,8 @@ public class UIManager : MonoBehaviour
 
     void CancelQuit()
     {
-        _BackStep = BACK_STEP.MAIN;
-
-        // 토스트 감추기.
+        if (_BackStep == BACK_STEP.QUIT)
+            _BackStep = BACK_STEP.MAIN;
     }
 
     public void SoundOn()
