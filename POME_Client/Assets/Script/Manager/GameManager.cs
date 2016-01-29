@@ -149,8 +149,14 @@ public class GameManager : MonoBehaviour
 
         _Timer.TimerStop();
 
-        AmiscGame.AchivStage(_iStage + 1);
-        AmiscGame.AchivScore(_iTotalScore);
+
+#if !UNITY_EDITOR
+        if (GameService._Instance.IsConnected())
+        {
+            AmiscGame.AchivStage(_iStage + 1);
+            AmiscGame.AchivScore(_iTotalScore);
+        }
+#endif
 
         _bNextReady = true;
         _NextStep = NEXT_STEP.ADDTIME;
