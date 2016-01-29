@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
 
     public float _fRemainTime;
 
-    public const float _fGameTime = 30.0f;
+    public const float _fGameTime = 60.0f;
 
     private float _fTotalTime;
 
