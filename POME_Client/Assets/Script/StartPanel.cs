@@ -90,8 +90,6 @@ public class StartPanel : MonoBehaviour
                         TweenAlpha.Begin(_btnSound, 1f, 1);
                         TweenAlpha.Begin(_btnRank, 1f, 1);
 
-                        yield return new WaitForSeconds(1f);
-
 #if !UNITY_EDITOR && !NO_AD
         GoogleAds._Instance.ShowBanner();
 #endif
