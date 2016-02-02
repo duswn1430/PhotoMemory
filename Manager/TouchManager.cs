@@ -19,7 +19,7 @@ public class TouchManager : MonoBehaviour
         _goMark.SetActive(false);
         _MovingBox.Visible(null, false);
 
-        if(_SellectBox1 != null)
+        if (_SellectBox1 != null)
         {
             BoxVisible(_SellectBox1, true);
             _SellectBox1 = null;
@@ -49,7 +49,7 @@ public class TouchManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, _MainCamera.farClipPlane, _MainCamera.cullingMask))
             {
-                if(hit.transform.CompareTag("Box"))
+                if (hit.transform.CompareTag("Box"))
                 {
                     Transform box = hit.transform;
 
@@ -64,22 +64,7 @@ public class TouchManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, _MainCamera.farClipPlane, _MainCamera.cullingMask))
             {
-                if (hit.transform.CompareTag("Box"))
-                {
-                    Transform box = hit.transform;
-
-                    OnTouchUp(box);
-                }
-                else
-                {
-                    BoxVisible(_SellectBox1, true);
-
-                    _SellectBox1 = null;
-                    _SellectBox2 = null;
-
-                    _goMark.SetActive(false);
-                    _MovingBox.Visible(null, false);
-                }
+                OnTouchUp(hit);
             }
         }
         else if (Input.GetMouseButton(0))
@@ -117,25 +102,23 @@ public class TouchManager : MonoBehaviour
     }
 
     // Up일때 교체 처리.
-    void OnTouchUp(Transform obj)
+    void OnTouchUp(RaycastHit hit)
     {
-        if(_SellectBox1 != null)
+        if (_SellectBox1 != null)
         {
-            _SellectBox2 = obj;
+            if (hit.transform.CompareTag("Box"))
+            {
+                _SellectBox2 = hit.transform;
 
-            BoxChange();
-        }
-        else
-        {
-            if (_SellectBox1 != null)
-                _SellectBox1 = null;
-
-            if (_SellectBox2 != null)
-                _SellectBox2 = null;
+                BoxChange();
+            }
+            else if (_SellectBox2 != null)
+            {
+                BoxChange();
+            }
         }
 
         _goMark.SetActive(false);
-
         _MovingBox.Visible(null, false);
     }
 
@@ -143,7 +126,11 @@ public class TouchManager : MonoBehaviour
     void OnTouchMove(Transform obj)
     {
         if (_SellectBox1 != null)
+        {
+            _SellectBox2 = obj;
             _transMark.position = obj.position;
+        }
+
     }
 
     // 무빙박스가 나타날 동안 선택한 박스는 투명 처리.
@@ -160,11 +147,11 @@ public class TouchManager : MonoBehaviour
     // 박스1 박스2 교체.
     void BoxChange()
     {
-        if(_SellectBox1 == _SellectBox2)
+        if (_SellectBox1 == _SellectBox2)
         {
             BoxVisible(_SellectBox1, true);
-            _SellectBox1 = null;
 
+            _SellectBox1 = null;
             _SellectBox2 = null;
 
             _MovingBox.Visible(null, false);
