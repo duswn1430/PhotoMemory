@@ -20,8 +20,6 @@ public class GameService : MonoBehaviour
     public event Action HandlePlayerConnected;
     public event Action HandlePlayerDisconnected;
 
-    //public event Action HandleScoreSubmitted;
-
     string _sBoard = "ScoreRanking";
 
     // Use this for initialization
@@ -85,8 +83,6 @@ public class GameService : MonoBehaviour
     public void AchivUnlock(string id)
     {
         UM_GameServiceManager.instance.UnlockAchievement(id);
-
-        //UM_GameServiceManager.instance.GetAchievementProgress(id);
     }
 
     public long GetBestScore()
