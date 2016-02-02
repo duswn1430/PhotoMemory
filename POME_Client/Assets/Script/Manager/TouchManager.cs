@@ -87,18 +87,15 @@ public class TouchManager : MonoBehaviour
     // Down일때 박스1 & 무빙 박스 셋팅.
     void OnTouchDown(Transform obj)
     {
-        if (GameManager._Step == GameManager.STEP.PLAY)
-        {
-            _SellectBox1 = obj;
-            BoxVisible(_SellectBox1, false);
+        _SellectBox1 = obj;
+        BoxVisible(_SellectBox1, false);
 
-            _goMark.SetActive(true);
-            _transMark.position = obj.position;
+        _goMark.SetActive(true);
+        _transMark.position = obj.position;
 
-            _MovingBox.Visible(obj, true);
+        _MovingBox.Visible(obj, true);
 
-            Sound._Instance.BoxUp();
-        }
+        Sound._Instance.BoxUp();
     }
 
     // Up일때 교체 처리.
@@ -130,7 +127,6 @@ public class TouchManager : MonoBehaviour
             _SellectBox2 = obj;
             _transMark.position = obj.position;
         }
-
     }
 
     // 무빙박스가 나타날 동안 선택한 박스는 투명 처리.
