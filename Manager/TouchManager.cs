@@ -7,12 +7,12 @@ public class TouchManager : MonoBehaviour
 
     public BoxMapManager _BoxMapManager = null;
 
-    private Transform _SellectBox1 = null;
-    private Transform _SellectBox2 = null;
-
     public MovingBox _MovingBox = null;
     public GameObject _goMark = null;
     public Transform _transMark = null;
+
+    private Transform _SellectBox1 = null;
+    private Transform _SellectBox2 = null;
 
     public void Init()
     {
@@ -113,6 +113,11 @@ public class TouchManager : MonoBehaviour
             {
                 BoxChange();
             }
+            else
+            {
+                BoxVisible(_SellectBox1, true);
+                _SellectBox1 = null;
+            }
         }
 
         _goMark.SetActive(false);
@@ -124,7 +129,8 @@ public class TouchManager : MonoBehaviour
     {
         if (_SellectBox1 != null)
         {
-            _SellectBox2 = obj;
+            if (_SellectBox1 != obj)
+                _SellectBox2 = obj;
             _transMark.position = obj.position;
         }
     }
